@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/taskloop"
+
+# Taskloop::Command.run(ARGV)
+Taskloop::Command.run(["init"])
+print "\n"
