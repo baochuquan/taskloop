@@ -5,5 +5,15 @@ require_relative "../lib/taskloop"
 # Taskloop::Command.run(ARGV)
 # Taskloop::Command.run(["init"])
 # print "\n"
-Taskloop::Command.run(["lint"])
+# Taskloop::Command.run(["lint"])
+# print "\n"
+# Taskloop::Command.run(["list"])
+# print "\n"
+# Taskloop::Command.run(["log"])
+# print "\n"
+# Taskloop::Command.run(["run"])
+# print "\n"
+# Taskloop::Command.run(["register"])
+# print "\n"
+Taskloop::Command.run(["unregister"])
 print "\n"

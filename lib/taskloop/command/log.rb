@@ -1,0 +1,16 @@
+module Taskloop
+  class Log < Command
+    self.abstract_command = true
+
+    self.summary = "Check Taskfile..."
+
+    self.description = <<-DESC
+    TODO baocq
+    DESC
+
+    def run
+      super
+      puts "taskloop log...Taskloop log"
+    end
+  end
+end

@@ -5,6 +5,10 @@ module Taskloop
 
     require 'taskloop/command/init'
     require 'taskloop/command/lint'
+    require 'taskloop/command/list'
+    require 'taskloop/command/log'
+    require 'taskloop/command/register'
+    require 'taskloop/command/unregister'
 
     self.abstract_command = true
 
