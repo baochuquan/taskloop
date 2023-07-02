@@ -3,6 +3,9 @@ module Taskloop
 
   class Command < CLAide::Command
 
+    require 'taskloop/command/init'
+    require 'taskloop/command/lint'
+
     self.abstract_command = true
 
     self.description = 'Taskloop Command Description.'
