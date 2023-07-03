@@ -1,16 +1,18 @@
 module Taskloop
   class Register < Command
-    self.abstract_command = true
+    self.abstract_command = false
 
-    self.summary = "Check Taskfile..."
+    self.summary = "Register a project into taskloop."
 
     self.description = <<-DESC
-    TODO baocq
+      The `taskloop register` command will register a project which has defined a Taskfile into taskloop.
+      Taskloop will record this information in ~/.taskloop/config.
     DESC
 
     def run
       super
-      puts "taskloop register...Taskloop Register"
+      createTaskloopDirIfNeeded
+      createTaskListIfNeeded
     end
   end
 end

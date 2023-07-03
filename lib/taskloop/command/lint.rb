@@ -1,6 +1,6 @@
 module Taskloop
   class Lint < Command
-    self.abstract_command = true
+    self.abstract_command = false
 
     self.summary = "Check Taskfile..."
 

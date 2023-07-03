@@ -16,19 +16,37 @@ module Taskloop
 
     self.command = 'taskloop'
 
-    def self.options
-      [
-        ['--verbose', 'Show detail information while executing command.']
-      ].concat(super)
-    end
+    # def self.options
+    #   [
+    #     ['--verbose', 'Show detail information while executing command.']
+    #   ].concat(super)
+    # end
 
     def initialize(argv)
-      @verbose = argv.flag?('verbose', true)
+      # @verbose = argv.flag?('verbose', true)
       super
     end
 
     def run
-      puts "run ... Taskloop Command"
+
+    end
+
+    def createTaskloopDirIfNeeded
+      # create ~/.taskloop directory if needed.
+      user_dir = Dir.home
+      taskloop_dir = File.join(user_dir, ".taskloop")
+      unless File.directory?(taskloop_dir)
+        FileUtils.mkdir(taskloop_dir)
+      end
+    end
+
+    def createTaskListIfNeeded
+      # create ~/.taskloop/tasklist.json directory if needed.
+      user_dir = Dir.home
+      config = File.join(user_dir, ".taskloop", "tasklist.json")
+      unless  File.file?(config)
+        File.new(config, "w+")
+      end
     end
   end
 end

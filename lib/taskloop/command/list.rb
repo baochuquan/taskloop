@@ -1,6 +1,6 @@
 module Taskloop
   class List < Command
-    self.abstract_command = true
+    self.abstract_command = false
 
     self.summary = "Check Taskfile..."
 
