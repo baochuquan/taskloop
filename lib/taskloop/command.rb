@@ -43,9 +43,17 @@ module Taskloop
     def createTaskListIfNeeded
       # create ~/.taskloop/tasklist.json directory if needed.
       user_dir = Dir.home
-      config = File.join(user_dir, ".taskloop", "tasklist.json")
-      unless  File.file?(config)
-        File.new(config, "w+")
+      tasklist = File.join(user_dir, ".taskloop", "tasklist.json")
+      unless  File.file?(tasklist)
+        file = File.new(tasklist, "w+")
+        content = <<-DESC
+{
+   "path": [],
+   "git": []
+}
+        DESC
+        file.puts content
+        file.close
       end
     end
   end

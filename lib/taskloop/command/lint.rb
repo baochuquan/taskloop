@@ -7,7 +7,6 @@ module Taskloop
     self.description = <<-DESC
     TODO baocq
     DESC
-
     def run
       super
       puts "taskloop lint...Taskloop Lint"
