@@ -14,6 +14,10 @@ module Taskloop
       super unit
       @scope = scope
     end
+
+    def hash
+      super + '_' + @scope.to_s
+    end
   end
 
   class BeforeScopeRule < ScopeRule
@@ -52,7 +56,10 @@ module Taskloop
       if @unit == :hour and (right < 0 or right > 23)
         raise ArgumentError, "'right' for 'hour' must >= 0 and <= 23"
       end
+    end
 
+    def hash
+      super + '_' + right.to_s
     end
   end
 
@@ -116,6 +123,10 @@ module Taskloop
         raise ArgumentError, "'left' must greater than 0"
       end
     end
+
+    def hash
+      super + '_' + left.to_s + '_' + right.to_s
+    end
   end
 
 
@@ -157,7 +168,10 @@ module Taskloop
         raise ArgumentError, "'right' for 'hour' must >= 0 and <= 23"
       end
     end
+  end
 
+  def hash
+    super + '_' + left.to_s
   end
 
 end

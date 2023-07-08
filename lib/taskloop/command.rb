@@ -9,6 +9,7 @@ module Taskloop
     require 'taskloop/command/log'
     require 'taskloop/command/register'
     require 'taskloop/command/unregister'
+    require 'taskloop/command/run'
 
     self.abstract_command = true
 
@@ -22,6 +23,8 @@ module Taskloop
     #   ].concat(super)
     # end
 
+
+
     def initialize(argv)
       # @verbose = argv.flag?('verbose', true)
       super
@@ -33,8 +36,6 @@ module Taskloop
 
     def create_taskloop_dir_if_needed
       # create ~/.taskloop directory if needed.
-      user_dir = Dir.home
-      taskloop_dir = File.join(user_dir, ".taskloop")
       unless File.directory?(taskloop_dir)
         FileUtils.mkdir(taskloop_dir)
       end
@@ -42,10 +43,8 @@ module Taskloop
 
     def create_tasklist_if_needed
       # create ~/.taskloop/tasklist.json directory if needed.
-      user_dir = Dir.home
-      tasklist = File.join(user_dir, ".taskloop", "tasklist.json")
-      unless  File.file?(tasklist)
-        file = File.new(tasklist, "w+")
+      unless  File.file?(tasklist_path)
+        file = File.new(tasklist_path, "w+")
         content = <<-DESC
 {
    "path": [],
@@ -55,6 +54,18 @@ module Taskloop
         file.puts content
         file.close
       end
+    end
+
+    def taskloop_dir
+      File.join(Dir.home, ".taskloop")
+    end
+    def tasklist_path
+      File.join(Dir.home, [".taskloop", "tasklist.json"])
+    end
+    def taskfile_paths
+      json_string = File.read(tasklist_path)
+      parsed_json = JSON.parse(json_string)
+      return parsed_json["path"]
     end
   end
 end

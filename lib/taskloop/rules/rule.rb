@@ -24,5 +24,9 @@ module Taskloop
     def invalidate!
 
     end
+
+    def hash
+      @unit.to_s
+    end
   end
 end

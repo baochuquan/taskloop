@@ -8,6 +8,10 @@ module Taskloop
       super unit
       @value = value
     end
+
+    def hash
+      super + '_' + value.to_s
+    end
   end
 
 end

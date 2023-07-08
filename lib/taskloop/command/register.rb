@@ -35,8 +35,7 @@ module Taskloop
 
     private def register_taskfile
       taskfile_path = Dir.pwd + "/Taskfile"
-      tasklist = File.join(Dir.home, ".taskloop", "tasklist.json")
-      json_string = File.read(tasklist)
+      json_string = File.read(tasklist_path)
       parsed_json = JSON.parse(json_string)
       # check if all the registered path
       parsed_json = check_tasklist(parsed_json)

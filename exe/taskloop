@@ -9,11 +9,11 @@ require_relative "../lib/taskloop"
 # print "\n"
 # Taskloop::Command.run(["list"])
 # print "\n"
-# Taskloop::Command.run(["log"])
+Taskloop::Command.run(["log"])
 # print "\n"
-# Taskloop::Command.run(["run"])
+Taskloop::Command.run(["run"])
 # print "\n"
-Taskloop::Command.run(["register"])
+# Taskloop::Command.run(["register"])
 # print "\n"
 # Taskloop::Command.run(["unregister"])
 # print "\n"

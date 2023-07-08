@@ -76,6 +76,7 @@ module Taskloop
 
     def initialize()
       yield self
+      puts "task.hash => #{hash}"
     end
 
     #################################
@@ -255,6 +256,16 @@ module Taskloop
     #################################
     def invalidate!
 
+    end
+
+    def hash
+      result = ""
+      result += "year_" + year.hash
+      result += "month_" + month.hash
+      result += "day_" + day.hash
+      result += "hour_" + hour.hash
+      result += "minute_" + minute.hash
+      return result
     end
 
     def test
