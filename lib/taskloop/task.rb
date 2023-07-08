@@ -84,7 +84,7 @@ module Taskloop
     #     - example: between 2025, 2026
     #   - after
     #     - examle: after 2023
-    attr_accessor :year
+    attr_reader :year
 
     # specific syntax
     #   - of
@@ -100,7 +100,7 @@ module Taskloop
     #     - example: between 2025, 2026
     #   - after
     #     - examle: after 2023
-    attr_accessor :month
+    attr_reader :month
 
     # specific syntax
     #   - on
@@ -117,7 +117,7 @@ module Taskloop
     #     - example: between Monday, Friday
     #   - after
     #     - example: after day10
-    attr_accessor :day
+    attr_reader :day
 
     # specific syntax
     #   - at
@@ -132,7 +132,7 @@ module Taskloop
     #     - example: between 10, 12
     #   - after
     #     - example: after 11
-    attr_accessor :hour
+    attr_reader :hour
 
     # specific syntax
     #   - at
@@ -140,11 +140,60 @@ module Taskloop
     # loop syntax
     #   - every
     #     - example: every 5
-    attr_accessor :minute
+    attr_reader :minute
 
     def initialize()
       yield self
     end
+
+    #################################
+    # Setters
+    #################################
+
+    def year=(rule)
+      unless rule.is_a?(Rule)
+        raise TypeError, "the rule of year must be a class or subclass of Rule"
+      end
+      @year = rule
+      @year.unit = :year
+    end
+
+    def month=(rule)
+      unless rule.is_a?(Rule)
+        raise TypeError, "the rule of month must be a class or subclass of Rule"
+      end
+      @month = rule
+      @month.unit = :month
+    end
+
+    def day=(rule)
+      unless rule.is_a?(Rule)
+        raise TypeError, "the rule of day must be a class or subclass of Rule"
+      end
+      @day = rule
+      @day.unit = :day
+    end
+
+    def hour=(rule)
+      unless rule.is_a?(Rule)
+        raise TypeError, "the rule of hour must be a class or subclass of Rule"
+      end
+      @hour = rule
+      @hour.unit = :hour
+    end
+
+    def minute=(rule)
+      unless rule.is_a?(Rule)
+        raise TypeError, "the rule of minute must be a class or subclass of Rule"
+      end
+
+      if rule.is_a?(ScopeRule)
+        raise TypeError, "the rule of minute cannot be a class or subclass of ScopeRule"
+      end
+      @minute = rule
+      @minute.unit = :minute
+    end
+
 
     #################################
     # Loop Syntax
