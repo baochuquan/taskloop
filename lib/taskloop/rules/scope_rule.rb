@@ -27,13 +27,17 @@ module Taskloop
 
     def invalidate!
       super
-      if Task::WEEK.has_key?(right)
+      if @unit == :day
+        unless Task::WEEK.has_key?(right) or Task::DAY.has_key?(right)
+          raise ArgumentError, "#{right} must be a Symbol defined in Task::WEEK or Task::DAY"
+        end
         return
       end
-      if Task::DAY.has_key?(right)
-        return
-      end
-      if Task::MONTH.has_key?(right)
+
+      if @unit == :month
+        unless Task::MONTH.has_key?(right)
+          raise ArgumentError, "#{right} must be a Symbol defined in Task::MONTH"
+        end
         return
       end
 
@@ -41,9 +45,14 @@ module Taskloop
         raise TypeError, "'right' need to be Symbol or Integer"
       end
 
-      unless right > 0
-        raise ArgumentError, "'right' must greater than 0."
+      if @unit == :minute and (right < 0 or right > 59)
+        raise ArgumentError, "'right' for 'minute' must >= 0 and <= 59"
       end
+
+      if @unit == :hour and (right < 0 or right > 23)
+        raise ArgumentError, "'right' for 'hour' must >= 0 and <= 23"
+      end
+
     end
   end
 
@@ -63,21 +72,26 @@ module Taskloop
 
     def invalidate!
       super
-      if Task::WEEK.has_key?(left) and Task::WEEK.has_key?(right)
-        unless left < right
-          raise ArgumentError, "'left' must less than 'right'"
+      if @unit == :day
+        if Task::WEEK.has_key?(left) and Task::WEEK.has_key?(right)
+          unless Task::WEEK[left] < Task::WEEK[right]
+            raise ArgumentError, "'left' must less than 'right'"
+          end
+          return
         end
-        return
-      end
-      if Task::DAY.has_key?(left) and Task::DAY.has_key?(right)
-        unless left < right
-          raise ArgumentError, "'left' must less than 'right'"
+        if Task::DAY.has_key?(left) and Task::DAY.has_key?(right)
+          unless Task::WEEK[left] < Task::WEEK[right]
+            raise ArgumentError, "'left' must less than 'right'"
+          end
+          return
         end
-        return
+
+        raise ArgumentError, "'left' and 'right' must be the same type."
       end
-      if Task::MONTH.has_key?(left) and Task::MONTH.has_key?(right)
-        unless left < right
-          raise ArgumentError, "'left' must less than 'right'"
+
+      if @unit == :month
+        unless Task::MONTH.has_key?(left)
+          raise ArgumentError, "#{left} must be a Symbol defined in Task::MONTH"
         end
         return
       end
@@ -89,9 +103,21 @@ module Taskloop
       unless left < right
         raise ArgumentError, "'left' must less than 'right'"
       end
+
+      if @unit == :minute and (left < 0 or right > 59)
+        raise ArgumentError, "'left' and 'right' for 'minute' must >= 0 and <= 59"
+      end
+
+      if @unit == :hour and (left < 0 or right > 23)
+        raise ArgumentError, "'left', 'right' for 'hour' must >= 0 and <= 23"
+      end
+
+      if @unit == :year and left < 0
+        raise ArgumentError, "'left' must greater than 0"
+      end
     end
   end
-  
+
 
 
   class AfterScopeRule < ScopeRule
@@ -105,13 +131,17 @@ module Taskloop
 
     def invalidate!
       super
-      if Task::WEEK.has_key?(left)
+      if @unit == :day
+        unless Task::WEEK.has_key?(left) or Task::DAY.has_key?(left)
+          raise ArgumentError, "#{left} must be a Symbol defined in Task::WEEK or Task::DAY"
+        end
         return
       end
-      if Task::DAY.has_key?(left)
-        return
-      end
-      if Task::MONTH.has_key?(left)
+
+      if @unit == :month
+        unless Task::MONTH.has_key?(left)
+          raise ArgumentError, "#{left} must be a Symbol defined in Task::MONTH"
+        end
         return
       end
 
@@ -119,8 +149,12 @@ module Taskloop
         raise TypeError, "'left' need to be Symbol or Integer"
       end
 
-      unless left > 0
-        raise ArgumentError, "'left' must greater than 0."
+      if @unit == :minute and (left < 0 or left > 59)
+        raise ArgumentError, "'right' for 'minute' must >= 0 and <= 59"
+      end
+
+      if @unit == :hour and (left < 0 or left > 23)
+        raise ArgumentError, "'right' for 'hour' must >= 0 and <= 23"
       end
     end
 

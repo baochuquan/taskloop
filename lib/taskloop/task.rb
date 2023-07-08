@@ -250,6 +250,13 @@ module Taskloop
       AfterScopeRule.new(:unknown, :after, left)
     end
 
+    #################################
+    # Utils
+    #################################
+    def invalidate!
+
+    end
+
     def test
       Task.new do |t|
         t.path = "xxx"
