@@ -71,6 +71,13 @@ module Taskloop
     # the path of a task
     attr_accessor :path
 
+    def initialize()
+      yield self
+    end
+
+    #################################
+    # Setters & Getters
+    #################################
     # specific syntax
     #   - of
     #     - example: in 2024
@@ -84,7 +91,18 @@ module Taskloop
     #     - example: between 2025, 2026
     #   - after
     #     - examle: after 2023
-    attr_reader :year
+    def year=(rule)
+      unless rule.is_a?(Rule)
+        raise TypeError, "the rule of year must be a class or subclass of Rule"
+      end
+
+      @year = rule
+      @year.unit = :year
+    end
+
+    def year
+      @year ||= LoopRule.new(:year, 1)
+    end
 
     # specific syntax
     #   - of
@@ -100,7 +118,17 @@ module Taskloop
     #     - example: between 2025, 2026
     #   - after
     #     - examle: after 2023
-    attr_reader :month
+    def month=(rule)
+      unless rule.is_a?(Rule)
+        raise TypeError, "the rule of month must be a class or subclass of Rule"
+      end
+      @month = rule
+      @month.unit = :month
+    end
+
+    def month
+      @month||= LoopRule.new(:month, 1)
+    end
 
     # specific syntax
     #   - on
@@ -117,7 +145,17 @@ module Taskloop
     #     - example: between Monday, Friday
     #   - after
     #     - example: after day10
-    attr_reader :day
+    def day=(rule)
+      unless rule.is_a?(Rule)
+        raise TypeError, "the rule of day must be a class or subclass of Rule"
+      end
+      @day = rule
+      @day.unit = :day
+    end
+
+    def day
+      @day ||= LoopRule.new(:day, 1)
+    end
 
     # specific syntax
     #   - at
@@ -132,48 +170,6 @@ module Taskloop
     #     - example: between 10, 12
     #   - after
     #     - example: after 11
-    attr_reader :hour
-
-    # specific syntax
-    #   - at
-    #     - example: at 59; at 45
-    # loop syntax
-    #   - every
-    #     - example: every 5
-    attr_reader :minute
-
-    def initialize()
-      yield self
-    end
-
-    #################################
-    # Setters
-    #################################
-
-    def year=(rule)
-      unless rule.is_a?(Rule)
-        raise TypeError, "the rule of year must be a class or subclass of Rule"
-      end
-      @year = rule
-      @year.unit = :year
-    end
-
-    def month=(rule)
-      unless rule.is_a?(Rule)
-        raise TypeError, "the rule of month must be a class or subclass of Rule"
-      end
-      @month = rule
-      @month.unit = :month
-    end
-
-    def day=(rule)
-      unless rule.is_a?(Rule)
-        raise TypeError, "the rule of day must be a class or subclass of Rule"
-      end
-      @day = rule
-      @day.unit = :day
-    end
-
     def hour=(rule)
       unless rule.is_a?(Rule)
         raise TypeError, "the rule of hour must be a class or subclass of Rule"
@@ -182,6 +178,16 @@ module Taskloop
       @hour.unit = :hour
     end
 
+    def hour
+      @hour ||= LoopRule.new(:hour, 1)
+    end
+
+    # # specific syntax
+    #     #   - at
+    #     #     - example: at 59; at 45
+    #     # loop syntax
+    #     #   - every
+    #     #     - example: every 5
     def minute=(rule)
       unless rule.is_a?(Rule)
         raise TypeError, "the rule of minute must be a class or subclass of Rule"
@@ -194,6 +200,9 @@ module Taskloop
       @minute.unit = :minute
     end
 
+    def minute
+      @minute ||= LoopRule.new(:minute, 1)
+    end
 
     #################################
     # Loop Syntax
@@ -236,11 +245,11 @@ module Taskloop
       AfterScopeRule.new(:unknown, :after, left)
     end
 
-    def xxx
+    def test
       Task.new do |t|
         t.path = "xxx"
         t.minute = every 1.minute
-        t.hour = at 10
+        t.hour = at 10.hour
         t.day = on :Sun
         t.month = of :Feb
         t.year = of 2023

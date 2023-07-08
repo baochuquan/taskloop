@@ -20,5 +20,9 @@ module Taskloop
     def next_execute_time(last_execute_time)
       raise NotImplementedError, 'subclass need implement this method!'
     end
+
+    def invalidate!
+
+    end
   end
 end
