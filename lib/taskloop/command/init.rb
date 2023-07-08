@@ -2,7 +2,7 @@ module Taskloop
   class Init < Command
     self.abstract_command = false
 
-    self.summary = "setup a project to support taskloop."
+    self.summary = "Setup a project to support taskloop."
 
     self.description = <<-DESC
       The `taskloop init` command will create a file named Taskfile in the current directory.

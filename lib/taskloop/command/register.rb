@@ -15,29 +15,33 @@ module Taskloop
       super
       # check if Taskfile exist
       unless  File.file?(:Taskfile.to_s)
-        puts "Taskfile is not exist. Please goto the project's root directory and execute again, or run `taskloop init` command first if current directory is the root directory of a project.".ansi.red
+        puts "Error:".ansi.red
+        puts "    Taskfile is not exist. Please goto the project's root directory and execute again, or run `taskloop init` command first if current directory is the root directory of a project.".ansi.red
         exit 1
       end
 
       # TODO: @baocq lint Taskfile if needed
 
       # create ~/.taskloop/
-      createTaskloopDirIfNeeded
+      create_taskloop_dir_if_needed
       # create ~/.taskloop/tasklist.json
-      createTaskListIfNeeded
+      create_tasklist_if_needed
       # register current Taskfile path into taslist.json
-      registerTaskfile
+      register_taskfile
+
+      # TODO: @baocq check if need to register crontab
+
     end
 
-    private def registerTaskfile
+    private def register_taskfile
       taskfile_path = Dir.pwd + "/Taskfile"
       tasklist = File.join(Dir.home, ".taskloop", "tasklist.json")
       json_string = File.read(tasklist)
       parsed_json = JSON.parse(json_string)
       # check if all the registered path
-      parsed_json = checkTasklist(parsed_json)
+      parsed_json = check_tasklist(parsed_json)
       # add current Tasfile
-      parsed_json = pushTaskFileIfNeeded(parsed_json, taskfile_path)
+      parsed_json = push_taskfile_if_needed(parsed_json, taskfile_path)
 
       # write back
       File.open(tasklist, 'w') do |file|
@@ -45,16 +49,19 @@ module Taskloop
       end
     end
 
-    private def checkTasklist(parsed_json)
+    private def check_tasklist(parsed_json)
       parsed_json['path'] = parsed_json['path'].uniq
       parsed_json['path'] = parsed_json['path'].select { |path| File.exists?(path)  }
       parsed_json
     end
 
-    private def pushTaskFileIfNeeded(parsed_json, taskfile_path)
+    private def push_taskfile_if_needed(parsed_json, taskfile_path)
       duplicate = parsed_json['path'].select { |path| path == taskfile_path }
       if duplicate.empty?
         parsed_json['path'].push(taskfile_path)
+      else
+        puts "Warning: ".ansi.yellow
+        puts "    Current project has already been registered. Do not need to register again.\n".ansi.yellow
       end
       parsed_json
     end

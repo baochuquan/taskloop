@@ -31,7 +31,7 @@ module Taskloop
 
     end
 
-    def createTaskloopDirIfNeeded
+    def create_taskloop_dir_if_needed
       # create ~/.taskloop directory if needed.
       user_dir = Dir.home
       taskloop_dir = File.join(user_dir, ".taskloop")
@@ -40,7 +40,7 @@ module Taskloop
       end
     end
 
-    def createTaskListIfNeeded
+    def create_tasklist_if_needed
       # create ~/.taskloop/tasklist.json directory if needed.
       user_dir = Dir.home
       tasklist = File.join(user_dir, ".taskloop", "tasklist.json")
