@@ -3,14 +3,14 @@ module Taskloop
 
   class Rule
 
-    UNITS = [
+    UNIT = {
       :unknown     => 0,
       :minute      => 1,
       :hour        => 2,
       :day         => 3,
       :month       => 4,
       :year        => 5,
-    ]
+    }
 
     attr_accessor :unit
 

@@ -1,7 +1,7 @@
 module Taskloop
   class Task
 
-    MONTHS = [
+    MONTH = {
       :Jan       => 1,
       :Feb       => 2,
       :Mar       => 3,
@@ -25,9 +25,9 @@ module Taskloop
       :month10   => 10,
       :month11   => 11,
       :month12   => 12,
-    ]
+    }
 
-    DAYS = [
+    WEEK = {
       :Mon       => 1,
       :Tue       => 2,
       :Wed       => 3,
@@ -35,6 +35,9 @@ module Taskloop
       :Fri       => 5,
       :Sat       => 6,
       :Sun       => 7,
+    }
+
+    DAY = {
       :day1      => 1,
       :day2      => 2,
       :day3      => 3,
@@ -66,7 +69,7 @@ module Taskloop
       :day29     => 29,
       :day30     => 30,
       :day31     => 31,
-    ]
+    }
 
     # the path of a task
     attr_accessor :path
@@ -203,6 +206,8 @@ module Taskloop
     def minute
       @minute ||= LoopRule.new(:minute, 1)
     end
+
+
 
     #################################
     # Loop Syntax
