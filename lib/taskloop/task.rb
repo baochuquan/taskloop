@@ -219,8 +219,13 @@ module TaskLoop
     def full_path
 
     end
+
     def hash
-      [year.hash, month.hash, day.hash, hour.hash, minute.hash].join('_')
+      puts description
+      description.hash
+    end
+    def description
+      [year.description, month.description, day.description, hour.description, minute.description].join('_')
     end
   end
 end

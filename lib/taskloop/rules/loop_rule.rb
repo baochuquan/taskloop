@@ -8,7 +8,7 @@ module TaskLoop
       @interval = interval
     end
 
-    def hash
+    def description
       super + '_loop_' + interval.to_s
     end
 

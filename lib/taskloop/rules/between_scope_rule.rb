@@ -14,14 +14,14 @@ module TaskLoop
     def invalidate!
       super
       if @unit == :day
-        if Task::WEEK.has_key?(left) and Task::WEEK.has_key?(right)
-          unless Task::WEEK[left] < Task::WEEK[right]
+        if Task::WEEK.has_key?(@left) and Task::WEEK.has_key?(@right)
+          unless Task::WEEK[@left] < Task::WEEK[@right]
             raise ArgumentError, "'left' must less than 'right'"
           end
           return
         end
-        if Task::DAY.has_key?(left) and Task::DAY.has_key?(right)
-          unless Task::WEEK[left] < Task::WEEK[right]
+        if Task::DAY.has_key?(@left) and Task::DAY.has_key?(@right)
+          unless Task::WEEK[@left] < Task::WEEK[@right]
             raise ArgumentError, "'left' must less than 'right'"
           end
           return
@@ -31,29 +31,29 @@ module TaskLoop
       end
 
       if @unit == :month
-        unless Task::MONTH.has_key?(left)
+        unless Task::MONTH.has_key?(@left)
           raise ArgumentError, "#{left} must be a Symbol defined in Task::MONTH"
         end
         return
       end
 
-      unless left.is_a?(Integer) and right.is_a?(Integer)
+      unless @left.is_a?(Integer) and @right.is_a?(Integer)
         raise TypeError, "both 'left' and 'right' need to be Symbol or Integer"
       end
 
-      unless left < right
+      unless @left < @right
         raise ArgumentError, "'left' must less than 'right'"
       end
 
-      if @unit == :minute and (left < 0 or right > 59)
+      if @unit == :minute and (@left < 0 or @right > 59)
         raise ArgumentError, "'left' and 'right' for 'minute' must >= 0 and <= 59"
       end
 
-      if @unit == :hour and (left < 0 or right > 23)
+      if @unit == :hour and (@left < 0 or @right > 23)
         raise ArgumentError, "'left', 'right' for 'hour' must >= 0 and <= 23"
       end
 
-      if @unit == :year and left < 0
+      if @unit == :year and @left < 0
         raise ArgumentError, "'left' must greater than 0"
       end
     end
@@ -94,7 +94,7 @@ module TaskLoop
       return @right
     end
 
-    def hash
+    def description
       super + '_' + left_value.to_s + '_' + right_value.to_s
     end
   end

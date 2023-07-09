@@ -15,7 +15,7 @@ module TaskLoop
       @scope = scope
     end
 
-    def hash
+    def description
       super + '_' + @scope.to_s
     end
   end

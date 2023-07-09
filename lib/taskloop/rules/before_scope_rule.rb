@@ -11,28 +11,28 @@ module TaskLoop
     def invalidate!
       super
       if @unit == :day
-        unless Task::WEEK.has_key?(right) or Task::DAY.has_key?(right)
-          raise ArgumentError, "#{right} must be a Symbol defined in Task::WEEK or Task::DAY"
+        unless Task::WEEK.has_key?(@right) or Task::DAY.has_key?(@right)
+          raise ArgumentError, "#{@right} must be a Symbol defined in Task::WEEK or Task::DAY"
         end
         return
       end
 
       if @unit == :month
-        unless Task::MONTH.has_key?(right)
-          raise ArgumentError, "#{right} must be a Symbol defined in Task::MONTH"
+        unless Task::MONTH.has_key?(@right)
+          raise ArgumentError, "#{@right} must be a Symbol defined in Task::MONTH"
         end
         return
       end
 
-      unless right.is_a?(Integer)
+      unless @right.is_a?(Integer)
         raise TypeError, "'right' need to be Symbol or Integer"
       end
 
-      if @unit == :minute and (right < 0 or right > 59)
+      if @unit == :minute and (@right < 0 or @right > 59)
         raise ArgumentError, "'right' for 'minute' must >= 0 and <= 59"
       end
 
-      if @unit == :hour and (right < 0 or right > 23)
+      if @unit == :hour and (@right < 0 or @right > 23)
         raise ArgumentError, "'right' for 'hour' must >= 0 and <= 23"
       end
     end
@@ -55,7 +55,7 @@ module TaskLoop
       return @right
     end
 
-    def hash
+    def description
       super + '_' + right_value.to_s
     end
   end

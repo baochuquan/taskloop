@@ -27,7 +27,7 @@ module TaskLoop
       return @value
     end
 
-    def hash
+    def description
       super + '_specific_' + value_value.to_s
     end
   end

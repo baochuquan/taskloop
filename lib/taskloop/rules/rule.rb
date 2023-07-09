@@ -26,6 +26,10 @@ module TaskLoop
     end
 
     def hash
+      description.hash
+    end
+
+    def description
       @unit.to_s
     end
   end
