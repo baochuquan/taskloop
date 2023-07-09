@@ -27,6 +27,25 @@ module TaskLoop
       return @value
     end
 
+    def is_conform_rule?(last_exec_time)
+      current = Time.now
+      value = value_value
+      result = false
+      case @unit
+      when :year then
+        result = current.year == value
+      when :month then
+        result = current.month == value
+      when :day then
+        result = current.day == value
+      when :hour then
+        result = current.hour == value
+      when :minute then
+        result = current.min == value
+      end
+      return result
+    end
+
     def description
       super + '_specific_' + value_value.to_s
     end

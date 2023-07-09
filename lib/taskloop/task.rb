@@ -231,13 +231,14 @@ module TaskLoop
       @@tasklist = value
     end
 
-    def conform_to_rule?(timefile_path)
-      timestamp
+    def is_conform_rule?
+      timestamp = 0
       File.open(timefile_path, 'r') do |file|
         timestamp = file.gets.to_i
       end
-
-
+      current =Time.at(timestamp)
+      conform = year.is_conform_rule?(current) and month.is_conform_rule?(current) and day.is_conform_rule?(current) and hour.is_conform_rule?(current) and minute.is_conform_rule?(current)
+      return conform
     end
 
     #################################

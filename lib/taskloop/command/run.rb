@@ -139,9 +139,11 @@ module TaskLoop
       end
 
       @proj_tasklist_map.each do |proj, list|
-        # TODO: @baocq check rule
         list.each do |task|
-          execute_task(proj, task)
+          if task.is_conform_rule?
+            puts "execute => " + task.sha1
+            execute_task(proj, task)
+          end
         end
       end
     end
@@ -152,7 +154,12 @@ module TaskLoop
         path = File.join(proj, path)
       end
 
-      puts "start execute #{path}"
+      unless File.exists?(path)
+        errmsg = "No such file or directory - #{path}"
+        task.write_to_logfile(errmsg)
+        return
+      end
+
       cmd = path
       Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
         out = stdout.read
@@ -160,7 +167,6 @@ module TaskLoop
         content = out + "\n" + err
         task.write_to_logfile(content)
       end
-      puts "end execute"
     end
   end
 end

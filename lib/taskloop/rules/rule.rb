@@ -15,12 +15,13 @@ module TaskLoop
     def initialize(unit = :unknown)
       @unit = unit
     end
-    def next_execute_time(last_execute_time)
-      raise NotImplementedError, 'subclass need implement this method!'
-    end
 
     def invalidate!
 
+    end
+
+    def is_conform_rule?(last_exec_time)
+      raise NotImplementedError, 'subclass need implement this method!'
     end
 
     def description
