@@ -160,8 +160,13 @@ module TaskLoop
         return
       end
 
+      # record execute timestamp into task's timefile
+      timestamp = Time.now.to_i
+      task.write_to_timefile(timestamp)
+
       cmd = path
       Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
+        # record execute information into task's logfile
         out = stdout.read
         err = stderr.read
         content = out + "\n" + err

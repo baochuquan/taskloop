@@ -27,6 +27,13 @@ module TaskLoop
       return @value
     end
 
+    def is_week_value?
+      if @unit == :day and Task::WEEK.has_key?(@value)
+        return true
+      end
+      return false
+    end
+
     def is_conform_rule?(last_exec_time)
       current = Time.now
       value = value_value
