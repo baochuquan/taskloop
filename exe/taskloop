@@ -2,18 +2,20 @@
 
 require_relative "../lib/taskloop"
 
-# Taskloop::Command.run(ARGV)
-# Taskloop::Command.run(["init"])
+# TaskLoop::Command.run(ARGV)
+# TaskLoop::Command.run(["init"])
 # print "\n"
-# Taskloop::Command.run(["lint"])
+# TaskLoop::Command.run(["lint"])
 # print "\n"
-# Taskloop::Command.run(["list"])
+# TaskLoop::Command.run(["list"])
 # print "\n"
-TaskLoop::Command.run(["log"])
+# TaskLoop::Command.run(["log"])
 # print "\n"
+# TaskLoop::Command.run(["launch"])
+# TaskLoop::Command.run(["shutdown"])
 TaskLoop::Command.run(["run"])
 # print "\n"
-# Taskloop::Command.run(["register"])
+# TaskLoop::Command.run(["register"])
 # print "\n"
-# Taskloop::Command.run(["unregister"])
+# TaskLoop::Command.run(["unregister"])
 # print "\n"

@@ -2,7 +2,8 @@ module TaskLoop
   require 'claide'
 
   class Command < CLAide::Command
-
+    require 'digest'
+    require 'taskloop/extension/string_extension'
     require 'taskloop/command/init'
     require 'taskloop/command/lint'
     require 'taskloop/command/list'
@@ -10,6 +11,8 @@ module TaskLoop
     require 'taskloop/command/register'
     require 'taskloop/command/unregister'
     require 'taskloop/command/run'
+    require 'taskloop/command/launch'
+    require 'taskloop/command/shutdown'
 
     self.abstract_command = true
 
@@ -31,24 +34,40 @@ module TaskLoop
     end
 
     def run
-
+      create_taskloop_file_structure_if_needed
     end
 
-    def create_taskloop_dir_if_needed
-      # create ~/.taskloop directory if needed.
+
+
+    #################################
+    # Path and Directory and Files
+    #################################
+    def create_taskloop_file_structure_if_needed
+      # create Dirs
       unless File.directory?(taskloop_dir)
         FileUtils.mkdir(taskloop_dir)
       end
+
+      unless File.directory?(taskloop_cache_dir)
+        FileUtils.mkdir(taskloop_cache_dir)
+      end
+
+      unless File.directory?(taskloop_repos_dir)
+        FileUtils.mkdir(taskloop_repos_dir)
+      end
+
+      # create files
+      create_tasklist_json_if_needed
     end
 
-    def create_tasklist_if_needed
+    def create_tasklist_json_if_needed
       # create ~/.taskloop/tasklist.json directory if needed.
-      unless  File.file?(tasklist_path)
-        file = File.new(tasklist_path, "w+")
+      unless  File.file?(tasklist_json_path)
+        file = File.new(tasklist_json_path, "w+")
         content = <<-DESC
 {
-   "path": [],
-   "git": []
+   "paths": [],
+   "repos": []
 }
         DESC
         file.puts content
@@ -56,16 +75,36 @@ module TaskLoop
       end
     end
 
+    def create_dir_if_needed(dir)
+      unless File.directory?(dir)
+        FileUtils.mkdir(dir)
+      end
+    end
+
     def taskloop_dir
       File.join(Dir.home, ".taskloop")
     end
-    def tasklist_path
-      File.join(Dir.home, [".taskloop", "tasklist.json"])
+
+    def tasklist_json_path
+      File.join(taskloop_dir, ["tasklist.json"])
+    end
+
+    def taskloop_cache_dir
+      File.join(taskloop_dir, ["cache"])
+    end
+
+    def taskloop_repos_dir
+      File.join(taskloop_dir, ["repos"])
     end
     def taskfile_paths
-      json_string = File.read(tasklist_path)
+      json_string = File.read(tasklist_json_path)
       parsed_json = JSON.parse(json_string)
-      return parsed_json["path"]
+      return parsed_json["paths"]
     end
+
+    #################################
+    # Hash
+    #################################
+
   end
 end

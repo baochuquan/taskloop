@@ -1,6 +1,8 @@
 module TaskLoop
   class Task
     require 'digest'
+    require 'taskloop/extension/string_extension'
+    require 'taskloop/extension/integer_extension'
 
     MONTH = {
       :Jan       => 1,
@@ -72,12 +74,16 @@ module TaskLoop
       :day31     => 31,
     }
 
+    @@tasklist = []
+
+    attr_accessor :tag
     # the path of a task
     attr_accessor :path
 
     def initialize()
       yield self
       puts "task.sha1 => #{sha1}"
+      @@tasklist.push(self)
     end
 
     #################################
@@ -217,43 +223,77 @@ module TaskLoop
 
     end
 
-    def proj_path
-
-    end
-    def full_path
-
+    def self.tasklist
+      @@tasklist
     end
 
+    def self.tasklist=(value)
+      @@tasklist = value
+    end
+
+    def conform_to_rule?(timefile_path)
+      timestamp
+      File.open(timefile_path, 'r') do |file|
+        timestamp = file.gets.to_i
+      end
+
+
+    end
+
+    #################################
+    # Filenames
+    #################################
+
+    attr_accessor :proj_cache_dir
+
+    def logfile_path
+      return File.join(@proj_cache_dir, logfile_name)
+    end
+
+    def timefile_path
+      return File.join(@proj_cache_dir, timefile_name)
+    end
+
+    def logfile_name
+      return sha1 + "_log"
+    end
+    def timefile_name
+      return sha1 + "_time"
+    end
+
+    def write_to_logfile(content)
+      file = File.open(logfile_path, "w")
+      file.puts content
+      file.close
+    end
+
+    def write_to_timefile(content)
+      file = File.open(timefile_path, "w")
+      file.puts content
+      file.close
+    end
+
+    #################################
+    # Sha1 and description
+    #################################
     def sha1
+      return rule_sha1 + '_' + path_sha1
+    end
+
+    def path_sha1
+      sha1_digest = Digest::SHA1.new
+      sha1_digest.update(@path)
+      return sha1_digest.hexdigest[0..7]
+    end
+
+    def rule_sha1
       sha1_digest = Digest::SHA1.new
       sha1_digest.update(description)
       return sha1_digest.hexdigest
     end
 
     def description
-      [year.description, month.description, day.description, hour.description, minute.description].join('_')
+      [year.description, month.description, day.description, hour.description, minute.description, tag.to_s].join('_')
     end
-  end
-end
-
-class Integer
-  def minute
-    self
-  end
-
-  def hour
-    self
-  end
-
-  def day
-    self
-  end
-
-  def month
-    self
-  end
-
-  def year
-    self
   end
 end

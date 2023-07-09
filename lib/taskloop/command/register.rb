@@ -21,11 +21,6 @@ module TaskLoop
       end
 
       # TODO: @baocq lint Taskfile if needed
-
-      # create ~/.taskloop/
-      create_taskloop_dir_if_needed
-      # create ~/.taskloop/tasklist.json
-      create_tasklist_if_needed
       # register current Taskfile path into taslist.json
       register_taskfile
 
@@ -35,7 +30,7 @@ module TaskLoop
 
     private def register_taskfile
       taskfile_path = Dir.pwd + "/Taskfile"
-      json_string = File.read(tasklist_path)
+      json_string = File.read(tasklist_json_path)
       parsed_json = JSON.parse(json_string)
       # check if all the registered path
       parsed_json = check_tasklist(parsed_json)
@@ -43,21 +38,21 @@ module TaskLoop
       parsed_json = push_taskfile_if_needed(parsed_json, taskfile_path)
 
       # write back
-      File.open(tasklist, 'w') do |file|
+      File.open(tasklist_json_path, 'w') do |file|
         file.write(JSON.pretty_generate(parsed_json))
       end
     end
 
     private def check_tasklist(parsed_json)
-      parsed_json['path'] = parsed_json['path'].uniq
-      parsed_json['path'] = parsed_json['path'].select { |path| File.exists?(path)  }
+      parsed_json['paths'] = parsed_json['paths'].uniq
+      parsed_json['paths'] = parsed_json['paths'].select { |path| File.exists?(path)  }
       parsed_json
     end
 
     private def push_taskfile_if_needed(parsed_json, taskfile_path)
-      duplicate = parsed_json['path'].select { |path| path == taskfile_path }
+      duplicate = parsed_json['paths'].select { |path| path == taskfile_path }
       if duplicate.empty?
-        parsed_json['path'].push(taskfile_path)
+        parsed_json['paths'].push(taskfile_path)
       else
         puts "Warning: ".ansi.yellow
         puts "    Current project has already been registered. Do not need to register again.\n".ansi.yellow
