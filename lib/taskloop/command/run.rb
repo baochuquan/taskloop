@@ -5,6 +5,9 @@ module TaskLoop
     require_relative '../rules/loop_rule'
     require_relative '../rules/scope_rule'
     require_relative '../rules/specific_rule'
+    require_relative '../rules/after_scope_rule'
+    require_relative '../rules/before_scope_rule'
+    require_relative '../rules/between_scope_rule'
 
     self.abstract_command = false
 

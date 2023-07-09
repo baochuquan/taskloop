@@ -28,13 +28,13 @@ module TaskLoop
     }
 
     WEEK = {
-      :Mon       => 1,
-      :Tue       => 2,
-      :Wed       => 3,
-      :Thu       => 4,
-      :Fri       => 5,
-      :Sat       => 6,
-      :Sun       => 7,
+      :Mon       => 10001,
+      :Tue       => 10002,
+      :Wed       => 10003,
+      :Thu       => 10004,
+      :Fri       => 10005,
+      :Sat       => 10006,
+      :Sun       => 10007,
     }
 
     DAY = {
@@ -110,8 +110,8 @@ module TaskLoop
 
     # specific syntax
     #   - of
-    #     - example: in January, February, March, April, June, July, August, September, October, November, December;
-    #     - example: in month1, month2, month3, ....
+    #     - example: of :Jan, :Feb, :Mar, :Apr, :Jun, :Jul, :Aug, :Sep, :Oct, :Nov, :Dec;
+    #     - example: of :month1, :month2, :month3, ....
     # loop syntax
     #   - every
     #     - example: every 1
@@ -136,19 +136,19 @@ module TaskLoop
 
     # specific syntax
     #   - on
-    #     - example: on Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday;
-    #     - example: on day1, day2, day3;
+    #     - example: on :Mon, :Tue, :Wed, :Thu, :Fri, :Sat, :Sun;
+    #     - example: on :day1, :day2, :day3;
     # loop syntax
     #   - every
     #     - example: every 10
     # scope syntax
     #   - before
-    #     - example: before day10
+    #     - example: before :day10
     #   - between
-    #     - example: between day10, day19
-    #     - example: between Monday, Friday
+    #     - example: between :day10, :day19
+    #     - example: between :Mon, :Fri
     #   - after
-    #     - example: after day10
+    #     - example: after :day10
     def day=(rule)
       unless rule.is_a?(Rule)
         raise TypeError, "the rule of day must be a class or subclass of Rule"
@@ -209,9 +209,6 @@ module TaskLoop
     end
 
 
-
-
-
     #################################
     # Utils
     #################################
@@ -219,21 +216,12 @@ module TaskLoop
 
     end
 
+    def full_path
+
+    end
     def hash
       [year.hash, month.hash, day.hash, hour.hash, minute.hash].join('_')
     end
-
-    def test
-      Task.new do |t|
-        t.path = "xxx"
-        t.minute = every 1.minute
-        t.hour = at 10.hour
-        t.day = on :Sun
-        t.month = of :Feb
-        t.year = of 2023
-      end
-    end
-
   end
 end
 
