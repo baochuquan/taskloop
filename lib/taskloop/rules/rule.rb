@@ -1,6 +1,4 @@
 module TaskLoop
-
-
   class Rule
 
     UNIT = {
@@ -23,10 +21,6 @@ module TaskLoop
 
     def invalidate!
 
-    end
-
-    def hash
-      description.hash
     end
 
     def description

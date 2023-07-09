@@ -1,5 +1,6 @@
 module TaskLoop
   class Task
+    require 'digest'
 
     MONTH = {
       :Jan       => 1,
@@ -76,7 +77,7 @@ module TaskLoop
 
     def initialize()
       yield self
-      puts "task.hash => #{hash}"
+      puts "task.sha1 => #{sha1}"
     end
 
     #################################
@@ -216,14 +217,19 @@ module TaskLoop
 
     end
 
+    def proj_path
+
+    end
     def full_path
 
     end
 
-    def hash
-      puts description
-      description.hash
+    def sha1
+      sha1_digest = Digest::SHA1.new
+      sha1_digest.update(description)
+      return sha1_digest.hexdigest
     end
+
     def description
       [year.description, month.description, day.description, hour.description, minute.description].join('_')
     end
