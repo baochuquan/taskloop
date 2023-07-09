@@ -1,4 +1,4 @@
-module Taskloop
+module TaskLoop
   require 'claide'
 
   class Command < CLAide::Command

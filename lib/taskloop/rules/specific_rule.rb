@@ -1,4 +1,4 @@
-module Taskloop
+module TaskLoop
 
   class SpecificRule < Rule
 
@@ -10,7 +10,7 @@ module Taskloop
     end
 
     def hash
-      super + '_' + value.to_s
+      super + '_specific_' + value.to_s
     end
   end
 

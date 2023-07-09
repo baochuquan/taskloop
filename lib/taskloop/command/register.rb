@@ -1,6 +1,6 @@
 require 'json'
 
-module Taskloop
+module TaskLoop
   class Register < Command
     self.abstract_command = false
 

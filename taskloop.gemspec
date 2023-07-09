@@ -4,7 +4,7 @@ require_relative "lib/taskloop/version"
 
 Gem::Specification.new do |spec|
   spec.name = "taskloop"
-  spec.version = Taskloop::VERSION
+  spec.version = TaskLoop::VERSION
   spec.authors = ["baochuquan"]
   spec.email = ["baochuquan@163.com"]
 

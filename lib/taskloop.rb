@@ -2,7 +2,7 @@
 
 require_relative "taskloop/version"
 
-module Taskloop
+module TaskLoop
   class Error < StandardError; end
   # Your code goes here...
   autoload :Command, 'taskloop/command'

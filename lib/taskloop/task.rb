@@ -1,4 +1,4 @@
-module Taskloop
+module TaskLoop
   class Task
 
     MONTH = {
@@ -210,46 +210,7 @@ module Taskloop
 
 
 
-    #################################
-    # Loop Syntax
-    #################################
-    def every(interval)
-      LoopRule.new(:unknown, interval)
-    end
 
-    #################################
-    # Specific Syntax
-    #################################
-
-    # Only for year/month
-    def of(value)
-      SpecificRule.new(:unknown, value)
-    end
-
-    # Only for day
-    def on(value)
-      SpecificRule.new(:day, value)
-    end
-
-    # Only for minute/hour
-    def at(value)
-      SpecificRule.new(:unknown, value)
-    end
-
-    #################################
-    # Scope Syntax
-    #################################
-    def before(right)
-      BeforeScopeRule.new(:unknown, :before, right)
-    end
-
-    def between(left, right)
-      BetweenScopeRule.new(:unknown, :between, left, right)
-    end
-
-    def after(left)
-      AfterScopeRule.new(:unknown, :after, left)
-    end
 
     #################################
     # Utils
@@ -259,13 +220,7 @@ module Taskloop
     end
 
     def hash
-      result = ""
-      result += "year_" + year.hash
-      result += "month_" + month.hash
-      result += "day_" + day.hash
-      result += "hour_" + hour.hash
-      result += "minute_" + minute.hash
-      return result
+      [year.hash, month.hash, day.hash, hour.hash, minute.hash].join('_')
     end
 
     def test

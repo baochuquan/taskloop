@@ -1,4 +1,4 @@
-module Taskloop
+module TaskLoop
   class List < Command
     self.abstract_command = false
 

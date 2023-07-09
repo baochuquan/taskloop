@@ -1,4 +1,4 @@
-module Taskloop
+module TaskLoop
   class LoopRule < Rule
 
     attr_accessor :interval
@@ -9,7 +9,7 @@ module Taskloop
     end
 
     def hash
-      super + '_' + "loop" + '_' + interval
+      super + '_loop_' + interval.to_s
     end
 
     def next_execute_time(last_execute_time)
