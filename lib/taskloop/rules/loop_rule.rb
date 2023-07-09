@@ -28,6 +28,7 @@ module TaskLoop
       when :minute then
         result = current.min - last_exec_time.min >= interval
       end
+      puts "check rule #{self} => #{@unit}, #{result}"
       return result
     end
 

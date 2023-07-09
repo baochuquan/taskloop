@@ -44,12 +44,17 @@ module TaskLoop
       when :month then
         result = current.month == value
       when :day then
-        result = current.day == value
+        if is_week_value?
+          result = current.wday == (value % TaskLoop::WEEK_BASE)
+        else
+          result = current.day == value
+        end
       when :hour then
         result = current.hour == value
       when :minute then
         result = current.min == value
       end
+      puts "check rule #{self} => #{@unit}, #{result}"
       return result
     end
 

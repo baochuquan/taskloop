@@ -30,6 +30,7 @@ module TaskLoop
       :mon12     => 12,
     }
 
+    WEEK_BASE = 10000
     WEEK = {
       :Sun       => 10000,
       :Mon       => 10001,

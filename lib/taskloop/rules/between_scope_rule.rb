@@ -112,10 +112,15 @@ module TaskLoop
       when :month then
         result = left <= current.month and current.month <= right
       when :day then
-        result = left <= current.day and current.day <= right
+        if is_week_value?
+          result = (left % TaskLoop::WEEK_BASE) <= current.wday and current.wday <= (right % TaskLoop::WEEK_BASE)
+        else
+          result = left <= current.day and current.day <= right
+        end
       when :hour then
         result = left <= current.hour and current.hour <= right
       end
+      puts "check rule #{self} => #{@unit}, #{result}"
       return result
     end
 
