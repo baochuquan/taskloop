@@ -4,6 +4,7 @@ module TaskLoop
     require_relative '../rules/rule'
     require_relative '../rules/loop_rule'
     require_relative '../rules/scope_rule'
+    require_relative '../rules/default_rule'
     require_relative '../rules/specific_rule'
     require_relative '../rules/after_scope_rule'
     require_relative '../rules/before_scope_rule'
@@ -80,6 +81,7 @@ module TaskLoop
       construct_proj_tasklist_map
       construct_proj_tasklist_cache
       execute_tasks_if_needed
+      clean_cache_file_if_needed
     end
 
     private def construct_proj_tasklist_map
@@ -116,6 +118,7 @@ module TaskLoop
 
         list.each do |task|
           task.proj_cache_dir = proj_cache_dir
+          task.taskfile_path = File.join(proj, "Taskfile")
 
           puts "    task => " + task.sha1
           task_cache_time_path = File.join(proj_cache_dir, [task.timefile_name])
@@ -140,6 +143,9 @@ module TaskLoop
 
       @proj_tasklist_map.each do |proj, list|
         list.each do |task|
+          unless task.is_rules_mutual_relationship_ok?
+            next
+          end
           if task.is_conform_rule?
             puts "execute => " + task.sha1
             execute_task(proj, task)
@@ -171,6 +177,29 @@ module TaskLoop
         err = stderr.read
         content = out + "\n" + err
         task.write_to_logfile(content)
+      end
+    end
+
+    private def clean_cache_file_if_needed
+      unless @proj_tasklist_map != nil
+        return
+      end
+
+      @proj_tasklist_map.each do |proj, list|
+        proj_cache_dir = File.join(taskloop_cache_dir, [proj.sha1_16bit])
+        files = Dir.entries(proj_cache_dir)
+
+        list.each do |task|
+          files.delete(task.logfile_name)
+          files.delete(task.timefile_name)
+        end
+
+        files.each do |file|
+          path = File.join(proj_cache_dir, file)
+          if file != '.' and file != '..' and File.exists?(path)
+            File.delete(path)
+          end
+        end
       end
     end
   end

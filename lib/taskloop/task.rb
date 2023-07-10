@@ -77,7 +77,7 @@ module TaskLoop
 
     @@tasklist = []
 
-    attr_accessor :tag
+    attr_writer :tag
     # the path of a task
     attr_accessor :path
 
@@ -85,6 +85,10 @@ module TaskLoop
       yield self
       puts "task.sha1 => #{sha1}"
       @@tasklist.push(self)
+    end
+
+    def tag
+      @tag ||= 0
     end
 
     #################################
@@ -113,7 +117,7 @@ module TaskLoop
     end
 
     def year
-      @year ||= LoopRule.new(:year, 1)
+      @year ||= DefaultRule.new(:year)
     end
 
     # specific syntax
@@ -139,7 +143,7 @@ module TaskLoop
     end
 
     def month
-      @month||= LoopRule.new(:month, 1)
+      @month||= DefaultRule.new(:month)
     end
 
     # specific syntax
@@ -166,7 +170,7 @@ module TaskLoop
     end
 
     def day
-      @day ||= LoopRule.new(:day, 1)
+      @day ||= DefaultRule.new(:day)
     end
 
     # specific syntax
@@ -191,7 +195,7 @@ module TaskLoop
     end
 
     def hour
-      @hour ||= LoopRule.new(:hour, 1)
+      @hour ||= DefaultRule.new(:hour)
     end
 
     # # specific syntax
@@ -213,7 +217,7 @@ module TaskLoop
     end
 
     def minute
-      @minute ||= LoopRule.new(:minute, 1)
+      @minute ||= DefaultRule.new(:minute)
     end
 
 
@@ -232,6 +236,33 @@ module TaskLoop
       @@tasklist = value
     end
 
+    #################################
+    # Check Methods
+    #################################
+
+    def is_rules_mutual_relationship_ok?
+      result = true
+      rules = [minute, hour, day, month, year]
+      rIdx = rules.rindex { |rule| rule.is_a?(LoopRule) }
+      unless rIdx != nil
+        return result
+      end
+
+      rules.each_with_index do |rule, index|
+        if index < rIdx and (rule.is_a?(ScopeRule) or rule.is_a?(SpecificRule))
+          result = false
+        end
+      end
+      unless result
+        puts "Error: the rules of the task may conflict, please check them again.".ansi.red
+        puts "    Task description: #{rule_description}".ansi.red
+        puts "    Task path: #{path}".ansi.red
+        puts "    Task defined in #{taskfile_path}".ansi.red
+        puts "    Suggestion: SpecificRule and ScopeRule cannot execute during LoopRules".ansi.red
+      end
+      return result
+    end
+
     def is_conform_rule?
       timestamp = 0
       File.open(timefile_path, 'r') do |file|
@@ -247,6 +278,7 @@ module TaskLoop
     #################################
 
     attr_accessor :proj_cache_dir
+    attr_accessor :taskfile_path
 
     def logfile_path
       return File.join(@proj_cache_dir, logfile_name)
@@ -290,11 +322,11 @@ module TaskLoop
 
     def rule_sha1
       sha1_digest = Digest::SHA1.new
-      sha1_digest.update(description)
+      sha1_digest.update(rule_description)
       return sha1_digest.hexdigest
     end
 
-    def description
+    def rule_description
       [year.description, month.description, day.description, hour.description, minute.description, tag.to_s].join('_')
     end
   end
