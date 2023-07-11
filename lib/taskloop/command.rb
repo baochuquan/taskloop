@@ -86,16 +86,24 @@ module TaskLoop
       File.join(Dir.home, ".taskloop")
     end
 
+    def tasklooprc_path
+      File.join(Dir.home, ".tasklooprc")
+    end
+
+    def taskloop_cron_log_path
+      File.join(taskloop_dir, "cron.log")
+    end
+
     def tasklist_json_path
-      File.join(taskloop_dir, ["tasklist.json"])
+      File.join(taskloop_dir, "tasklist.json")
     end
 
     def taskloop_cache_dir
-      File.join(taskloop_dir, ["cache"])
+      File.join(taskloop_dir, "cache")
     end
 
     def taskloop_repos_dir
-      File.join(taskloop_dir, ["repos"])
+      File.join(taskloop_dir, "repos")
     end
     def taskfile_paths
       json_string = File.read(tasklist_json_path)
