@@ -30,8 +30,9 @@ module TaskLoop
     def register_taskloop_into_crontab_if_needed
       system("crontab -l > #{taskloop_cron_tab_path}")
       registered = false
+      pattern = /\A\* \* \* \* \* sh ~\/\.tasklooprc/
       File.open(taskloop_cron_tab_path, "r").each_line do |line|
-        pattern = /\A\* \* \* \* \* ~\/sh \.tasklooprc/
+
         if line.match?(pattern)
           registered = true
           break
@@ -39,8 +40,8 @@ module TaskLoop
       end
 
       if registered
-        puts "Warning: taskloop has already launch. Please do not launch again.".ansi.yellow
-        puts "    If your want to shutdown taskloop, please execute `taskloop shutdown` command.".ansi.yellow
+        puts "Warning: taskloop has already launched. Please do not launch again.".ansi.yellow
+        puts "    If your want to shutdown taskloop, please execute the `taskloop shutdown` command.".ansi.yellow
         return
       end
 
@@ -49,6 +50,7 @@ module TaskLoop
       end
 
       system("crontab #{taskloop_cron_tab_path}")
+      puts "taskloop has launched successfully. ".ansi.green
     end
   end
 end
