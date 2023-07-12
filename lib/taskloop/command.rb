@@ -94,6 +94,10 @@ module TaskLoop
       File.join(taskloop_dir, "cron.log")
     end
 
+    def taskloop_cron_tab_path
+      File.join(taskloop_dir, "cron.tab")
+    end
+
     def tasklist_json_path
       File.join(taskloop_dir, "tasklist.json")
     end
