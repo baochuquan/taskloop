@@ -11,8 +11,8 @@ require_relative "../lib/taskloop"
 # print "\n"
 # TaskLoop::Command.run(["log"])
 # print "\n"
-# TaskLoop::Command.run(["launch"])
-TaskLoop::Command.run(["shutdown"])
+TaskLoop::Command.run(["launch"])
+# TaskLoop::Command.run(["shutdown"])
 # TaskLoop::Command.run(["run"])
 # print "\n"
 # TaskLoop::Command.run(["register"])

@@ -12,6 +12,7 @@ module TaskLoop
       puts "taskloop launch"
       create_run_control_file_if_needed
       register_taskloop_into_crontab_if_needed
+      # TODO: @baocq print logo
     end
 
     def create_run_control_file_if_needed
@@ -21,7 +22,6 @@ module TaskLoop
         variables.each do |var|
           rc.puts "export " + var + "=#{ENV[var]}"
         end
-        # TODO: @baocq
         rc.puts "taskloop run > ~/.taskloop/cron.log 2>&1"
         rc.close
       end
