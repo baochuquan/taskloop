@@ -11,7 +11,9 @@ require_relative "../lib/taskloop"
 # print "\n"
 # TaskLoop::Command.run(["log"])
 # print "\n"
-TaskLoop::Command.run(["launch"])
+# TaskLoop::Command.run(["launch"])
+TaskLoop::Command.run(["import", "--env=PATH,RUBY_VERSION,GEM_PATH,GEM_HOME,IRBRC"])
+# TaskLoop::Command.run(["import"])
 # TaskLoop::Command.run(["shutdown"])
 # TaskLoop::Command.run(["run"])
 # print "\n"

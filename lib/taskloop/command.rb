@@ -13,7 +13,7 @@ module TaskLoop
     require 'taskloop/command/run'
     require 'taskloop/command/launch'
     require 'taskloop/command/shutdown'
-    require 'taskloop/command/clean'
+    require 'taskloop/command/import'
 
     self.abstract_command = true
 
@@ -96,6 +96,10 @@ module TaskLoop
 
     def taskloop_cron_tab_path
       File.join(taskloop_dir, "cron.tab")
+    end
+
+    def taskloop_environments_path
+      File.join(taskloop_dir, "environments")
     end
 
     def tasklist_json_path
