@@ -268,9 +268,25 @@ module TaskLoop
       File.open(timefile_path, 'r') do |file|
         timestamp = file.gets.to_i
       end
-      current =Time.at(timestamp)
-      conform = year.is_conform_rule?(current) and month.is_conform_rule?(current) and day.is_conform_rule?(current) and hour.is_conform_rule?(current) and minute.is_conform_rule?(current)
+      current = Time.at(timestamp)
+      conform = true
+      if has_loop_rule?
+        # TODO: @baocq
+      else
+        conform &&= year.is_conform_rule?(current)
+        conform &&= month.is_conform_rule?(current)
+        conform &&= day.is_conform_rule?(current)
+        conform &&= hour.is_conform_rule?(current)
+        conform &&= minute.is_conform_rule?(current)
+      end
+
+      puts "conform => #{conform}"
       return conform
+    end
+
+    def has_loop_rule?
+      rules = [year, month, day, hour, minute]
+      return rules.any?{ |rule| rule.is_a?(LoopRule) }
     end
 
     #################################

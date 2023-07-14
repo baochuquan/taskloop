@@ -24,11 +24,12 @@ module TaskLoop
       when :day then
         result = current.day - last_exec_time.day >= interval
       when :hour then
-        result = current.hour - last_exec_time.hour >= interval
+        result = (current.to_i - last_exec_time.to_i) / 60 / 60 >= interval
       when :minute then
-        result = current.min - last_exec_time.min >= interval
+        result = (current.to_i - last_exec_time.to_i) / 60 >= interval
       end
-      puts "check rule #{self} => #{@unit}, #{result}"
+      puts "curr.min => #{current.min}, last_exec_time.min => #{last_exec_time.min}"
+      puts "check ruleee #{self} => #{@unit}, #{result}"
       return result
     end
 
