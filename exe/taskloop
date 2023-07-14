@@ -2,7 +2,7 @@
 
 require_relative "../lib/taskloop"
 
-# TaskLoop::Command.run(ARGV)
+TaskLoop::Command.run(ARGV)
 # TaskLoop::Command.run(["init"])
 # print "\n"
 # TaskLoop::Command.run(["lint"])
@@ -12,8 +12,7 @@ require_relative "../lib/taskloop"
 # TaskLoop::Command.run(["log"])
 # print "\n"
 # TaskLoop::Command.run(["launch"])
-TaskLoop::Command.run(["import", "--env=PATH,RUBY_VERSION,GEM_PATH,GEM_HOME,IRBRC"])
-# TaskLoop::Command.run(["import"])
+# TaskLoop::Command.run(["env", "--list"])
 # TaskLoop::Command.run(["shutdown"])
 # TaskLoop::Command.run(["run"])
 # print "\n"

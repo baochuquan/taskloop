@@ -13,7 +13,7 @@ module TaskLoop
     require 'taskloop/command/run'
     require 'taskloop/command/launch'
     require 'taskloop/command/shutdown'
-    require 'taskloop/command/import'
+    require 'taskloop/command/env'
 
     self.abstract_command = true
 
