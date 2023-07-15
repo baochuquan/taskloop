@@ -120,7 +120,6 @@ module TaskLoop
       when :hour then
         result = left <= current.hour and current.hour <= right
       end
-      puts "check rule #{self} => #{@unit}, #{result}"
       return result
     end
 

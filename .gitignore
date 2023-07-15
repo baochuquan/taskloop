@@ -10,3 +10,4 @@ Taskfile
 Test.rb
 tmp/*
 test/*
+debug

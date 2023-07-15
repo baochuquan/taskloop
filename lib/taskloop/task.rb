@@ -279,7 +279,7 @@ module TaskLoop
         conform &&= hour.is_conform_rule?(last_exec_time)
         conform &&= minute.is_conform_rule?(last_exec_time)
       end
-      puts "conform => #{conform}"
+      puts "#{self.sha1} rule check => #{conform}"
       return conform
     end
 
@@ -312,7 +312,7 @@ module TaskLoop
         result &&= year.is_conform_rule?(last_exec_time)
       end
       if minute.is_a?(LoopRule)
-        min += minute.interval * MINUTE_MIN
+        min += minute.interval
       else
         result &&= year.is_conform_rule?(last_exec_time)
       end

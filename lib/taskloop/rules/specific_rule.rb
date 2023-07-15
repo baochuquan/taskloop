@@ -54,7 +54,6 @@ module TaskLoop
       when :minute then
         result = current.min == value
       end
-      puts "check rule #{self} => #{@unit}, #{result}"
       return result
     end
 
