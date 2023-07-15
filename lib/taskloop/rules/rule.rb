@@ -8,6 +8,7 @@ module TaskLoop
       :day         => 3,
       :month       => 4,
       :year        => 5,
+      :loop        => 7,
     }
 
     attr_accessor :unit

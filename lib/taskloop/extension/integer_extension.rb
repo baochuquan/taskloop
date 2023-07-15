@@ -18,4 +18,8 @@ class Integer
   def year
     self
   end
+
+  def times
+    self
+  end
 end

@@ -14,43 +14,49 @@ module TaskLoop
 
     def self.options
       [
-        ['--list', "To list all the environment variables exported in taskloop."],
-        ['--export=VAR1,VAR2...', 'Use one or more environment variables to import into taskloop.']
+        ['--list', "To list all the environment variables imported in taskloop."],
+        ['--import=VAR1,VAR2...', 'Import one or more environment variables into taskloop.'],
+        ["--remove=VAR1,VAR2...", 'Remove one or more environment variables from taskloop.']
       ].concat(super)
     end
 
     def initialize(argv)
-      @export = argv.option('export')
+      @import = argv.option('import')
+      @remove = argv.option('remove')
       @list = argv.flag?('list', false)
-      # TODO: @baocq delete
-      puts "debug: @export => #{@export}"
-      puts "debug: @list => #{@list}"
       super
     end
 
     def run
       super
-      if @export
-        export_environment_variables
+      if @list
+        list_environment_variables
         return
       end
 
-      if @list
-        list_environment_variables
+      if @import
+        import_environment_variables
+      end
+
+      if @remove
+        remove_environment_variables
       end
     end
 
     def validate!
       super
-      if @export and @list
+      if @export && @list
         help! "The --export option and the --list option cannot be used simultaneously."
+      end
+      if @remove && @list
+        help! "The --remove option and the --list option cannot be used simultaneously."
       end
     end
 
-    def export_environment_variables
-      env_list = @export.split(',')
+    def import_environment_variables
+      env_list = @import.split(',')
       unless env_list.length > 0
-        puts "Warning: the environment variables you import is empty. Please check the option again.".ansi.yellow
+        puts "Warning: the environment variables you import is empty. Please check the option arguments again.".ansi.yellow
         return
       end
       env_file = File.open(taskloop_environments_path, "a")
@@ -64,6 +70,31 @@ module TaskLoop
       env_file.close
     end
 
+    def remove_environment_variables
+      env_list = @remove.split(',')
+      unless env_list.length > 0
+        puts "Warning: the environment variables you import is empty. Please check the option arguments again.".ansi.yellow
+        return
+      end
+
+      file_content = []
+      File.open(taskloop_environments_path, "r") do |file|
+        file.each_line do |line|
+          name = get_environment_variable_from_line(line)
+          unless env_list.include?(name)
+            file_content.push(line)
+          end
+        end
+      end
+
+      File.open(taskloop_environments_path, "w") do |file|
+        file_content.each do |line|
+          file.puts line
+        end
+      end
+      puts "remove environment variables complete.".ansi.green
+    end
+
     def list_environment_variables
       env_list = {}
       env_file = File.open(taskloop_environments_path, "r")
@@ -73,15 +104,33 @@ module TaskLoop
           left = line.index(" ")
           right = line.index("=")
           if left and right
-            name = line[left..right-1]
-            value = line[left..-1]
+            name = line[left+1..right-1]
+            value = line[left+1..-1]
             env_list[name] = value
           end
         end
       end
+      if env_list.empty?
+        puts "No environment variable imported in taskloop."
+        return
+      end
+      puts "Environmants variables imported in taskloop: ".ansi.green
       env_list.each do |k, v|
         puts v
       end
+    end
+
+    def get_environment_variable_from_line(line)
+      pattern = /\Aexport /
+      result = nil
+      if line.match(pattern)
+        left = line.index(" ")
+        right = line.index("=")
+        if left and right
+          result = line[left+1..right-1]
+        end
+      end
+      return result
     end
   end
 end

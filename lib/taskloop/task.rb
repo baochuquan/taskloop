@@ -78,8 +78,12 @@ module TaskLoop
     @@tasklist = []
 
     attr_writer :tag
-    # the path of a task
+    # the path of task
     attr_accessor :path
+    # the author of task
+    attr_accessor :author
+    # the name of task
+    attr_accessor :name
 
     def initialize()
       yield self
@@ -97,9 +101,9 @@ module TaskLoop
     # specific syntax
     #   - of
     #     - example: in 2024
-    # loop syntax
-    #   - every
-    #     - example: every 1
+    # interval syntax
+    #   - interval
+    #     - example: interval 1.year
     # scope syntax
     #   - before
     #     - example: before 2025
@@ -124,9 +128,9 @@ module TaskLoop
     #   - of
     #     - example: of :Jan, :Feb, :Mar, :Apr, :Jun, :Jul, :Aug, :Sep, :Oct, :Nov, :Dec;
     #     - example: of :month1, :month2, :month3, ....
-    # loop syntax
+    # interval syntax
     #   - every
-    #     - example: every 1
+    #     - example: interval 1.month
     # scope syntax
     #   - before
     #     - example: before 2025
@@ -150,9 +154,9 @@ module TaskLoop
     #   - on
     #     - example: on :Mon, :Tue, :Wed, :Thu, :Fri, :Sat, :Sun;
     #     - example: on :day1, :day2, :day3;
-    # loop syntax
-    #   - every
-    #     - example: every 10
+    # interval syntax
+    #   - interval
+    #     - example: interval 10.day
     # scope syntax
     #   - before
     #     - example: before :day10
@@ -176,9 +180,9 @@ module TaskLoop
     # specific syntax
     #   - at
     #     - example: at 10; at 23
-    # loop syntax
-    #   - every
-    #     - example: every 10
+    # interval syntax
+    #   - interval
+    #     - example: interval 10.hour
     # scope syntax
     #   - before
     #     - example: before 9
@@ -198,12 +202,12 @@ module TaskLoop
       @hour ||= DefaultRule.new(:hour)
     end
 
-    # # specific syntax
-    #     #   - at
-    #     #     - example: at 59; at 45
-    #     # loop syntax
-    #     #   - every
-    #     #     - example: every 5
+    # specific syntax
+    #   - at
+    #     - example: at 59; at 45
+    # interval syntax
+    #   - interval
+    #     - example: interval 5.minute
     def minute=(rule)
       unless rule.is_a?(Rule)
         raise TypeError, "the rule of minute must be a class or subclass of Rule"
@@ -220,6 +224,20 @@ module TaskLoop
       @minute ||= DefaultRule.new(:minute)
     end
 
+    # loop syntax
+    #   - loop
+    #     - example: loop 5.times
+    def loop=(rule)
+      unless rule.is_a?(Rule)
+        raise TypeError, "the urle of loop must be a class or subclass of Rule"
+      end
+
+      @loop = rule
+      @loop.unit = :loop
+    end
+    def loop
+      @loop ||= DefaultRule.new(":loop")
+    end
 
     #################################
     # Utils
@@ -243,7 +261,7 @@ module TaskLoop
     def is_rules_mutual_relationship_ok?
       result = true
       rules = [minute, hour, day, month, year]
-      rIdx = rules.rindex { |rule| rule.is_a?(LoopRule) }
+      rIdx = rules.rindex { |rule| rule.is_a?(IntervalRule) }
       unless rIdx != nil
         return result
       end
@@ -258,7 +276,7 @@ module TaskLoop
         puts "    Task description: #{rule_description}".ansi.red
         puts "    Task path: #{path}".ansi.red
         puts "    Task defined in #{taskfile_path}".ansi.red
-        puts "    Suggestion: SpecificRule and ScopeRule cannot execute during LoopRules".ansi.red
+        puts "    Suggestion: SpecificRule and ScopeRule cannot execute during IntervalRules".ansi.red
       end
       return result
     end
@@ -285,33 +303,33 @@ module TaskLoop
 
     def has_loop_rule?
       rules = [year, month, day, hour, minute]
-      return rules.any?{ |rule| rule.is_a?(LoopRule) }
+      return rules.any?{ |rule| rule.is_a?(IntervalRule) }
     end
 
     def check_for_loop_rule?(last_exec_time)
       result = true
       min = 0
-      if year.is_a?(LoopRule)
+      if year.is_a?(IntervalRule)
         min += year.interval * YEAR_MIN
       else
         result &&= year.is_conform_rule?(last_exec_time)
       end
-      if month.is_a?(LoopRule)
+      if month.is_a?(IntervalRule)
         min += month.interval * MONTH_MIN
       else
         result &&= year.is_conform_rule?(last_exec_time)
       end
-      if day.is_a?(LoopRule)
+      if day.is_a?(IntervalRule)
         min += day.interval * DAY_MIN
       else
         result &&= year.is_conform_rule?(last_exec_time)
       end
-      if hour.is_a?(LoopRule)
+      if hour.is_a?(IntervalRule)
         min += day.interval * HOUR_MIN
       else
         result &&= year.is_conform_rule?(last_exec_time)
       end
-      if minute.is_a?(LoopRule)
+      if minute.is_a?(IntervalRule)
         min += minute.interval
       else
         result &&= year.is_conform_rule?(last_exec_time)

@@ -2,7 +2,7 @@ module TaskLoop
   class Run < Command
     require_relative '../task'
     require_relative '../rules/rule'
-    require_relative '../rules/loop_rule'
+    require_relative '../rules/interval_rule'
     require_relative '../rules/scope_rule'
     require_relative '../rules/default_rule'
     require_relative '../rules/specific_rule'
@@ -34,8 +34,8 @@ module TaskLoop
     #################################
     # Loop Syntax
     #################################
-    def every(interval)
-      LoopRule.new(:unknown, interval)
+    def interval(interval)
+      IntervalRule.new(:unknown, interval)
     end
 
     #################################
@@ -47,9 +47,11 @@ module TaskLoop
       SpecificRule.new(:unknown, value)
     end
 
+    alias_method :in, :of
+
     # Only for day
     def on(value)
-      SpecificRule.new(:day, value)
+      SpecificRule.new(:unknown, value)
     end
 
     # Only for minute/hour
@@ -72,6 +74,12 @@ module TaskLoop
       AfterScopeRule.new(:unknown, :after, left)
     end
 
+    #################################
+    # Loop Syntax
+    #################################
+    def loop(count)
+      LoopRule.new(:unknown, count)
+    end
     #################################
     # Utils Methods
     #################################
@@ -144,10 +152,10 @@ module TaskLoop
       @proj_tasklist_map.each do |proj, list|
         list.each do |task|
           unless task.is_rules_mutual_relationship_ok?
+            puts "task<#{task.sha1}> is rule conflict, skip..."
             next
           end
           if task.is_conform_rule?
-            puts "execute => " + task.sha1
             execute_task(proj, task)
           end
         end
