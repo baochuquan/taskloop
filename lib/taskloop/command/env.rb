@@ -73,14 +73,14 @@ module TaskLoop
           left = line.index(" ")
           right = line.index("=")
           if left and right
-            name = line[left..right]
-            value = line[right+1..-1]
+            name = line[left..right-1]
+            value = line[left..-1]
             env_list[name] = value
           end
         end
       end
       env_list.each do |k, v|
-        puts k + '=' + v
+        puts v
       end
     end
   end

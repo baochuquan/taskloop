@@ -8,3 +8,5 @@
 /tmp/
 Taskfile
 Test.rb
+tmp/*
+test/*

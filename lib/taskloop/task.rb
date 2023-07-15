@@ -290,33 +290,34 @@ module TaskLoop
 
     def check_for_loop_rule?(last_exec_time)
       result = true
-      sec = 0
+      min = 0
       if year.is_a?(LoopRule)
-        sec += year.interval * YEAR_SEC
+        min += year.interval * YEAR_MIN
       else
         result &&= year.is_conform_rule?(last_exec_time)
       end
       if month.is_a?(LoopRule)
-        sec += month.interval * MONTH_SEC
+        min += month.interval * MONTH_MIN
       else
         result &&= year.is_conform_rule?(last_exec_time)
       end
       if day.is_a?(LoopRule)
-        sec += day.interval * DAY_SEC
+        min += day.interval * DAY_MIN
       else
         result &&= year.is_conform_rule?(last_exec_time)
       end
       if hour.is_a?(LoopRule)
-        sec += day.interval * HOUR_SEC
+        min += day.interval * HOUR_MIN
       else
         result &&= year.is_conform_rule?(last_exec_time)
       end
       if minute.is_a?(LoopRule)
-        sec += minute.interval * MINUTE_SEC
+        min += minute.interval * MINUTE_MIN
       else
         result &&= year.is_conform_rule?(last_exec_time)
       end
-      result &&= Time.now.to_i - last_exec_time.to_i >= sec
+      correction = 20
+      result &&= (Time.now.to_i - last_exec_time.to_i + correction) / 60.0 >= min
       return result
     end
 
@@ -381,14 +382,12 @@ module TaskLoop
     # Time Seconds
     #################################
 
-    YEAR_SEC = 365 * 24 * 60 * 60
+    YEAR_MIN = 365 * 24 * 60
 
-    MONTH_SEC = 30 * 24 * 60 * 60
+    MONTH_MIN = 30 * 24 * 60
 
-    DAY_SEC = 24 * 60 * 60
+    DAY_MIN = 24 * 60
 
-    HOUR_SEC = 60 * 60
-
-    MINUTE_SEC = 60
+    HOUR_MIN = 60
   end
 end
