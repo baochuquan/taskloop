@@ -14,7 +14,8 @@ module TaskLoop
       super
       # check if Taskfile exist in current directory
       if File.exists?(:Taskfile.to_s)
-        puts "Taskfile exists! There is no need to execute `taskloop init` command in current directory!".ansi.red
+        puts "Warning: Taskfile exists! There is no need to execute `taskloop init` command in current directory!".ansi.yellow
+        puts ""
         return
       end
 
