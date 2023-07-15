@@ -5,7 +5,6 @@ module TaskLoop
     require 'digest'
     require 'taskloop/extension/string_extension'
     require 'taskloop/command/init'
-    require 'taskloop/command/deploy'
     require 'taskloop/command/list'
     require 'taskloop/command/log'
     require 'taskloop/command/register'
