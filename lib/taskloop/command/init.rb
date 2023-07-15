@@ -18,10 +18,26 @@ module TaskLoop
         return
       end
 
-      taskfile = File.new(:Taskfile.to_s, "w+")
-      # TODO: @baocq 注入模板代码
-      taskfile.puts("debug")
-      taskfile.close
+      file = File.new(:Taskfile.to_s, "w+")
+      content = <<-DESC
+# env to set environment variables which are shared by all tasks defined in the Taskfile. <Optional>
+# env "ENV_NAME", "ENV_VALUE" 
+
+TaskLoop::Task.new do |t|
+  t.author = 'TODO: task author. <Required>'
+  t.name = 'TODO: task name. <Required>'
+  t.path = 'TODO: task job path. For exmaple, t.path = "./Job.sh". <Required>'
+  t.year = "TODO: year rule. <Optional>"
+  t.month = "TODO: month rule. <Optional>"
+  t.day = "TODO: day rule. <Optional>"
+  t.hour = "TODO: hour rule. <Optional>"
+  t.minute = "TODO: minute rule. <Optional>"
+  t.loop = "TODO: loop count. <Optional>"
+  t.env = "TODO: environment variables only for this task. <Optional>"
+end
+      DESC
+      file.puts content
+      file.close
     end
   end
 end
