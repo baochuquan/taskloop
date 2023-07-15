@@ -119,9 +119,7 @@ module TaskLoop
       return parsed_json["paths"]
     end
 
-    #################################
-    # Hash
-    #################################
+
 
   end
 end

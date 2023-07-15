@@ -13,24 +13,9 @@ module TaskLoop
     end
 
     def is_conform_rule?(last_exec_time)
-      current = Time.now
-      interval = @interval
-      result = false
-      case @unit
-      when :year then
-        result = current.year - last_exec_time.year >= interval
-      when :month then
-        result = current.month - last_exec_time.month >= interval
-      when :day then
-        result = current.day - last_exec_time.day >= interval
-      when :hour then
-        result = (current.to_i - last_exec_time.to_i) / 60 / 60 >= interval
-      when :minute then
-        result = (current.to_i - last_exec_time.to_i) / 60 >= interval
-      end
-      puts "curr.min => #{current.min}, last_exec_time.min => #{last_exec_time.min}"
-      puts "check ruleee #{self} => #{@unit}, #{result}"
-      return result
+      # loop rule is different for other rules. It should be calculated by combining the interval times of all units.
+      # So here returns false
+      return false
     end
 
     def description

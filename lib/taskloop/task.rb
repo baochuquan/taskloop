@@ -268,18 +268,17 @@ module TaskLoop
       File.open(timefile_path, 'r') do |file|
         timestamp = file.gets.to_i
       end
-      current = Time.at(timestamp)
+      last_exec_time = Time.at(timestamp)
       conform = true
       if has_loop_rule?
-        # TODO: @baocq
+        conform = check_for_loop_rule?(last_exec_time)
       else
-        conform &&= year.is_conform_rule?(current)
-        conform &&= month.is_conform_rule?(current)
-        conform &&= day.is_conform_rule?(current)
-        conform &&= hour.is_conform_rule?(current)
-        conform &&= minute.is_conform_rule?(current)
+        conform &&= year.is_conform_rule?(last_exec_time)
+        conform &&= month.is_conform_rule?(last_exec_time)
+        conform &&= day.is_conform_rule?(last_exec_time)
+        conform &&= hour.is_conform_rule?(last_exec_time)
+        conform &&= minute.is_conform_rule?(last_exec_time)
       end
-
       puts "conform => #{conform}"
       return conform
     end
@@ -287,6 +286,38 @@ module TaskLoop
     def has_loop_rule?
       rules = [year, month, day, hour, minute]
       return rules.any?{ |rule| rule.is_a?(LoopRule) }
+    end
+
+    def check_for_loop_rule?(last_exec_time)
+      result = true
+      sec = 0
+      if year.is_a?(LoopRule)
+        sec += year.interval * YEAR_SEC
+      else
+        result &&= year.is_conform_rule?(last_exec_time)
+      end
+      if month.is_a?(LoopRule)
+        sec += month.interval * MONTH_SEC
+      else
+        result &&= year.is_conform_rule?(last_exec_time)
+      end
+      if day.is_a?(LoopRule)
+        sec += day.interval * DAY_SEC
+      else
+        result &&= year.is_conform_rule?(last_exec_time)
+      end
+      if hour.is_a?(LoopRule)
+        sec += day.interval * HOUR_SEC
+      else
+        result &&= year.is_conform_rule?(last_exec_time)
+      end
+      if minute.is_a?(LoopRule)
+        sec += minute.interval * MINUTE_SEC
+      else
+        result &&= year.is_conform_rule?(last_exec_time)
+      end
+      result &&= Time.now.to_i - last_exec_time.to_i >= sec
+      return result
     end
 
     #################################
@@ -345,5 +376,19 @@ module TaskLoop
     def rule_description
       [year.description, month.description, day.description, hour.description, minute.description, tag.to_s].join('_')
     end
+
+    #################################
+    # Time Seconds
+    #################################
+
+    YEAR_SEC = 365 * 24 * 60 * 60
+
+    MONTH_SEC = 30 * 24 * 60 * 60
+
+    DAY_SEC = 24 * 60 * 60
+
+    HOUR_SEC = 60 * 60
+
+    MINUTE_SEC = 60
   end
 end
