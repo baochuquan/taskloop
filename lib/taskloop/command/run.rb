@@ -80,6 +80,14 @@ module TaskLoop
     def loop(count)
       LoopRule.new(:unknown, count)
     end
+
+    #################################
+    # Env
+    #################################
+    def env(name, value)
+      ENV[name] = value
+    end
+
     #################################
     # Utils Methods
     #################################
