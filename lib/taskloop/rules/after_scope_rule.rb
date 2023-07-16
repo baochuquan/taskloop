@@ -84,8 +84,8 @@ module TaskLoop
       return result
     end
 
-    def description
-      super + '_' + left_value.to_s
-    end
+    # def description
+    #   super + '_' + left_value.to_s
+    # end
   end
 end

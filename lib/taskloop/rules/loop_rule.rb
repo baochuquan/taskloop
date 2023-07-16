@@ -18,9 +18,9 @@ module TaskLoop
       return false
     end
 
-    def description
-      super + '_loop_' + interval.to_s
-    end
+    # def description
+    #   super + '_loop_' + interval.to_s
+    # end
   end
 
 end

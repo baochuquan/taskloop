@@ -29,8 +29,8 @@ module TaskLoop
       raise NotImplementedError, 'subclass need implement this method!'
     end
 
-    def description
-      @unit.to_s
-    end
+    # def description
+    #   @unit.to_s
+    # end
   end
 end

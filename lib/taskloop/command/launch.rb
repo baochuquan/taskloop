@@ -2,10 +2,11 @@ module TaskLoop
   class Launch < Command
     self.abstract_command = false
 
-    self.summary = "Check Taskfile..."
+    self.summary = "Launch taskloop in order to run all the tasks which conform their rules."
 
     self.description = <<-DESC
-    TODO baocq
+    The `taskloop launch` command will register a schedule job into to crontab which is * * * * * sh ~/.tasklooprc.
+    Taskloop which check all the tasks every minute. If a task met its rule, execute it.
     DESC
     def run
       super
@@ -40,7 +41,6 @@ module TaskLoop
       registered = false
       pattern = /\A\* \* \* \* \* sh ~\/\.tasklooprc/
       File.open(taskloop_cron_tab_path, "r").each_line do |line|
-
         if line.match?(pattern)
           registered = true
           break
@@ -60,7 +60,6 @@ module TaskLoop
       system("crontab #{taskloop_cron_tab_path}")
 
       puts LOGO.ansi.blue
-      puts ""
       puts "    taskloop has launched successfully. ".ansi.blue
       puts ""
     end

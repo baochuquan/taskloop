@@ -33,7 +33,6 @@ TaskLoop::Task.new do |t|
   t.hour = "TODO: hour rule. <Optional>"
   t.minute = "TODO: minute rule. <Optional>"
   t.loop = "TODO: loop count. <Optional>"
-  t.env = "TODO: environment variables only for this task. <Optional>"
 end
       DESC
       file.puts content

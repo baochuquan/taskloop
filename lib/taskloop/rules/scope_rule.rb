@@ -15,8 +15,8 @@ module TaskLoop
       @scope = scope
     end
 
-    def description
-      super + '_' + @scope.to_s
-    end
+    # def description
+    #   super + '_' + @scope.to_s
+    # end
   end
 end

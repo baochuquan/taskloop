@@ -3,6 +3,7 @@ module TaskLoop
     require 'digest'
     require 'taskloop/extension/string_extension'
     require 'taskloop/extension/integer_extension'
+    require_relative './task_error'
 
     MONTH = {
       :Jan       => 1,
@@ -76,23 +77,36 @@ module TaskLoop
     }
 
     @@tasklist = []
+    def self.tasklist
+      @@tasklist
+    end
 
-    attr_writer :tag
-    # the path of task
-    attr_accessor :path
-    # the author of task
-    attr_accessor :author
+    def self.tasklist=(value)
+      @@tasklist = value
+    end
+
     # the name of task
     attr_accessor :name
+    # the path of task
+    attr_accessor :path
 
     def initialize()
       yield self
-      puts "task.sha1 => #{sha1}"
+      check = true
+      unless @name
+        puts "Error: task name is reqired.".ansi.red
+        puts ""
+        check = false
+      end
+      unless @path
+        puts "Error: task path is required.".ansi.red
+        puts ""
+        check = false
+      end
+      unless check
+        exit 1
+      end
       @@tasklist.push(self)
-    end
-
-    def tag
-      @tag ||= 0
     end
 
     #################################
@@ -240,25 +254,35 @@ module TaskLoop
     end
 
     #################################
-    # Utils
+    # Check and Lint
     #################################
-    def invalidate!
-
+    def deploy_lint?
+      result = true
+      # task name
+      for task in @@tasklist
+        if task.name == @name
+          puts "Error: task name `#{@name}` duplicated in Taskfile. Every task name should be unique in a Taskfile.".ansi.red
+          puts ""
+          result = false
+        end
+      end
+      # task path
+      unless task.path && File.exists?(task.path)
+        puts "Error: task path `#{task.path}` specified file must be exit. Please check the task path again.".ansi.red
+        puts ""
+        result = false
+      end
+      # task rule
+      unless check_rule_conflict?
+        puts "Error: the rules of the task may conflict. Please check the rules again.".ansi.red
+        puts "Suggestion: SpecificRule and ScopeRule cannot execute during IntervalRules.".and.red
+        puts ""
+        result = false
+      end
+      return result
     end
 
-    def self.tasklist
-      @@tasklist
-    end
-
-    def self.tasklist=(value)
-      @@tasklist = value
-    end
-
-    #################################
-    # Check Methods
-    #################################
-
-    def is_rules_mutual_relationship_ok?
+    def check_rule_conflict?
       result = true
       rules = [minute, hour, day, month, year]
       rIdx = rules.rindex { |rule| rule.is_a?(IntervalRule) }
@@ -271,17 +295,10 @@ module TaskLoop
           result = false
         end
       end
-      unless result
-        puts "Error: the rules of the task may conflict, please check them again.".ansi.red
-        puts "    Task description: #{rule_description}".ansi.red
-        puts "    Task path: #{path}".ansi.red
-        puts "    Task defined in #{taskfile_path}".ansi.red
-        puts "    Suggestion: SpecificRule and ScopeRule cannot execute during IntervalRules".ansi.red
-      end
       return result
     end
 
-    def is_conform_rule?
+    def check_all_rules?
       timestamp = 0
       File.open(timefile_path, 'r') do |file|
         timestamp = file.gets.to_i
@@ -301,12 +318,12 @@ module TaskLoop
       return conform
     end
 
-    def has_loop_rule?
+    private def has_loop_rule?
       rules = [year, month, day, hour, minute]
       return rules.any?{ |rule| rule.is_a?(IntervalRule) }
     end
 
-    def check_for_loop_rule?(last_exec_time)
+    private def check_for_loop_rule?(last_exec_time)
       result = true
       min = 0
       if year.is_a?(IntervalRule)
@@ -343,7 +360,9 @@ module TaskLoop
     # Filenames
     #################################
 
+    # ~/.taskloop/cache/<project-sha>.
     attr_accessor :proj_cache_dir
+    # <project-path>/Taskfile
     attr_accessor :taskfile_path
 
     def logfile_path
@@ -360,6 +379,9 @@ module TaskLoop
     def timefile_name
       return sha1 + "_time"
     end
+    def loopfile_name
+      return sha1 + "_loop"
+    end
 
     def write_to_logfile(content)
       file = File.open(logfile_path, "w")
@@ -373,27 +395,19 @@ module TaskLoop
       file.close
     end
 
+    def write_to_loopfile(content)
+      file = File.open(loopfile_name, "w")
+      file.puts content
+      file.close
+    end
+
     #################################
     # Sha1 and description
     #################################
     def sha1
-      return rule_sha1 + '_' + path_sha1
-    end
-
-    def path_sha1
       sha1_digest = Digest::SHA1.new
-      sha1_digest.update(@path)
-      return sha1_digest.hexdigest[0..7]
-    end
-
-    def rule_sha1
-      sha1_digest = Digest::SHA1.new
-      sha1_digest.update(rule_description)
-      return sha1_digest.hexdigest
-    end
-
-    def rule_description
-      [year.description, month.description, day.description, hour.description, minute.description, tag.to_s].join('_')
+      sha1_digest.update(@name)
+      return sha1_digest
     end
 
     #################################

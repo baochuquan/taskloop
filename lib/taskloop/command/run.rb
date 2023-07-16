@@ -1,6 +1,6 @@
 module TaskLoop
   class Run < Command
-    require_relative '../task'
+    require_relative '../task/task'
     require_relative '../rules/rule'
     require_relative '../rules/interval_rule'
     require_relative '../rules/scope_rule'
@@ -31,62 +31,7 @@ module TaskLoop
       @proj_tasklist_map ||= {}
     end
 
-    #################################
-    # Loop Syntax
-    #################################
-    def interval(interval)
-      IntervalRule.new(:unknown, interval)
-    end
 
-    #################################
-    # Specific Syntax
-    #################################
-
-    # Only for year/month
-    def of(value)
-      SpecificRule.new(:unknown, value)
-    end
-
-    alias_method :in, :of
-
-    # Only for day
-    def on(value)
-      SpecificRule.new(:unknown, value)
-    end
-
-    # Only for minute/hour
-    def at(value)
-      SpecificRule.new(:unknown, value)
-    end
-
-    #################################
-    # Scope Syntax
-    #################################
-    def before(right)
-      BeforeScopeRule.new(:unknown, :before, right)
-    end
-
-    def between(left, right)
-      BetweenScopeRule.new(:unknown, :between, left, right)
-    end
-
-    def after(left)
-      AfterScopeRule.new(:unknown, :after, left)
-    end
-
-    #################################
-    # Loop Syntax
-    #################################
-    def loop(count)
-      LoopRule.new(:unknown, count)
-    end
-
-    #################################
-    # Env
-    #################################
-    def env(name, value)
-      ENV[name] = value
-    end
 
     #################################
     # Utils Methods
@@ -159,11 +104,11 @@ module TaskLoop
 
       @proj_tasklist_map.each do |proj, list|
         list.each do |task|
-          unless task.is_rules_mutual_relationship_ok?
+          unless task.check_rule_conflict?
             puts "task<#{task.sha1}> is rule conflict, skip..."
             next
           end
-          if task.is_conform_rule?
+          if task.check_all_rules?
             execute_task(proj, task)
           end
         end

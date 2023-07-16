@@ -57,9 +57,9 @@ module TaskLoop
       return result
     end
 
-    def description
-      super + '_specific_' + value_value.to_s
-    end
+    # def description
+    #   super + '_specific_' + value_value.to_s
+    # end
   end
 
 end

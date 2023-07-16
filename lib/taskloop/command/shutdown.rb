@@ -38,10 +38,9 @@ module TaskLoop
       system("crontab #{taskloop_cron_tab_path}")
 
       puts LOGO.ansi.blue
+      puts "    taskloop has shutdown successfully. ".ansi.blue
       puts ""
-      puts "    taskloop has shutdown successfully. ".ansi.green
-      puts ""
-      puts "    byeeeeeeeeeeeeeeeee !"
+      puts "    byeeeeeeeeeeeeeeeee !".ansi.blue
       puts ""
     end
   end
