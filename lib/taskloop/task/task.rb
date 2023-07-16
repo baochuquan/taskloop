@@ -104,7 +104,7 @@ module TaskLoop
         check = false
       end
       unless check
-        exit 1
+        raise TaskArgumentError, "Lack of <required> arguments."
       end
       @@tasklist.push(self)
     end
@@ -260,10 +260,14 @@ module TaskLoop
       result = true
       # task name
       for task in @@tasklist
-        if task.name == @name
-          puts "Error: task name `#{@name}` duplicated in Taskfile. Every task name should be unique in a Taskfile.".ansi.red
+        if task != self && task.name == @name
+          puts "Error: task name `#{@name}` duplicated with in Taskfile. Every task name should be unique in a Taskfile.".ansi.red
           puts ""
           result = false
+        end
+        # only check with the task before self
+        if task == self
+          break
         end
       end
       # task path

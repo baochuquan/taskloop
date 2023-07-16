@@ -70,7 +70,9 @@ module TaskLoop
     #################################
     private def deploy_lint?
       taskfile_path = Dir.pwd + "/Taskfile"
+
       eval_taskfile(taskfile_path)
+
       results = []
       for task in TaskLoop::Task::tasklist
         results.push(task.deploy_lint?)

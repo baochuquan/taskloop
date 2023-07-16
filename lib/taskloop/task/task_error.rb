@@ -6,6 +6,10 @@ module TaskLoop
 
   end
 
+  class TaskArgumentError < StandardError
+
+  end
+
   class TaskfileDeployError < StandardError
 
   end
