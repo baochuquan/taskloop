@@ -2,21 +2,21 @@ module TaskLoop
   class Env < Command
     self.abstract_command = false
 
-    self.summary = "To import one or more environment variables into taskloop."
+    self.summary = "To import one or more global environment variables into taskloop."
 
     self.description = <<-DESC
-      The `taskloop env` command can be used to deal with environment variable related operations. 
-      For example, you can export environment variables into taskloop with `--export=VAR1,VAR2...` options.
-      Beside, you can list all the environment variables exported in taskloop.
-      All above operations are based on ~/.taskloop/environments file. If you want more details about environment
+      The `taskloop env` command can be used to deal with global environment variable related operations. 
+      For example, you can export environment variables into taskloop with `--global-export=VAR1,VAR2...` options.
+      Beside, you can list all the global environment variables exported in taskloop.
+      All above operations are based on ~/.taskloop/environments file. If you want more details about global environment
       variables, check and edit ~/.taskloop/environments by yourself.
     DESC
 
     def self.options
       [
-        ['--global-list', "To list all the environment variables imported in taskloop."],
-        ['--global-import=VAR1,VAR2...', 'Import one or more environment variables into taskloop.'],
-        ["--global-remove=VAR1,VAR2...", 'Remove one or more environment variables from taskloop.']
+        ['--global-list', "To list all the global environment variables imported in taskloop."],
+        ['--global-import=VAR1,VAR2...', 'Import one or more global environment variables into taskloop.'],
+        ["--global-remove=VAR1,VAR2...", 'Remove one or more global environment variables from taskloop.']
       ].concat(super)
     end
 
@@ -114,7 +114,7 @@ module TaskLoop
         puts "No global environment variable imported in taskloop."
         return
       end
-      puts "There are the global environmants variables imported in taskloop:".ansi.green
+      puts "There are the global environments variables imported in taskloop:".ansi.green
       env_list.each do |k, v|
         puts v
       end

@@ -12,7 +12,6 @@ module TaskLoop
       create_environments_file_if_needed
       create_run_control_file_if_needed
       register_taskloop_into_crontab_if_needed
-      # TODO: @baocq print logo
     end
 
     def create_environments_file_if_needed
@@ -59,7 +58,11 @@ module TaskLoop
       end
 
       system("crontab #{taskloop_cron_tab_path}")
-      puts "taskloop has launched successfully. ".ansi.green
+
+      puts LOGO.ansi.blue
+      puts ""
+      puts "    taskloop has launched successfully. ".ansi.blue
+      puts ""
     end
   end
 end

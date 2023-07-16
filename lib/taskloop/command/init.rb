@@ -25,7 +25,6 @@ module TaskLoop
 # env "ENV_NAME", "ENV_VALUE" 
 
 TaskLoop::Task.new do |t|
-  t.author = 'TODO: task author. <Required>'
   t.name = 'TODO: task name. <Required>'
   t.path = 'TODO: task job path. For exmaple, t.path = "./Job.sh". <Required>'
   t.year = "TODO: year rule. <Optional>"

@@ -14,4 +14,5 @@ class String
   def sha1_16bit
     sha1[0..15]
   end
+
 end
