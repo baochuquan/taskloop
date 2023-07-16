@@ -111,7 +111,7 @@ module TaskLoop
     def taskloop_repos_dir
       File.join(taskloop_dir, "repos")
     end
-    def taskfile_paths
+    def taskfile_dirs
       json_string = File.read(tasklist_json_path)
       parsed_json = JSON.parse(json_string)
       return parsed_json["paths"]

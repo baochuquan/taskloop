@@ -31,8 +31,6 @@ module TaskLoop
       @proj_tasklist_map ||= {}
     end
 
-
-
     #################################
     # Utils Methods
     #################################
@@ -47,11 +45,10 @@ module TaskLoop
 
     private def construct_proj_tasklist_map
       # load Taskfiles from ~/.taskloop/tasklist.json
-      taskfile_paths.each do |path|
-        eval_taskfile(path)
-        # get folder
-        proj_root_path = path[0..-9]
-        proj_tasklist_map[proj_root_path] = TaskLoop::Task.tasklist
+      taskfile_dirs.each do |dir|
+        lock_file_path = dir + "/Taskfile.lock"
+        eval_taskfile(lock_file_path)
+        proj_tasklist_map[dir] = TaskLoop::Task.tasklist
         TaskLoop::Task.tasklist = []
       end
     end
@@ -73,25 +70,30 @@ module TaskLoop
         return
       end
       @proj_tasklist_map.each do |proj, list|
-        proj_cache_dir = File.join(taskloop_cache_dir, [proj.sha1_16bit])
+        proj_cache_dir = File.join(taskloop_cache_dir, [proj.sha1_8bit])
         create_dir_if_needed(proj_cache_dir)
-        puts "proj => " + proj
 
         list.each do |task|
+          # set properties for task
           task.proj_cache_dir = proj_cache_dir
           task.taskfile_path = File.join(proj, "Taskfile")
+          task.taskfile_lock_pach = File.join(proj, "Taskfile.lock")
 
-          puts "    task => " + task.sha1
-          task_cache_time_path = File.join(proj_cache_dir, [task.timefile_name])
-          unless  File.file?(task_cache_time_path)
+          task_cache_time_path = File.join(proj_cache_dir, task.timefile_name)
+          unless File.file?(task_cache_time_path)
             file = File.new(task_cache_time_path, "w+")
             file.puts "0"
             file.close
           end
 
-          task_cache_log_path = File.join(proj_cache_dir, [task.logfile_name])
-          unless  File.file?(task_cache_log_path)
+          task_cache_log_path = File.join(proj_cache_dir, task.logfile_name)
+          unless File.file?(task_cache_log_path)
             File.new(task_cache_log_path, "w+")
+          end
+
+          task_cache_loop_path = File.join(proj_cache_dir, task.loopfile_name)
+          unless File.file?(task_cache_loop_path)
+            File.new(task_cache_loop_path, "w+")
           end
         end
       end
@@ -147,7 +149,7 @@ module TaskLoop
       end
 
       @proj_tasklist_map.each do |proj, list|
-        proj_cache_dir = File.join(taskloop_cache_dir, [proj.sha1_16bit])
+        proj_cache_dir = File.join(taskloop_cache_dir, [proj.sha1_8bit])
         files = Dir.entries(proj_cache_dir)
 
         list.each do |task|

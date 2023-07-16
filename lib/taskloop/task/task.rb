@@ -259,7 +259,7 @@ module TaskLoop
     def deploy_lint?
       result = true
       # task name
-      for task in @@tasklist
+      @@tasklist.each { |task|
         if task != self && task.name == @name
           puts "Error: task name `#{@name}` duplicated with in Taskfile. Every task name should be unique in a Taskfile.".ansi.red
           puts ""
@@ -269,7 +269,7 @@ module TaskLoop
         if task == self
           break
         end
-      end
+      }
       # task path
       unless task.path && File.exists?(task.path)
         puts "Error: task path `#{task.path}` specified file must be exit. Please check the task path again.".ansi.red
@@ -368,6 +368,7 @@ module TaskLoop
     attr_accessor :proj_cache_dir
     # <project-path>/Taskfile
     attr_accessor :taskfile_path
+    attr_accessor :taskfile_lock_path
 
     def logfile_path
       return File.join(@proj_cache_dir, logfile_name)

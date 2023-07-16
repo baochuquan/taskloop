@@ -11,8 +11,8 @@ class String
     sha1[0..31]
   end
 
-  def sha1_16bit
-    sha1[0..15]
+  def sha1_8bit
+    sha1[0..8]
   end
 
 end
