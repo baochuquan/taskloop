@@ -2,10 +2,12 @@ module TaskLoop
   class Shutdown < Command
     self.abstract_command = false
 
-    self.summary = "Check Taskfile..."
+    self.summary = "Shutdown taskloop. "
 
     self.description = <<-DESC
-    TODO baocq
+    The `taskloop shutdown` command will shutdown taskloop. Therefore, every Taskfile registered in taskloop will stop. 
+    It is a global switch that controls taskloop. If you execute `taskloop launch` command again after executing 'taskloop shutdown',
+    every Taskfile you deployed before will resume automatically.
     DESC
     def run
       super
