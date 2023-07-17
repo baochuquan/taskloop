@@ -1,5 +1,7 @@
 module TaskLoop
   class Run < Command
+    include TaskLoop::DSL
+
     require_relative '../task/task'
     require_relative '../rules/rule'
     require_relative '../rules/interval_rule'
@@ -77,7 +79,7 @@ module TaskLoop
           # set properties for task
           task.proj_cache_dir = proj_cache_dir
           task.taskfile_path = File.join(proj, "Taskfile")
-          task.taskfile_lock_pach = File.join(proj, "Taskfile.lock")
+          task.taskfile_lock_path = File.join(proj, "Taskfile.lock")
 
           task_cache_time_path = File.join(proj_cache_dir, task.timefile_name)
           unless File.file?(task_cache_time_path)

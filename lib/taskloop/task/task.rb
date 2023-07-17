@@ -271,8 +271,8 @@ module TaskLoop
         end
       }
       # task path
-      unless task.path && File.exists?(task.path)
-        puts "Error: task path `#{task.path}` specified file must be exit. Please check the task path again.".ansi.red
+      unless @path && File.exists?(@path)
+        puts "Error: task path `#{@path}` specified file must be exit. Please check the task path again.".ansi.red
         puts ""
         result = false
       end
@@ -412,7 +412,7 @@ module TaskLoop
     def sha1
       sha1_digest = Digest::SHA1.new
       sha1_digest.update(@name)
-      return sha1_digest
+      return sha1_digest.hexdigest
     end
 
     #################################

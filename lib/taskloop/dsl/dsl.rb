@@ -17,8 +17,6 @@ module TaskLoop
       SpecificRule.new(:unknown, value)
     end
 
-    alias_method :in, :of
-
     # Only for day
     def on(value)
       SpecificRule.new(:unknown, value)
