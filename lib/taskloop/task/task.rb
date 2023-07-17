@@ -299,6 +299,7 @@ module TaskLoop
           result = false
         end
       end
+      puts "<Task.name: #{@name}> check rule conflict: #{result}"
       return result
     end
 
@@ -318,7 +319,7 @@ module TaskLoop
         conform &&= hour.is_conform_rule?(last_exec_time)
         conform &&= minute.is_conform_rule?(last_exec_time)
       end
-      puts "#{self.sha1} rule check => #{conform}"
+      puts "<Task.name: #{@name}> check all rule: #{conform}"
       return conform
     end
 
