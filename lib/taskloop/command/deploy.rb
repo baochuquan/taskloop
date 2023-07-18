@@ -54,14 +54,13 @@ module TaskLoop
     private def push_taskfile_dir_if_needed(parsed_json, taskfile_dir)
       duplicate = parsed_json['paths'].select { |path| path == taskfile_dir }
       if duplicate.empty?
-        puts "Register Taskfile into taskloop...".ansi.blue
+        puts "First time to deploy current Taskfile.".ansi.blue
+        puts "Register Taskfile into taskloop.".ansi.blue
         parsed_json['paths'].push(taskfile_dir)
 
         File.open(tasklist_json_path, 'w') do |file|
           file.write(JSON.pretty_generate(parsed_json))
         end
-
-        puts "Taskfile registration completed.".ansi.blue
       end
     end
 
@@ -95,7 +94,9 @@ module TaskLoop
     #################################
 
     private def generate_taskfile_lock
+      puts "Generate Taskfile.lock.".ansi.blue
       FileUtils.copy_file("Taskfile", "Taskfile.lock")
+      puts "Taskfile deploy success.".ansi.blue
     end
 
   end

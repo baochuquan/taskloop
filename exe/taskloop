@@ -2,14 +2,14 @@
 
 require_relative "../lib/taskloop"
 
-# TaskLoop::Command.run(ARGV)
+TaskLoop::Command.run(ARGV)
 # TaskLoop::Command.run(["init"])
 # print "\n"
 # TaskLoop::Command.run(["lint"])
 # print "\n"
 # TaskLoop::Command.run(["list"])
 # print "\n"
-TaskLoop::Command.run(["log", "--task-name=chuquan"])
+# TaskLoop::Command.run(["log", "--task-name=chuquan"])
 # TaskLoop::Command.run(["log", "--cron"])
 # print "\n"
 # TaskLoop::Command.run(["launch"])
