@@ -9,7 +9,8 @@ require_relative "../lib/taskloop"
 # print "\n"
 # TaskLoop::Command.run(["list"])
 # print "\n"
-TaskLoop::Command.run(["log", "--task-name=haha"])
+TaskLoop::Command.run(["log", "--task-name=chuquan"])
+# TaskLoop::Command.run(["log", "--cron"])
 # print "\n"
 # TaskLoop::Command.run(["launch"])
 
