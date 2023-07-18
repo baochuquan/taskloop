@@ -14,7 +14,6 @@ module TaskLoop
 
     def self.options
       [
-        ['--global-list', "To list all the global environment variables imported in taskloop."],
         ['--global-import=VAR1,VAR2...', 'Import one or more global environment variables into taskloop.'],
         ["--global-remove=VAR1,VAR2...", 'Remove one or more global environment variables from taskloop.']
       ].concat(super)
@@ -23,13 +22,12 @@ module TaskLoop
     def initialize(argv)
       @import = argv.option('global-import')
       @remove = argv.option('global-remove')
-      @list = argv.flag?('global-list', false)
       super
     end
 
     def run
       super
-      if @list
+      if @import == nil && @remove == nil
         list_environment_variables
         return
       end
@@ -61,12 +59,12 @@ module TaskLoop
       end
       env_file = File.open(taskloop_environments_path, "a")
       env_list.each do |var|
-        puts "importing #{var} ...".ansi.green
-        puts "    #{var}=#{ENV[var]}".ansi.green
+        puts "importing #{var} ...".ansi.blue
+        puts "    #{var}=#{ENV[var]}".ansi.blue
         env_file.puts "export #{var}=#{ENV[var]}"
       end
       puts ""
-      puts "import global environment variables complete.".ansi.green
+      puts "import global environment variables complete.".ansi.blue
       env_file.close
     end
 
@@ -92,7 +90,7 @@ module TaskLoop
           file.puts line
         end
       end
-      puts "remove global environment variables complete.".ansi.green
+      puts "remove global environment variables complete.".ansi.blue
     end
 
     def list_environment_variables
@@ -111,10 +109,10 @@ module TaskLoop
         end
       end
       if env_list.empty?
-        puts "No global environment variable imported in taskloop."
+        puts "Warning: no global environment variable imported in taskloop.".ansi.blue
         return
       end
-      puts "There are the global environments variables imported in taskloop:".ansi.green
+      puts "There are the global environments variables imported in taskloop:".ansi.blue
       env_list.each do |k, v|
         puts v
       end

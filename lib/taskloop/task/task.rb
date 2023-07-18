@@ -287,6 +287,7 @@ module TaskLoop
     end
 
     def check_rule_conflict?
+      puts "Check rule conflict ...".ansi.blue
       result = true
       rules = [minute, hour, day, month, year]
       rIdx = rules.rindex { |rule| rule.is_a?(IntervalRule) }
@@ -299,7 +300,11 @@ module TaskLoop
           result = false
         end
       end
-      puts "<Task.name: #{@name}> check rule conflict: #{result}"
+      if result
+        puts "<Task.name: #{@name}> rule check success.".ansi.blue
+      else
+        puts "<Task.name: #{@name}> rule check failed.".ansi.red
+      end
       return result
     end
 
