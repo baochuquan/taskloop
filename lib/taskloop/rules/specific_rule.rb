@@ -20,7 +20,7 @@ module TaskLoop
         return Task::MONTH[@value]
       end
 
-      unless @value != nil and @value.is_a?(Integer)
+      unless @value != nil && @value.is_a?(Integer)
         return -1
       end
 
@@ -28,7 +28,7 @@ module TaskLoop
     end
 
     def is_week_value?
-      if @unit == :day and Task::WEEK.has_key?(@value)
+      if @unit == :day && Task::WEEK.has_key?(@value)
         return true
       end
       return false

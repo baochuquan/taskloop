@@ -101,7 +101,7 @@ module TaskLoop
         if line.match(pattern)
           left = line.index(" ")
           right = line.index("=")
-          if left and right
+          if left && right
             name = line[left+1..right-1]
             value = line[left+1..-1]
             env_list[name] = value
@@ -124,7 +124,7 @@ module TaskLoop
       if line.match(pattern)
         left = line.index(" ")
         right = line.index("=")
-        if left and right
+        if left && right
           result = line[left+1..right-1]
         end
       end

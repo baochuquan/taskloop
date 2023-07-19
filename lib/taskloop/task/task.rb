@@ -296,7 +296,7 @@ module TaskLoop
       end
 
       rules.each_with_index do |rule, index|
-        if index < rIdx and (rule.is_a?(ScopeRule) or rule.is_a?(SpecificRule))
+        if index < rIdx && (rule.is_a?(ScopeRule) || rule.is_a?(SpecificRule))
           result = false
         end
       end
@@ -316,15 +316,17 @@ module TaskLoop
       last_exec_time = Time.at(timestamp)
       conform = true
       if has_loop_rule?
+        puts "#{desc} has loop rule.".ansi.blue
         conform = check_for_loop_rule?(last_exec_time)
       else
+        puts "#{desc} no loop rule."
         conform &&= year.is_conform_rule?(last_exec_time)
         conform &&= month.is_conform_rule?(last_exec_time)
         conform &&= day.is_conform_rule?(last_exec_time)
         conform &&= hour.is_conform_rule?(last_exec_time)
         conform &&= minute.is_conform_rule?(last_exec_time)
       end
-      puts "<Task.name: #{@name}> check all rule: #{conform}"
+      puts "#{desc} check all rule: #{conform}".ansi.blue
       return conform
     end
 
@@ -344,22 +346,22 @@ module TaskLoop
       if month.is_a?(IntervalRule)
         min += month.interval * MONTH_MIN
       else
-        result &&= year.is_conform_rule?(last_exec_time)
+        result &&= month.is_conform_rule?(last_exec_time)
       end
       if day.is_a?(IntervalRule)
         min += day.interval * DAY_MIN
       else
-        result &&= year.is_conform_rule?(last_exec_time)
+        result &&= day.is_conform_rule?(last_exec_time)
       end
       if hour.is_a?(IntervalRule)
-        min += day.interval * HOUR_MIN
+        min += hour.interval * HOUR_MIN
       else
-        result &&= year.is_conform_rule?(last_exec_time)
+        result &&= hour.is_conform_rule?(last_exec_time)
       end
       if minute.is_a?(IntervalRule)
         min += minute.interval
       else
-        result &&= year.is_conform_rule?(last_exec_time)
+        result &&= minute.is_conform_rule?(last_exec_time)
       end
       correction = 20
       result &&= (Time.now.to_i - last_exec_time.to_i + correction) / 60.0 >= min
@@ -419,6 +421,10 @@ module TaskLoop
       sha1_digest = Digest::SHA1.new
       sha1_digest.update(@name)
       return sha1_digest.hexdigest
+    end
+
+    def desc
+      "<Task.name: #{@name}>"
     end
 
     #################################

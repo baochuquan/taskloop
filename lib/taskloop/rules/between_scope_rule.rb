@@ -14,13 +14,13 @@ module TaskLoop
     def invalidate!
       super
       if @unit == :day
-        if Task::WEEK.has_key?(@left) and Task::WEEK.has_key?(@right)
+        if Task::WEEK.has_key?(@left) && Task::WEEK.has_key?(@right)
           unless Task::WEEK[@left] < Task::WEEK[@right]
             raise ArgumentError, "'left' must less than 'right'"
           end
           return
         end
-        if Task::DAY.has_key?(@left) and Task::DAY.has_key?(@right)
+        if Task::DAY.has_key?(@left) && Task::DAY.has_key?(@right)
           unless Task::WEEK[@left] < Task::WEEK[@right]
             raise ArgumentError, "'left' must less than 'right'"
           end
@@ -37,7 +37,7 @@ module TaskLoop
         return
       end
 
-      unless @left.is_a?(Integer) and @right.is_a?(Integer)
+      unless @left.is_a?(Integer) && @right.is_a?(Integer)
         raise TypeError, "both 'left' and 'right' need to be Symbol or Integer"
       end
 
@@ -45,15 +45,15 @@ module TaskLoop
         raise ArgumentError, "'left' must less than 'right'"
       end
 
-      if @unit == :minute and (@left < 0 or @right > 59)
+      if @unit == :minute && (@left < 0 || @right > 59)
         raise ArgumentError, "'left' and 'right' for 'minute' must >= 0 and <= 59"
       end
 
-      if @unit == :hour and (@left < 0 or @right > 23)
+      if @unit == :hour && (@left < 0 || @right > 23)
         raise ArgumentError, "'left', 'right' for 'hour' must >= 0 and <= 23"
       end
 
-      if @unit == :year and @left < 0
+      if @unit == :year && @left < 0
         raise ArgumentError, "'left' must greater than 0"
       end
     end
@@ -69,7 +69,7 @@ module TaskLoop
         return Task::MONTH[@left]
       end
 
-      unless @left != nil and @left.is_a?(Integer)
+      unless @left != nil && @left.is_a?(Integer)
         return -1
       end
 
@@ -87,7 +87,7 @@ module TaskLoop
         return Task::MONTH[@right]
       end
 
-      unless @right != nil and @right.is_a?(Integer)
+      unless @right != nil && @right.is_a?(Integer)
         return -1
       end
 
@@ -95,7 +95,7 @@ module TaskLoop
     end
 
     def is_week_value?
-      if @unit == :day and Task::WEEK.has_key?(@left) and Task::WEEK.has_key?(@right)
+      if @unit == :day && Task::WEEK.has_key?(@left) && Task::WEEK.has_key?(@right)
         return true
       end
       return false
@@ -108,17 +108,17 @@ module TaskLoop
       result = false
       case @unit
       when :year then
-        result = left <= current.year >= left and current.year <= right
+        result = left <= current.year >= left && current.year <= right
       when :month then
-        result = left <= current.month and current.month <= right
+        result = left <= current.month && current.month <= right
       when :day then
         if is_week_value?
-          result = (left % TaskLoop::WEEK_BASE) <= current.wday and current.wday <= (right % TaskLoop::WEEK_BASE)
+          result = (left % TaskLoop::WEEK_BASE) <= current.wday && current.wday <= (right % TaskLoop::WEEK_BASE)
         else
-          result = left <= current.day and current.day <= right
+          result = left <= current.day && current.day <= right
         end
       when :hour then
-        result = left <= current.hour and current.hour <= right
+        result = left <= current.hour && current.hour <= right
       end
       return result
     end

@@ -2,7 +2,7 @@
 
 require_relative "../lib/taskloop"
 
-TaskLoop::Command.run(ARGV)
+# TaskLoop::Command.run(ARGV)
 # TaskLoop::Command.run(["init"])
 # print "\n"
 # TaskLoop::Command.run(["lint"])
@@ -19,7 +19,7 @@ TaskLoop::Command.run(ARGV)
 # TaskLoop::Command.run(["env", "--import=PATH,RUBY_VERSION,GEM_PATH,GEM_HOME,IRBRC,NOX_ROOT,NOX_HOME,NOX_COMMON,NOX_SCRIPTS,NOX_CONFIG,NOX_TEMPALTES"])
 
 # TaskLoop::Command.run(["shutdown"])
-# TaskLoop::Command.run(["run"])
+TaskLoop::Command.run(["run"])
 # print "\n"
 # TaskLoop::Command.run(["deploy"])
 # print "\n"

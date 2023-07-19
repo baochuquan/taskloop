@@ -161,7 +161,7 @@ module TaskLoop
 
         files.each do |file|
           path = File.join(proj_cache_dir, file)
-          if file != '.' and file != '..' and File.exists?(path)
+          if file != '.' && file != '..' && File.exists?(path)
             File.delete(path)
           end
         end
