@@ -243,7 +243,7 @@ module TaskLoop
     #     - example: loop 5.times
     def loop=(rule)
       unless rule.is_a?(Rule)
-        raise TypeError, "the urle of loop must be a class or subclass of Rule"
+        raise TypeError, "the rule of loop must be a class or subclass of Rule"
       end
 
       @loop = rule
@@ -251,6 +251,36 @@ module TaskLoop
     end
     def loop
       @loop ||= DefaultRule.new(":loop")
+    end
+
+    # time list syntax
+    #   - time
+    #     - example: time "10:10:30", "9:10:20", "20:10:20"
+    def time=(time)
+      unless rule.is_a?(TimeListRule)
+        raise TypeError, "the rule of time must be a TimeList Rule"
+      end
+
+      @time = rule
+      @time.unit = :time
+    end
+    def time
+      @time ||= DefaultRule.new(":time")
+    end
+
+    # date list syntax
+    #   - date
+    #     - example: date "2023-10-10", "2013-10-11", "2023-11-10"
+    def date=(date)
+      unless rule.is_a?(DateListRule)
+        raise TypeError, "the rule of time must be a DateList Rule"
+      end
+
+      @date = rule
+      @date.unit = :date
+    end
+    def date
+      @date ||= DefaultRule.new(":date")
     end
 
     #################################

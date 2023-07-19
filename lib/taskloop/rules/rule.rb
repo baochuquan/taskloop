@@ -3,12 +3,14 @@ module TaskLoop
 
     UNIT = {
       :unknown     => 0,
-      :minute      => 1,
-      :hour        => 2,
-      :day         => 3,
-      :month       => 4,
-      :year        => 5,
-      :loop        => 7,
+      :minute      => 1,      # support interval/specific syntax
+      :hour        => 2,      # support interval/scope/specific syntax
+      :day         => 3,      # support interval/scope/specific syntax
+      :month       => 4,      # support interval/scope/specific syntax
+      :year        => 5,      # support interval/scope/specific syntax
+      :loop        => 7,      # only support loop syntax
+      :date        => 8,      # only support date list syntax
+      :time        => 9,      # only support time list syntax
     }
 
     attr_accessor :unit

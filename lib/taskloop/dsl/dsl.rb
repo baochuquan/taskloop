@@ -11,18 +11,6 @@ module TaskLoop
     #################################
     # Specific Syntax
     #################################
-
-    # Only for year/month
-    def of(value)
-      SpecificRule.new(:unknown, value)
-    end
-
-    # Only for day
-    def on(value)
-      SpecificRule.new(:unknown, value)
-    end
-
-    # Only for minute/hour
     def at(value)
       SpecificRule.new(:unknown, value)
     end
@@ -50,14 +38,26 @@ module TaskLoop
     end
 
     #################################
+    # Time List Syntax
+    #################################
+    def time(*args)
+      TimeListRule.new(:unknown, args)
+    end
+
+    #################################
+    # Date List Syntax
+    #################################
+    def date(*args)
+      DateListRule.new(:unknown, args)
+    end
+
+    #################################
     # Env
     #################################
     def env(name, value)
       ENV[name] = value
     end
 
-    #################################
-    # Env
-    #################################
+
   end
 end
