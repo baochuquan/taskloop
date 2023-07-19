@@ -17,10 +17,6 @@ module TaskLoop
       @unit = unit
     end
 
-    def invalidate!
-
-    end
-
     def is_week_value?
       raise NotImplementedError, 'subclass need implement this method!'
     end
@@ -28,9 +24,5 @@ module TaskLoop
     def is_conform_rule?(last_exec_time)
       raise NotImplementedError, 'subclass need implement this method!'
     end
-
-    # def description
-    #   @unit.to_s
-    # end
   end
 end

@@ -12,9 +12,6 @@ module TaskLoop
       return true
     end
 
-    # def description
-    #   super + '_default'
-    # end
   end
 
 end

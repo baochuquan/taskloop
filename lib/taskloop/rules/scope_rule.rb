@@ -14,9 +14,5 @@ module TaskLoop
       super unit
       @scope = scope
     end
-
-    # def description
-    #   super + '_' + @scope.to_s
-    # end
   end
 end
