@@ -47,8 +47,8 @@ module TaskLoop
         FileUtils.mkdir(taskloop_dir)
       end
 
-      unless File.directory?(taskloop_cache_dir)
-        FileUtils.mkdir(taskloop_cache_dir)
+      unless File.directory?(taskloop_data_dir)
+        FileUtils.mkdir(taskloop_data_dir)
       end
 
       unless File.directory?(taskloop_repos_dir)
@@ -61,8 +61,8 @@ module TaskLoop
 
     def create_tasklist_json_if_needed
       # create ~/.taskloop/tasklist.json directory if needed.
-      unless  File.file?(tasklist_json_path)
-        file = File.new(tasklist_json_path, "w+")
+      unless  File.file?(taskloop_project_list_path)
+        file = File.new(taskloop_project_list_path, "w+")
         content = <<-DESC
 {
    "paths": [],
@@ -89,30 +89,34 @@ module TaskLoop
     end
 
     def taskloop_cron_log_path
-      File.join(taskloop_dir, "cron.log")
+      File.join(taskloop_dir, "cronlog")
     end
 
     def taskloop_cron_tab_path
-      File.join(taskloop_dir, "cron.tab")
+      File.join(taskloop_dir, "crontab")
     end
 
     def taskloop_environments_path
       File.join(taskloop_dir, "environments")
     end
 
-    def tasklist_json_path
-      File.join(taskloop_dir, "tasklist.json")
+    def taskloop_project_list_path
+      File.join(taskloop_dir, "projectlist")
     end
 
-    def taskloop_cache_dir
-      File.join(taskloop_dir, "cache")
+    def taskloop_repo_list_path
+      File.join(taskloop_dir, "repolist")
+    end
+
+    def taskloop_data_dir
+      File.join(taskloop_dir, "data")
     end
 
     def taskloop_repos_dir
       File.join(taskloop_dir, "repos")
     end
     def taskfile_dirs
-      json_string = File.read(tasklist_json_path)
+      json_string = File.read(taskloop_project_list_path)
       parsed_json = JSON.parse(json_string)
       return parsed_json["paths"]
     end

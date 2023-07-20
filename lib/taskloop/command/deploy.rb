@@ -38,7 +38,7 @@ module TaskLoop
     #################################
     private def register_taskfile_dir_if_needed
       taskfile_dir = Dir.pwd
-      json_string = File.read(tasklist_json_path)
+      json_string = File.read(taskloop_project_list_path)
       parsed_json = JSON.parse(json_string)
       # check if all the registered path
       parsed_json = check_tasklist(parsed_json)
@@ -58,7 +58,7 @@ module TaskLoop
         puts "Register Taskfile into taskloop.".ansi.blue
         parsed_json['paths'].push(taskfile_dir)
 
-        File.open(tasklist_json_path, 'w') do |file|
+        File.open(taskloop_project_list_path, 'w') do |file|
           file.write(JSON.pretty_generate(parsed_json))
         end
       end

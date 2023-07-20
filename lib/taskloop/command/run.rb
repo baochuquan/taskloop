@@ -72,7 +72,7 @@ module TaskLoop
         return
       end
       @proj_tasklist_map.each do |proj, list|
-        proj_cache_dir = File.join(taskloop_cache_dir, [proj.sha1_8bit])
+        proj_cache_dir = File.join(taskloop_data_dir, [proj.sha1_8bit])
         create_dir_if_needed(proj_cache_dir)
 
         list.each do |task|
@@ -151,7 +151,7 @@ module TaskLoop
       end
 
       @proj_tasklist_map.each do |proj, list|
-        proj_cache_dir = File.join(taskloop_cache_dir, [proj.sha1_8bit])
+        proj_cache_dir = File.join(taskloop_data_dir, [proj.sha1_8bit])
         files = Dir.entries(proj_cache_dir)
 
         list.each do |task|
