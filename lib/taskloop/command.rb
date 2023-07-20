@@ -51,24 +51,28 @@ module TaskLoop
         FileUtils.mkdir(taskloop_data_dir)
       end
 
-      unless File.directory?(taskloop_repos_dir)
-        FileUtils.mkdir(taskloop_repos_dir)
+      unless File.directory?(taskloop_repo_dir)
+        FileUtils.mkdir(taskloop_repo_dir)
       end
 
       # create files
-      create_tasklist_json_if_needed
+      create_project_list_if_needed
+      create_repo_list_if_needed
     end
 
-    def create_tasklist_json_if_needed
-      # create ~/.taskloop/tasklist.json directory if needed.
-      unless  File.file?(taskloop_project_list_path)
+    def create_project_list_if_needed
+      unless File.file?(taskloop_project_list_path)
         file = File.new(taskloop_project_list_path, "w+")
-        content = <<-DESC
-{
-   "paths": [],
-   "repos": []
-}
-        DESC
+        content = "[]"
+        file.puts content
+        file.close
+      end
+    end
+
+    def create_repo_list_if_needed
+      unless File.file?(taskloop_repo_list_path)
+        file = File.new(taskloop_repo_list_path, "w+")
+        content = "[]"
         file.puts content
         file.close
       end
@@ -112,10 +116,11 @@ module TaskLoop
       File.join(taskloop_dir, "data")
     end
 
-    def taskloop_repos_dir
-      File.join(taskloop_dir, "repos")
+    def taskloop_repo_dir
+      File.join(taskloop_dir, "repo")
     end
     def taskfile_dirs
+      # TODO: @baocq
       json_string = File.read(taskloop_project_list_path)
       parsed_json = JSON.parse(json_string)
       return parsed_json["paths"]
