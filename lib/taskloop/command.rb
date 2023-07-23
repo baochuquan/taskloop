@@ -113,7 +113,7 @@ module TaskLoop
       paths = taskloop_data_proj_dirs
       result = []
       paths.each do |path|
-        result.push(File.join(path, "Taskfile.deploy"))
+        result.push(File.join(path, ".Taskfile.deploy"))
       end
       return result
     end

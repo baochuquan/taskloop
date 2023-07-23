@@ -94,9 +94,9 @@ module TaskLoop
     private def generate_taskfile_deploy
       data_proj_dir = File.join(taskloop_data_dir, Dir.pwd.sha1_8bit)
       create_dir_if_needed(data_proj_dir)
-      deploy_path = File.join(data_proj_dir, "Taskfile.deploy")
+      deploy_path = File.join(data_proj_dir, ".Taskfile.deploy")
 
-      puts "Generate Taskfile.deploy.".ansi.blue
+      puts "Generate .Taskfile.deploy.".ansi.blue
       FileUtils.copy_file("Taskfile", deploy_path)
       puts "Taskfile deploy success.".ansi.blue
     end

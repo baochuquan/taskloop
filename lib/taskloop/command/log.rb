@@ -51,19 +51,30 @@ module TaskLoop
         if dir == "." or dir == ".."
           next
         end
-
-        found = false
         data_proj_dir = File.join(taskloop_data_dir, dir)
+
+        print_proj = false
+        found = false
         log_files = Dir.entries(data_proj_dir)
         log_files.each do |file|
           if "#{name.sha1}_log" == file
             found = true
-            task_path = File.join(data_proj_dir, "#{name.sha1}_log")
-            puts "=============================".ansi.blue
-            puts "Log of <Task.name: #{name}>: ".ansi.blue
-            File.open(task_path).each_line do |line|
+
+            if !print_proj
+              print_proj = true
+              desc_file_path = File.join(data_proj_dir, ".description")
+              puts "=============================".ansi.blue
+              File.open(desc_file_path).each_line do |line|
+                puts "Project of <#{line.strip}>".ansi.blue
+              end
+            end
+            # print
+            task_log_path = File.join(data_proj_dir, "#{name.sha1}_log")
+            puts "Log of <Task.name: #{name}> above: ".ansi.blue
+            File.open(task_log_path).each_line do |line|
               puts line
             end
+
             puts "=============================".ansi.blue
             puts ""
           end
