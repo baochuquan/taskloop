@@ -38,7 +38,11 @@ module TaskLoop
       # create ~/.taskloop/ dir
       create_dir_if_needed(taskloop_dir)
       # create ~/.taskloop/projlist file
-      create_file_if_needed(taskloop_proj_list_path)
+      unless File.exists?(taskloop_proj_list_path)
+        projlist = File.new(taskloop_proj_list_path, "w+")
+        projlist.puts "[]"
+        projlist.close
+      end
 
       # create ~/.taskloop/crontab file
       create_file_if_needed(taskloop_cron_tab_path)
@@ -51,7 +55,7 @@ module TaskLoop
 
     def create_file_if_needed(path)
       unless File.file?(path)
-        File.new(path)
+        File.new(path, "w")
       end
     end
     def create_dir_if_needed(dir)

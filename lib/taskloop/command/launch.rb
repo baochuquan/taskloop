@@ -30,7 +30,7 @@ module TaskLoop
       unless File.exists?(tasklooprc_path)
         rc = File.new(tasklooprc_path, "w+")
         rc.puts "source ~/.taskloop/environments"
-        rc.puts "taskloop run > ~/.taskloop/cron.log 2>&1"
+        rc.puts "taskloop run > ~/.taskloop/cronlog 2>&1"
         rc.close
       end
     end

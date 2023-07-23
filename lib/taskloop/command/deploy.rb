@@ -30,7 +30,7 @@ module TaskLoop
         exit 1
       end
 
-      generate_taskfile_lock
+      generate_taskfile_deploy
     end
 
 
@@ -42,26 +42,19 @@ module TaskLoop
     # Register taskfile dir if needed
     #################################
     private def register_taskfile_dir_if_needed
-      taskfile_dir = Dir.pwd
       json_string = File.read(taskloop_proj_list_path)
       parsed_json = JSON.parse(json_string)
       # check if all the registered path
-      parsed_json = check_tasklist(parsed_json)
-      push_taskfile_dir_if_needed(parsed_json, taskfile_dir)
+      push_taskfile_dir_if_needed(parsed_json)
     end
 
-    private def check_tasklist(parsed_json)
-      parsed_json['paths'] = parsed_json['paths'].uniq
-      parsed_json['paths'] = parsed_json['paths'].select { |path| File.exists?(path)  }
-      parsed_json
-    end
-
-    private def push_taskfile_dir_if_needed(parsed_json, taskfile_dir)
-      duplicate = parsed_json['paths'].select { |path| path == taskfile_dir }
+    private def push_taskfile_dir_if_needed(parsed_json)
+      proj_dir = Dir.pwd
+      duplicate = parsed_json.select { |path| path == proj_dir }
       if duplicate.empty?
         puts "First time to deploy current Taskfile.".ansi.blue
         puts "Register Taskfile into taskloop.".ansi.blue
-        parsed_json['paths'].push(taskfile_dir)
+        parsed_json.push(proj_dir)
 
         File.open(taskloop_proj_list_path, 'w') do |file|
           file.write(JSON.pretty_generate(parsed_json))
@@ -98,9 +91,13 @@ module TaskLoop
     # Generate Taskfile.lock
     #################################
 
-    private def generate_taskfile_lock
-      puts "Generate Taskfile.lock.".ansi.blue
-      FileUtils.copy_file("Taskfile", "Taskfile.lock")
+    private def generate_taskfile_deploy
+      data_proj_dir = File.join(taskloop_data_dir, Dir.pwd.sha1_8bit)
+      create_dir_if_needed(data_proj_dir)
+      deploy_path = File.join(data_proj_dir, "Taskfile.deploy")
+
+      puts "Generate Taskfile.deploy.".ansi.blue
+      FileUtils.copy_file("Taskfile", deploy_path)
       puts "Taskfile deploy success.".ansi.blue
     end
 
