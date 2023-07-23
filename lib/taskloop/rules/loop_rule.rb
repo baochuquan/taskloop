@@ -13,7 +13,7 @@ module TaskLoop
     end
 
     def is_conform_rule?(last_exec_time)
-      # loop rule is different for other rules. It should based on task cache file.
+      # loop rule is different for other rules. It should based on task loop file.
       # So here returns false
       return false
     end

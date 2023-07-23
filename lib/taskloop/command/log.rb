@@ -82,7 +82,7 @@ module TaskLoop
           end
         end
       end
-      
+
       unless found
         puts "Warning: log of <Task.name: #{name}> not exist. Please check if the name of task is correct.".ansi.yellow
         puts ""
