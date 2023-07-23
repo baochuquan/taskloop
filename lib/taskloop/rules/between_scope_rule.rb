@@ -122,5 +122,9 @@ module TaskLoop
       end
       return result
     end
+
+    def desc
+      super + " #{left}, #{right}"
+    end
   end
 end

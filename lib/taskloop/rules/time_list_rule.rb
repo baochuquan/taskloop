@@ -15,6 +15,9 @@ module TaskLoop
     def is_conform_rule?(last_exec_time)
       return false
     end
-  end
 
+    def desc
+      super + "; TODO: @baocq"
+    end
+  end
 end

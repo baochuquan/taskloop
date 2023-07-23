@@ -14,5 +14,9 @@ module TaskLoop
       super unit
       @scope = scope
     end
+
+    def desc
+      super + "; scope: #{scope.to_s}"
+    end
   end
 end

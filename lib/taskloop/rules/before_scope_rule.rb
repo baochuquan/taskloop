@@ -82,5 +82,9 @@ module TaskLoop
       end
       return result
     end
+
+    def desc
+      super + " #{right}"
+    end
   end
 end

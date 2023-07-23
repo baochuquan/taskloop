@@ -17,6 +17,10 @@ module TaskLoop
       # So here returns false
       return false
     end
+
+    def desc
+      super + "; interval: #{interval}"
+    end
   end
 
 end

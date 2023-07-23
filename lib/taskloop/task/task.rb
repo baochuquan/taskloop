@@ -250,7 +250,7 @@ module TaskLoop
       @loop.unit = :loop
     end
     def loop
-      @loop ||= DefaultRule.new(":loop")
+      @loop ||= DefaultRule.new(:loop)
     end
 
     # time list syntax

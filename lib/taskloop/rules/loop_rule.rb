@@ -17,6 +17,9 @@ module TaskLoop
       # So here returns false
       return false
     end
-  end
 
+    def desc
+      super + "; loop: #{count}"
+    end
+  end
 end

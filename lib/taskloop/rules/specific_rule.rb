@@ -56,6 +56,9 @@ module TaskLoop
       end
       return result
     end
-  end
 
+    def desc
+      super + "; specific: #{value}"
+    end
+  end
 end

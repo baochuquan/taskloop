@@ -26,5 +26,9 @@ module TaskLoop
     def is_conform_rule?(last_exec_time)
       raise NotImplementedError, 'subclass need implement this method!'
     end
+
+    def desc
+      "unit: #{unit.to_s}"
+    end
   end
 end

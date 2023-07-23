@@ -12,6 +12,8 @@ module TaskLoop
       return true
     end
 
+    def desc
+      super + "; default rule"
+    end
   end
-
 end
