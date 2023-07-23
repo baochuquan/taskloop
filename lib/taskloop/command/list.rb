@@ -33,7 +33,8 @@ module TaskLoop
     end
 
     def show_proj_tasklist_info
-      unless @proj_tasklist_map != nil
+      unless @proj_tasklist_map != nil && !@proj_tasklist_map.empty?
+        puts "Warning: there is no task in taskloop.".ansi.yellow
         return
       end
       @proj_tasklist_map.each do |proj, list|

@@ -5,7 +5,9 @@ module TaskLoop
     self.summary = "Check log"
 
     self.description = <<-DESC
-    TODO baocq
+    The 'taskloop log' is used to check log. It supports two options to check different kinds of log. 
+    With '--task-name=TASK_NAME' option, you can check a specific task' log. 
+    With '--cron' option, you can check the cron log of taskloop.
     DESC
 
     def self.options
@@ -46,6 +48,7 @@ module TaskLoop
     end
 
     def check_log_of_task(name)
+      found = false
       data_proj_dirs = Dir.entries(taskloop_data_dir)
       data_proj_dirs.each do |dir|
         if dir == "." or dir == ".."
@@ -54,7 +57,6 @@ module TaskLoop
         data_proj_dir = File.join(taskloop_data_dir, dir)
 
         print_proj = false
-        found = false
         log_files = Dir.entries(data_proj_dir)
         log_files.each do |file|
           if "#{name.sha1}_log" == file
@@ -79,11 +81,11 @@ module TaskLoop
             puts ""
           end
         end
-
-        unless found
-          puts "Warning: log of <Task.name: #{name}> not exist. Please check if the name of task is correct.".ansi.yellow
-          puts ""
-        end
+      end
+      
+      unless found
+        puts "Warning: log of <Task.name: #{name}> not exist. Please check if the name of task is correct.".ansi.yellow
+        puts ""
       end
     end
 
