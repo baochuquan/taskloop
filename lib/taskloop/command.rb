@@ -12,6 +12,7 @@ module TaskLoop
     require 'taskloop/command/launch'
     require 'taskloop/command/shutdown'
     require 'taskloop/command/env'
+    require 'taskloop/command/undeploy'
 
     self.abstract_command = true
 
