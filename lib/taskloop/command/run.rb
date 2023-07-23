@@ -40,9 +40,8 @@ module TaskLoop
     def run
       super
       create_data_proj_file_structure_if_needed
-
       construct_proj_tasklist_map
-      construct_proj_tasklist_cache
+      construct_files_for_tasks
       execute_tasks_if_needed
       clean_cache_file_if_needed
     end
@@ -96,8 +95,9 @@ module TaskLoop
       end
       @proj_tasklist_map.each do |proj, list|
         list.each do |task|
+          data_proj_dir = File.join(taskloop_data_dir, proj.sha1_8bit)
           # set properties for task
-          task.data_proj_dir = File.join(taskloop_data_dir, proj.sha1_8bit)
+          task.data_proj_dir = data_proj_dir
           # task.taskfile_path = File.join(proj, "Taskfile")
           # task.taskfile_lock_path = File.join(proj, "Taskfile.lock")
 
@@ -168,26 +168,26 @@ module TaskLoop
     end
 
     private def clean_cache_file_if_needed
-      unless @proj_tasklist_map != nil
-        return
-      end
-
-      @proj_tasklist_map.each do |proj, list|
-        data_proj_dir = File.join(taskloop_data_dir, proj.sha1_8bit)
-        files = Dir.entries(data_proj_dir)
-
-        list.each do |task|
-          files.delete(task.logfile_name)
-          files.delete(task.timefile_name)
-        end
-
-        files.each do |file|
-          path = File.join(data_proj_dir, file)
-          if file != '.' && file != '..' && File.exists?(path)
-            File.delete(path)
-          end
-        end
-      end
+      # unless @proj_tasklist_map != nil
+      #   return
+      # end
+      #
+      # @proj_tasklist_map.each do |proj, list|
+      #   data_proj_dir = File.join(taskloop_data_dir, proj.sha1_8bit)
+      #   files = Dir.entries(data_proj_dir)
+      #
+      #   list.each do |task|
+      #     files.delete(task.logfile_name)
+      #     files.delete(task.timefile_name)
+      #   end
+      #
+      #   files.each do |file|
+      #     path = File.join(data_proj_dir, file)
+      #     if file != '.' && file != '..' && File.exists?(path)
+      #       File.delete(path)
+      #     end
+      #   end
+      # end
     end
   end
 end
