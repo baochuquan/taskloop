@@ -117,12 +117,6 @@ module TaskLoop
       end
       return result
     end
-    # def taskfile_dirs
-    #   # TODO: @baocq
-    #   json_string = File.read(taskloop_proj_list_path)
-    #   parsed_json = JSON.parse(json_string)
-    #   return parsed_json["paths"]
-    # end
 
     LOGO = <<-DESC
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
