@@ -403,17 +403,17 @@ module TaskLoop
     #################################
 
     # ~/.taskloop/cache/<project-sha>.
-    attr_accessor :proj_cache_dir
-    # <project-path>/Taskfile
-    attr_accessor :taskfile_path
-    attr_accessor :taskfile_lock_path
+    attr_accessor :data_proj_dir
+    # # <project-path>/Taskfile
+    # attr_accessor :taskfile_path
+    # attr_accessor :taskfile_lock_path
 
     def logfile_path
-      return File.join(@proj_cache_dir, logfile_name)
+      return File.join(@data_proj_dir, logfile_name)
     end
 
     def timefile_path
-      return File.join(@proj_cache_dir, timefile_name)
+      return File.join(@data_proj_dir, timefile_name)
     end
 
     def logfile_name

@@ -11,7 +11,7 @@ module TaskLoop
     def run
       super
       create_environments_file_if_needed
-      create_run_control_file_if_needed
+      create_tasklooprc_file_if_needed
       register_taskloop_into_crontab_if_needed
     end
 
@@ -26,7 +26,7 @@ module TaskLoop
       end
     end
 
-    def create_run_control_file_if_needed
+    def create_tasklooprc_file_if_needed
       unless File.exists?(tasklooprc_path)
         rc = File.new(tasklooprc_path, "w+")
         rc.puts "source ~/.taskloop/environments"

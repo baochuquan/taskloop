@@ -46,19 +46,19 @@ module TaskLoop
     end
 
     def check_log_of_task(name)
-      proj_cache_dirs = Dir.entries(taskloop_data_dir)
-      proj_cache_dirs.each do |dir|
+      data_proj_dirs = Dir.entries(taskloop_data_dir)
+      data_proj_dirs.each do |dir|
         if dir == "." or dir == ".."
           next
         end
 
         found = false
-        proj_cache_dir = File.join(taskloop_data_dir, dir)
-        log_files = Dir.entries(proj_cache_dir)
+        data_proj_dir = File.join(taskloop_data_dir, dir)
+        log_files = Dir.entries(data_proj_dir)
         log_files.each do |file|
           if "#{name.sha1}_log" == file
             found = true
-            task_path = File.join(proj_cache_dir, "#{name.sha1}_log")
+            task_path = File.join(data_proj_dir, "#{name.sha1}_log")
             puts "=============================".ansi.blue
             puts "Log of <Task.name: #{name}>: ".ansi.blue
             File.open(task_path).each_line do |line|

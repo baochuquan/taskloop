@@ -39,17 +39,40 @@ module TaskLoop
 
     def run
       super
+      create_data_proj_file_structure_if_needed
+
       construct_proj_tasklist_map
       construct_proj_tasklist_cache
       execute_tasks_if_needed
       clean_cache_file_if_needed
     end
 
+    private def create_data_proj_file_structure_if_needed
+      taskloop_proj_list_dirs.each do |dir|
+        # create ~/.tasklooop/data/<proj-sha1-8bit>/ dir
+        data_proj_dir = File.join(taskloop_data_dir, dir.sha1_8bit)
+        create_dir_if_needed(data_proj_dir)
+
+        # create ~/.taskloop/data/<proj_sha1-8bit>/description
+        data_proj_description_path = File.join(data_proj_dir, "description")
+        unless File.exists?(data_proj_description_path)
+          desc = File.new(data_proj_description_path, "w+")
+          desc.puts dir
+          desc.close
+        end
+      end
+    end
+
     private def construct_proj_tasklist_map
-      # load Taskfiles from ~/.taskloop/tasklist.json
-      taskfile_dirs.each do |dir|
-        lock_file_path = dir + "/Taskfile.lock"
-        eval_taskfile(lock_file_path)
+      # load Taskfiles from ~/.taskloop/projlist
+      taskloop_proj_list_dirs.each do |dir|
+        deploy_file_path = File.join(taskloop_data_dir, dir.sha1_8bit,"Taskfile.deploy")
+        unless File.exists?(deploy_file_path)
+          puts "Warning: #{deploy_file_path} is not exist, taskloop will skip its execution.".ansi.yellow
+          proj_tasklist_map[dir] = []
+          next
+        end
+        eval_taskfile(deploy_file_path)
         proj_tasklist_map[dir] = TaskLoop::Task.tasklist
         TaskLoop::Task.tasklist = []
       end
@@ -67,33 +90,30 @@ module TaskLoop
         raise ArgumentError, "test"
     end
 
-    private def construct_proj_tasklist_cache
+    private def construct_files_for_tasks
       unless @proj_tasklist_map != nil
         return
       end
       @proj_tasklist_map.each do |proj, list|
-        proj_cache_dir = File.join(taskloop_data_dir, [proj.sha1_8bit])
-        create_dir_if_needed(proj_cache_dir)
-
         list.each do |task|
           # set properties for task
-          task.proj_cache_dir = proj_cache_dir
-          task.taskfile_path = File.join(proj, "Taskfile")
-          task.taskfile_lock_path = File.join(proj, "Taskfile.lock")
+          task.data_proj_dir = File.join(taskloop_data_dir, proj.sha1_8bit)
+          # task.taskfile_path = File.join(proj, "Taskfile")
+          # task.taskfile_lock_path = File.join(proj, "Taskfile.lock")
 
-          task_cache_time_path = File.join(proj_cache_dir, task.timefile_name)
+          task_cache_time_path = File.join(data_proj_dir, task.timefile_name)
           unless File.file?(task_cache_time_path)
             file = File.new(task_cache_time_path, "w+")
             file.puts "0"
             file.close
           end
 
-          task_cache_log_path = File.join(proj_cache_dir, task.logfile_name)
+          task_cache_log_path = File.join(data_proj_dir, task.logfile_name)
           unless File.file?(task_cache_log_path)
             File.new(task_cache_log_path, "w+")
           end
 
-          task_cache_loop_path = File.join(proj_cache_dir, task.loopfile_name)
+          task_cache_loop_path = File.join(data_proj_dir, task.loopfile_name)
           unless File.file?(task_cache_loop_path)
             File.new(task_cache_loop_path, "w+")
           end
@@ -109,12 +129,14 @@ module TaskLoop
       @proj_tasklist_map.each do |proj, list|
         list.each do |task|
           unless task.check_rule_conflict?
-            puts "task<#{task.sha1}> is rule conflict, skip..."
+            puts "Warning: There is a rule conflict in #{task.desc}, taskloop will skip its execution.".ansi.yellow
             next
           end
-          if task.check_all_rules?
-            execute_task(proj, task)
+          unless task.check_all_rules?
+            puts "Checking: #{task.desc} does not meet the execution rules, taskloop will skip its execution.".ansi.blue
+            next
           end
+          execute_task(proj, task)
         end
       end
     end
@@ -151,8 +173,8 @@ module TaskLoop
       end
 
       @proj_tasklist_map.each do |proj, list|
-        proj_cache_dir = File.join(taskloop_data_dir, [proj.sha1_8bit])
-        files = Dir.entries(proj_cache_dir)
+        data_proj_dir = File.join(taskloop_data_dir, proj.sha1_8bit)
+        files = Dir.entries(data_proj_dir)
 
         list.each do |task|
           files.delete(task.logfile_name)
@@ -160,7 +182,7 @@ module TaskLoop
         end
 
         files.each do |file|
-          path = File.join(proj_cache_dir, file)
+          path = File.join(data_proj_dir, file)
           if file != '.' && file != '..' && File.exists?(path)
             File.delete(path)
           end

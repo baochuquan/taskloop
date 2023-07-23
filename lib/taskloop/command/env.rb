@@ -118,7 +118,7 @@ module TaskLoop
       end
     end
 
-    def get_environment_variable_from_line(line)
+    private def get_environment_variable_from_line(line)
       pattern = /\Aexport /
       result = nil
       if line.match(pattern)
