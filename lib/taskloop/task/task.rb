@@ -102,7 +102,7 @@ module TaskLoop
       conform = true
       if has_interval_rule?
         puts "#{desc} has interval rule.".ansi.blue
-        conform = check_for_interval_rule?(last_exec_time)
+        conform = check_interval_rule?(last_exec_time)
       else
         puts "#{desc} no interval rule."
         conform &&= year.is_conform_rule?(last_exec_time)
@@ -120,7 +120,7 @@ module TaskLoop
       return rules.any?{ |rule| rule.is_a?(IntervalRule) }
     end
 
-    private def check_for_interval_rule?(last_exec_time)
+    private def check_interval_rule?(last_exec_time)
       result = true
       min = 0
       if year.is_a?(IntervalRule)
@@ -152,7 +152,7 @@ module TaskLoop
       result &&= (Time.now.to_i - last_exec_time.to_i + correction) / 60.0 >= min
       return result
     end
-    
+
     #################################
     # Sha1 and description
     #################################
