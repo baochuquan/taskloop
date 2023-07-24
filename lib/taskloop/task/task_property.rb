@@ -250,5 +250,29 @@ module TaskLoop
     def date
       @date ||= DefaultRule.new(:date)
     end
+
+    #################################
+    # Help Methods
+    #################################
+    def hasDate?
+      !date.is_a?(DefaultRule)
+    end
+
+    def hasTime?
+      !time.is_a?(DefaultRule)
+    end
+
+    def hasYMD?
+      [year, month, day].any? { |rule| !rule.is_a?(DefaultRule) }
+    end
+
+    def hasHM?
+      [hour, minute].any? { |rule| !rule.is_a?(DefaultRule) }
+    end
+
+    def has_interval_rule?
+      rules = [year, month, day, hour, minute]
+      return rules.any?{ |rule| rule.is_a?(IntervalRule) }
+    end
   end
 end

@@ -11,6 +11,10 @@ module TaskLoop
       return File.join(@data_proj_dir, timefile_name)
     end
 
+    def loopfile_path
+      return File.join(@data_proj_dir, loopfile_name)
+    end
+
     def logfile_name
       return sha1 + "_log"
     end
