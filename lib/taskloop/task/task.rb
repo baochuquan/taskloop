@@ -74,18 +74,18 @@ module TaskLoop
     def check_rule_conflict?
       result = true
       # check year/month/day with date, they cannot be set at the same time
-      if hasYMD && hasDate
+      if hasYMD? && hasDate?
         result = false
       end
 
       # check hour/minute with time, they cannot be set at the same time
-      if hasHM && hasDate
+      if hasHM? && hasDate?
         result = false
       end
 
       # check rule type
 
-      if hasYMD && hasHM
+      if hasYMD? && hasHM?
         # check minute/hour/day/month/year. Get the last IntervalRule, than check if there is SpecificRule or ScopeRule before
         rules = [minute, hour, day, month, year]
         rIdx = rules.rindex { |rule| rule.is_a?(IntervalRule) }
@@ -100,7 +100,7 @@ module TaskLoop
         end
       end
 
-      if hasYMD && hasTime
+      if hasYMD? && hasTime?
         # check year/month/day with time, YMD can not have IntervalRule
         rules = [day, month, year]
         hasInterval = rules.any? { |rule| rule.is_a?(IntervalRule) }
@@ -109,11 +109,11 @@ module TaskLoop
         end
       end
 
-      if hasDate && hasHM
+      if hasDate? && hasHM?
         # it's ok
       end
 
-      if hasDate && hasTime
+      if hasDate? && hasTime?
         # it's ok
       end
 
@@ -121,26 +121,14 @@ module TaskLoop
     end
 
     def check_all_rules?
-      timestamp = 0
-      File.open(timefile_path, 'r') do |file|
-        timestamp = file.gets.to_i
-      end
-      last_exec_time = Time.at(timestamp)
+      last_exec_time = last_time
 
-      conform = true
-      if has_interval_rule?
-        puts "#{desc} has interval rule.".ansi.blue
-        conform = check_interval_rule?(last_exec_time)
-      else
-        puts "#{desc} no interval rule."
-        conform &&= year.is_conform_rule?(last_exec_time)
-        conform &&= month.is_conform_rule?(last_exec_time)
-        conform &&= day.is_conform_rule?(last_exec_time)
-        conform &&= hour.is_conform_rule?(last_exec_time)
-        conform &&= minute.is_conform_rule?(last_exec_time)
-      end
-      puts "#{desc} check all rule: #{conform}".ansi.blue
-      return conform
+      result = true
+      result &&= check_interval_rule?(last_exec_time)
+      result &&= check_scope_rule?(last_exec_time)
+      result &&= check_specific_fule?(last_exec_time)
+      result &&= check_loop_rule?(last_exec_time)
+      return result
     end
 
     private def check_interval_rule?(last_exec_time)
@@ -148,28 +136,18 @@ module TaskLoop
       min = 0
       if year.is_a?(IntervalRule)
         min += year.interval * YEAR_MIN
-      # else
-      #   result &&= year.is_conform_rule?(last_exec_time)
       end
       if month.is_a?(IntervalRule)
         min += month.interval * MONTH_MIN
-      # else
-      #   result &&= month.is_conform_rule?(last_exec_time)
       end
       if day.is_a?(IntervalRule)
         min += day.interval * DAY_MIN
-      # else
-      #   result &&= day.is_conform_rule?(last_exec_time)
       end
       if hour.is_a?(IntervalRule)
         min += hour.interval * HOUR_MIN
-      # else
-      #   result &&= hour.is_conform_rule?(last_exec_time)
       end
       if minute.is_a?(IntervalRule)
         min += minute.interval
-      # else
-      #   result &&= minute.is_conform_rule?(last_exec_time)
       end
       correction = 20
       result &&= (Time.now.to_i - last_exec_time.to_i + correction) / 60.0 >= min
@@ -223,13 +201,10 @@ module TaskLoop
     end
 
     private def check_loop_rule?(last_exec_time)
-      count = 0
-      File.open(loopfile_path, 'r') do |file|
-        count = file.gets.to_i
-      end
+      count = loop_count
 
       result = true
-      if !loop.is_a?(LoopRule)
+      if loop.is_a?(LoopRule)
         result = count < loop.count
       end
       return result
@@ -246,7 +221,7 @@ module TaskLoop
     end
 
     def desc
-      "<Task.name: #{@name}>"
+      "<Task.name: #{@name}, sha1: #{sha1}>"
     end
 
     #################################

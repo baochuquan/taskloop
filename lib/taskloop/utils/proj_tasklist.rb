@@ -130,6 +130,7 @@ module TaskLoop
         list.each do |task|
           files.delete(task.logfile_name)
           files.delete(task.timefile_name)
+          files.delete(task.loopfile_name)
         end
 
         files.each do |file|

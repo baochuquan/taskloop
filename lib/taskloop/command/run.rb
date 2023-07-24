@@ -1,10 +1,5 @@
-require_relative '../utils/proj_tasklist'
-
 module TaskLoop
   class Run < Command
-    include TaskLoop::DSL
-    include TaskLoop::ProjTaskList
-
     require_relative '../task/task'
     require_relative '../rules/rule'
     require_relative '../rules/interval_rule'
@@ -14,10 +9,17 @@ module TaskLoop
     require_relative '../rules/after_scope_rule'
     require_relative '../rules/before_scope_rule'
     require_relative '../rules/between_scope_rule'
+    require_relative '../rules/loop_rule'
+    require_relative '../rules/date_list_rule'
+    require_relative '../rules/time_list_rule'
     require_relative '../extension/string_extension'
     require_relative '../extension/integer_extension'
-
+    require_relative '../utils/proj_tasklist'
+    require_relative '../dsl/dsl'
     require 'open3'
+
+    include TaskLoop::DSL
+    include TaskLoop::ProjTaskList
 
     self.abstract_command = false
 
@@ -66,6 +68,7 @@ module TaskLoop
             puts "Checking: #{task.desc} does not meet the execution rules, taskloop will skip its execution.".ansi.blue
             next
           end
+          puts "Checking: #{task.desc} doee meet the execution rules, taskloop start to execute.".ansi.blue
           execute_task(proj, task)
         end
       end
@@ -86,6 +89,8 @@ module TaskLoop
       # record execute timestamp into task's timefile
       timestamp = Time.now.to_i
       task.write_to_timefile(timestamp)
+      count = task.loop_count + 1
+      task.write_to_loopfile(count)
 
       cmd = path
       Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|

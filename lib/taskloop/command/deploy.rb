@@ -1,8 +1,23 @@
-require 'json'
-require_relative '../dsl/dsl'
 
 module TaskLoop
   class Deploy < Command
+    require_relative '../task/task'
+    require_relative '../rules/rule'
+    require_relative '../rules/interval_rule'
+    require_relative '../rules/scope_rule'
+    require_relative '../rules/default_rule'
+    require_relative '../rules/specific_rule'
+    require_relative '../rules/after_scope_rule'
+    require_relative '../rules/before_scope_rule'
+    require_relative '../rules/between_scope_rule'
+    require_relative '../rules/loop_rule'
+    require_relative '../rules/date_list_rule'
+    require_relative '../rules/time_list_rule'
+    require_relative '../extension/string_extension'
+    require_relative '../extension/integer_extension'
+    require_relative '../dsl/dsl'
+    require 'json'
+
     include TaskLoop::DSL
 
     self.abstract_command = false

@@ -38,7 +38,7 @@ module TaskLoop
     end
 
     def write_to_loopfile(content)
-      file = File.open(loopfile_name, "w")
+      file = File.open(loopfile_path, "w")
       file.puts content
       file.close
     end

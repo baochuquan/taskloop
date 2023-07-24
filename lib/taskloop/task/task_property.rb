@@ -274,5 +274,21 @@ module TaskLoop
       rules = [year, month, day, hour, minute]
       return rules.any?{ |rule| rule.is_a?(IntervalRule) }
     end
+
+    def loop_count
+      count = 0
+      File.open(loopfile_path, 'r') do |file|
+        count = file.gets.to_i
+      end
+      return count
+    end
+
+    def last_time
+      timestamp = 0
+      File.open(timefile_path, 'r') do |file|
+        timestamp = file.gets.to_i
+      end
+      return Time.at(timestamp)
+    end
   end
 end
