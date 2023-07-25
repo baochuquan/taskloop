@@ -224,7 +224,7 @@ module TaskLoop
     # time list syntax
     #   - time
     #     - example: time "10:10:30", "9:10:20", "20:10:20"
-    def time=(time)
+    def time=(rule)
       unless rule.is_a?(TimeListRule)
         raise TypeError, "the rule of time must be a TimeList Rule"
       end
@@ -239,7 +239,7 @@ module TaskLoop
     # date list syntax
     #   - date
     #     - example: date "2023-10-10", "2013-10-11", "2023-11-10"
-    def date=(date)
+    def date=(rule)
       unless rule.is_a?(DateListRule)
         raise TypeError, "the rule of time must be a DateList Rule"
       end

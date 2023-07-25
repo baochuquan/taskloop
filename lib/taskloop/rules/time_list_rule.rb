@@ -1,6 +1,8 @@
 module TaskLoop
   class TimeListRule < Rule
 
+    require 'time'
+
     attr_writer :times
 
     def times
@@ -35,7 +37,7 @@ module TaskLoop
       result = false
 
       times_values.each do |time|
-        result = result || (time.hour == current.hour && time.minute == current.min)
+        result = result || (time.hour == current.hour && time.min == current.min)
       end
       return result
     end

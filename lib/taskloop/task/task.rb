@@ -23,7 +23,7 @@ module TaskLoop
       yield self
       check = true
       unless @name
-        puts "Error: task name is reqired.".ansi.red
+        puts "Error: task name is required.".ansi.red
         puts ""
         check = false
       end
@@ -46,27 +46,26 @@ module TaskLoop
       # check task name uniqueness
       @@tasklist.each do |task|
         if task != self && task.name == @name
-          puts "Error: task name `#{@name}` duplicated with in Taskfile. Every task name should be unique in a Taskfile.".ansi.red
-          puts ""
+          puts "Error: #{task.desc} => there are multiple tasks with the same name in the Taskfile. Please check the task name again.".ansi.red
           result = false
         end
         # only check with the task before self
         if task == self
           break
         end
-        end
+      end
       # check if task path exists
       unless @path && File.exists?(@path)
-        puts "Error: task path `#{@path}` specified file must be exit. Please check the task path again.".ansi.red
-        puts ""
+        puts "Error: #{desc} => the file in <#{@path}> is not exist. Please check the task path again.".ansi.red
         result = false
       end
       # check task rules conflict
       unless check_rule_conflict?
-        puts "Error: the rules of the task may conflict. Please check the rules again.".ansi.red
-        puts "Suggestion: SpecificRule and ScopeRule cannot execute during IntervalRules.".and.red
-        puts ""
+        puts "Error: #{desc} rule conflicts have been detected above.".ansi.red
         result = false
+      end
+      unless result
+        puts "=============================".ansi.red
       end
       return result
     end
@@ -75,11 +74,13 @@ module TaskLoop
       result = true
       # check year/month/day with date, they cannot be set at the same time
       if hasYMD? && hasDate?
+        puts "Error: #{desc} => <year/month/day> and <date> cannot be set at the same time.".ansi.red
         result = false
       end
 
       # check hour/minute with time, they cannot be set at the same time
-      if hasHM? && hasDate?
+      if hasHM? && hasTime?
+        puts "Error: #{desc} => <hour/minute> and <time> cannot be set at the same time.".ansi.red
         result = false
       end
 
@@ -89,15 +90,18 @@ module TaskLoop
         # check minute/hour/day/month/year. Get the last IntervalRule, than check if there is SpecificRule or ScopeRule before
         rules = [minute, hour, day, month, year]
         rIdx = rules.rindex { |rule| rule.is_a?(IntervalRule) }
-        unless rIdx != nil
-          return result
+        if rIdx != nil
+          rules.each_with_index do |rule, index|
+            if index < rIdx && (rule.is_a?(ScopeRule) || rule.is_a?(SpecificRule))
+              puts "Error: #{desc} => a ScopeRule or a SpecificRule is assigned to a smaller unit while a IntervalRule is assigned to a larger unit.".ansi.red
+              result = false
+              break
+            end
+          end
+
         end
 
-        rules.each_with_index do |rule, index|
-          if index < rIdx && (rule.is_a?(ScopeRule) || rule.is_a?(SpecificRule))
-            result = false
-          end
-        end
+
       end
 
       if hasYMD? && hasTime?
@@ -105,6 +109,7 @@ module TaskLoop
         rules = [day, month, year]
         hasInterval = rules.any? { |rule| rule.is_a?(IntervalRule) }
         if hasInterval
+          puts "Error: #{desc} => a IntervalRule is assigned to <year/month/day> while <time> is assigned. It is a conflict!".ansi.red
           result = false
         end
       end

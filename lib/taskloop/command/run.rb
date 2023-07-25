@@ -57,6 +57,7 @@ module TaskLoop
         return
       end
 
+      puts "Trigger Time: <#{Time.now}>"
       @proj_tasklist_map.each do |proj, list|
         list.each do |task|
           unless task.check_rule_conflict?
@@ -67,7 +68,7 @@ module TaskLoop
             puts "Checking: #{task.desc} does not meet the execution rules, taskloop will skip its execution.".ansi.blue
             next
           end
-          puts "Checking: #{task.desc} doee meet the execution rules, taskloop start to execute.".ansi.blue
+          puts "Checking: #{task.desc} does meet the execution rules, taskloop start to execute.".ansi.blue
           execute_task(proj, task)
         end
       end
@@ -91,14 +92,13 @@ module TaskLoop
       count = task.loop_count + 1
       task.write_to_loopfile(count)
 
-      puts "Trigger Time: <#{timestamp.now}>"
-
       cmd = path
       Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
         # record execute information into task's logfile
         out = stdout.read
         err = stderr.read
         content = out + "\n" + err
+        content = "<Trigger Time: #{Time.now}>\n" + content
         task.write_to_logfile(content)
       end
     end

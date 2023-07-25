@@ -46,18 +46,13 @@ module TaskLoop
 
       register_taskfile_dir_if_needed
       unless deploy_lint?
-        puts ""
         puts "Taskfile deploy failed. Please check Taskfile again.".ansi.red
         exit 1
       end
 
       generate_taskfile_deploy
 
-      clean_looopfile_if_needed
-    end
-
-    def create_proj_file_structrue_if_needed
-
+      clean_loopfile_if_needed
     end
 
     #################################
@@ -93,6 +88,7 @@ module TaskLoop
       eval_taskfile(taskfile_path)
 
       results = []
+      lint_msgs = []
       for task in TaskLoop::Task::tasklist
         results.push(task.deploy_lint?)
       end
@@ -118,9 +114,9 @@ module TaskLoop
       create_dir_if_needed(data_proj_dir)
       deploy_path = File.join(data_proj_dir, ".Taskfile.deploy")
 
-      puts "Generate .Taskfile.deploy.".ansi.blue
       FileUtils.copy_file("Taskfile", deploy_path)
-      puts "Taskfile deploy success.".ansi.blue
+      puts DOLPHIN.ansi.blue
+      puts "                              Taskfile deploy success!".ansi.blue
     end
 
     #################################

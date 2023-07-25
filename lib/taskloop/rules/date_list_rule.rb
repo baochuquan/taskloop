@@ -1,5 +1,6 @@
 module TaskLoop
   class DateListRule < Rule
+    require 'time'
 
     attr_writer :dates
 
