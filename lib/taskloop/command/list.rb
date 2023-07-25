@@ -25,9 +25,8 @@ module TaskLoop
       create_data_proj_dir_if_needed
       create_data_proj_description_if_needed
 
-      setup_task_property
-
       construct_proj_tasklist_map
+      setup_task_property
 
       show_proj_tasklist_info
     end

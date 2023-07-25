@@ -29,6 +29,12 @@ module TaskLoop
       Taskloop will record the path of a Taskfile into ~/.taskloop/tasklist.json.
     DESC
 
+    attr_writer :tasklist
+
+    def tasklist
+      @tasklist ||= []
+    end
+
     def run
       super
       # check if Taskfile exist
@@ -46,8 +52,9 @@ module TaskLoop
       end
 
       generate_taskfile_deploy
-    end
 
+      clean_looopfile_if_needed
+    end
 
     def create_proj_file_structrue_if_needed
 
@@ -114,6 +121,19 @@ module TaskLoop
       puts "Generate .Taskfile.deploy.".ansi.blue
       FileUtils.copy_file("Taskfile", deploy_path)
       puts "Taskfile deploy success.".ansi.blue
+    end
+
+    #################################
+    # Clean loopfile
+    #################################
+    private def clean_loopfile_if_needed
+      data_proj_dir = File.join(taskloop_data_dir, Dir.pwd.sha1_8bit)
+      TaskLoop::Task::tasklist.each do |task|
+        loopfile_path = File.join(data_proj_dir, task.loopfile_name)
+        if File.exists?(loopfile_path)
+          File.delete(loopfile_path)
+        end
+      end
     end
 
   end

@@ -42,7 +42,6 @@ module TaskLoop
       create_data_proj_description_if_needed
 
       construct_proj_tasklist_map
-
       setup_task_property
 
       create_data_proj_task_log_if_needed
@@ -91,6 +90,8 @@ module TaskLoop
       task.write_to_timefile(timestamp)
       count = task.loop_count + 1
       task.write_to_loopfile(count)
+
+      puts "Trigger Time: <#{timestamp.now}>"
 
       cmd = path
       Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
