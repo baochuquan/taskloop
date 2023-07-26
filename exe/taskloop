@@ -4,24 +4,13 @@ require_relative "../lib/taskloop"
 
 TaskLoop::Command.run(ARGV)
 # TaskLoop::Command.run(["init"])
-# print "\n"
-# TaskLoop::Command.run(["lint"])
-# print "\n"
 # TaskLoop::Command.run(["list"])
-# print "\n"
 # TaskLoop::Command.run(["log", "--task-name=chuquan"])
 # TaskLoop::Command.run(["log", "--cron"])
-# print "\n"
 # TaskLoop::Command.run(["launch"])
-
 # TaskLoop::Command.run(["env", "--remove=NOX_TEMPALTES,NOX_HOME"])
 # TaskLoop::Command.run(["env", "--global-list"])
 # TaskLoop::Command.run(["env", "--import=PATH,RUBY_VERSION,GEM_PATH,GEM_HOME,IRBRC,NOX_ROOT,NOX_HOME,NOX_COMMON,NOX_SCRIPTS,NOX_CONFIG,NOX_TEMPALTES"])
-
 # TaskLoop::Command.run(["shutdown"])
 # TaskLoop::Command.run(["run"])
-# print "\n"
 # TaskLoop::Command.run(["deploy"])
-# print "\n"
-# TaskLoop::Command.run(["unregister"])
-# print "\n"
