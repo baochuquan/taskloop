@@ -11,8 +11,8 @@ module TaskLoop
     #################################
     # Specific Syntax
     #################################
-    def at(value)
-      SpecificRule.new(:unknown, value)
+    def at(*values)
+      SpecificRule.new(:unknown, values)
     end
 
     #################################

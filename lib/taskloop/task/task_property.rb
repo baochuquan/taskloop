@@ -82,7 +82,33 @@ module TaskLoop
     #################################
     # specific syntax
     #   - of
-    #     - example: in 2024
+    #     - example: at :Mon
+    # scope syntax
+    #   - before
+    #     - example: before :Mon
+    #   - between
+    #     - example: between :Mon, :Fri
+    #   - after
+    #     - examle: after :Tue
+    def week=(rule)
+      unless rule.is_a?(Rule)
+        raise TypeError, "the rule of week must be a class or subclass of Rule"
+      end
+
+      @week = rule
+      @week.unit = :week
+    end
+
+    def week
+      @week ||= DefaultRule.new(:week)
+    end
+
+    #################################
+    # Setters & Getters
+    #################################
+    # specific syntax
+    #   - of
+    #     - example: at 2024
     # interval syntax
     #   - interval
     #     - example: interval 1.year
@@ -134,7 +160,6 @@ module TaskLoop
 
     # specific syntax
     #   - on
-    #     - example: on :Mon, :Tue, :Wed, :Thu, :Fri, :Sat, :Sun;
     #     - example: on :day1, :day2, :day3;
     # interval syntax
     #   - interval

@@ -94,13 +94,6 @@ module TaskLoop
       return @right
     end
 
-    def is_week_value?
-      if @unit == :day && Task::WEEK.has_key?(@left) && Task::WEEK.has_key?(@right)
-        return true
-      end
-      return false
-    end
-
     def is_conform_rule?(last_exec_time)
       current = Time.now
       left = left_value
@@ -111,12 +104,10 @@ module TaskLoop
         result = left <= current.year >= left && current.year <= right
       when :month then
         result = left <= current.month && current.month <= right
+      when :week then
+        result = (left % TaskLoop::WEEK_BASE) <= current.wday && current.wday <= (right % TaskLoop::WEEK_BASE)
       when :day then
-        if is_week_value?
-          result = (left % TaskLoop::WEEK_BASE) <= current.wday && current.wday <= (right % TaskLoop::WEEK_BASE)
-        else
-          result = left <= current.day && current.day <= right
-        end
+        result = left <= current.day && current.day <= right
       when :hour then
         result = left <= current.hour && current.hour <= right
       end

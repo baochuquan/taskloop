@@ -4,10 +4,6 @@ module TaskLoop
       super unit
     end
 
-    def is_week_value?
-      return false
-    end
-
     def is_conform_rule?(last_exec_time)
       return true
     end

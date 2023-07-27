@@ -8,10 +8,6 @@ module TaskLoop
       @count = count
     end
 
-    def is_week_value?
-      return false
-    end
-
     def is_conform_rule?(last_exec_time)
       # loop rule is different for other rules. It should based on task loop file.
       # So here returns false

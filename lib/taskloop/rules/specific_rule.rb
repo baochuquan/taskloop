@@ -2,63 +2,56 @@ module TaskLoop
 
   class SpecificRule < Rule
 
-    attr_accessor :value
+    attr_accessor :values
 
-    def initialize(unit, value)
+    def initialize(unit, values)
       super unit
-      @value = value
+      unless values != nil && values.length > 0
+        raise ArgumentError, "values arguments need at least one value."
+      end
+
+      @values = values
     end
 
-    def value_value
-      if (Task::DAY.has_key?(@value))
-        return Task::DAY[@value]
-      end
-      if (Task::WEEK.has_key?(@value))
-        return Task::WEEK[@value]
-      end
-      if (Task::MONTH.has_key?(@value))
-        return Task::MONTH[@value]
+    def values_values
+      if @unit == :week
+        return @values.map { |key| Task::WEEK[key] }
       end
 
-      unless @value != nil && @value.is_a?(Integer)
-        return -1
+      if @unit == :day
+        return @values.map { |key| Task::DAY[key] }
       end
 
-      return @value
-    end
-
-    def is_week_value?
-      if @unit == :day && Task::WEEK.has_key?(@value)
-        return true
+      if @unit == :month
+        return @values.map { |key| Task::MONTH[key] }
       end
-      return false
+
+      return @values
     end
 
     def is_conform_rule?(last_exec_time)
       current = Time.now
-      value = value_value
+      valuess = values_values
       result = false
       case @unit
       when :year then
-        result = current.year == value
+        result = valuess.include?(current.year)
       when :month then
-        result = current.month == value
+        result = valuess.include?(current.month)
+      when :week then
+        result = valuess.include?(TaskLoop::WEEK_BASE + current.wday)
       when :day then
-        if is_week_value?
-          result = current.wday == (value % TaskLoop::WEEK_BASE)
-        else
-          result = current.day == value
-        end
+        result = valuess.include?(current.day)
       when :hour then
-        result = current.hour == value
+        result = valuess.include?(current.hour)
       when :minute then
-        result = current.min == value
+        result = valuess.include?(current.min)
       end
       return result
     end
 
     def desc
-      super + "; specific: #{value}"
+      super + "; specific: #{values.join(', ')}"
     end
   end
 end
