@@ -53,7 +53,7 @@ module TaskLoop
           puts "    t.minute      = #{task.minute.desc}".ansi.blue
           puts "    t.loop        = #{task.loop.desc}".ansi.blue
           puts "    t.start_point = #{task.start_point.desc}".ansi.blue
-          puts "    t.end_point   = #{task.start_point.desc}".ansi.blue
+          puts "    t.end_point   = #{task.end_point.desc}".ansi.blue
         end
       end
     end
