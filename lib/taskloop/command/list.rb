@@ -44,14 +44,16 @@ module TaskLoop
         puts "Tasks above are defined in Taskfile of <#{proj}>".ansi.blue
         list.each do |task|
           puts "  #{task.desc}".ansi.blue
-          puts "    t.name   = #{task.name}".ansi.blue
-          puts "    t.path   = #{task.path}".ansi.blue
-          puts "    t.year   = #{task.year.desc}".ansi.blue
-          puts "    t.month  = #{task.month.desc}".ansi.blue
-          puts "    t.day    = #{task.day.desc}".ansi.blue
-          puts "    t.hour   = #{task.hour.desc}".ansi.blue
-          puts "    t.minute = #{task.minute.desc}".ansi.blue
-          puts "    t.loop   = #{task.loop.desc}".ansi.blue
+          puts "    t.name        = #{task.name}".ansi.blue
+          puts "    t.path        = #{task.path}".ansi.blue
+          puts "    t.year        = #{task.year.desc}".ansi.blue
+          puts "    t.month       = #{task.month.desc}".ansi.blue
+          puts "    t.day         = #{task.day.desc}".ansi.blue
+          puts "    t.hour        = #{task.hour.desc}".ansi.blue
+          puts "    t.minute      = #{task.minute.desc}".ansi.blue
+          puts "    t.loop        = #{task.loop.desc}".ansi.blue
+          puts "    t.start_point = #{task.start_point.desc}".ansi.blue
+          puts "    t.end_point   = #{task.start_point.desc}".ansi.blue
         end
       end
     end

@@ -25,14 +25,16 @@ module TaskLoop
 # env "ENV_NAME", "ENV_VALUE" 
 
 TaskLoop::Task.new do |t|
-  t.name = 'TODO: task name. <Required>'
-  t.path = 'TODO: task job path. For exmaple, t.path = "./Job.sh". <Required>'
-  t.year = "TODO: year rule. <Optional>"
-  t.month = "TODO: month rule. <Optional>"
-  t.day = "TODO: day rule. <Optional>"
-  t.hour = "TODO: hour rule. <Optional>"
-  t.minute = "TODO: minute rule. <Optional>"
-  t.loop = "TODO: loop count. <Optional>"
+  t.name        = 'TODO: task name. <Required>'
+  t.path        = 'TODO: task job path. For exmaple, t.path = "./Job.sh". <Required>'
+  t.year        = "TODO: year rule. <Optional>"
+  t.month       = "TODO: month rule. <Optional>"
+  t.day         = "TODO: day rule. <Optional>"
+  t.hour        = "TODO: hour rule. <Optional>"
+  t.minute      = "TODO: minute rule. <Optional>"
+  t.loop        = "TODO: loop count. <Optional>"
+  t.start_point = "TODO: start point boundary rule. <Optional"
+  t.end_point   = "TODO: start point boundary rule. <Optional"
 end
       DESC
       file.puts content
