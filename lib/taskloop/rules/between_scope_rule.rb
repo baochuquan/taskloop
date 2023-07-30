@@ -5,8 +5,8 @@ module TaskLoop
 
     attr_accessor :right
 
-    def initialize(unit, scope, left, right)
-      super unit, scope
+    def initialize(unit, left, right)
+      super unit, :between
       @left = left
       @right = right
     end

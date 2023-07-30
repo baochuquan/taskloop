@@ -3,8 +3,8 @@ module TaskLoop
 
     attr_accessor :right
 
-    def initialize(unit, scope, right)
-      super unit, scope
+    def initialize(unit, right)
+      super unit, :before
       @right = right
     end
 

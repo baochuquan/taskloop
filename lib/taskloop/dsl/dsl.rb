@@ -19,15 +19,15 @@ module TaskLoop
     # Scope Syntax
     #################################
     def before(right)
-      BeforeScopeRule.new(:unknown, :before, right)
+      BeforeScopeRule.new(:unknown, right)
     end
 
     def between(left, right)
-      BetweenScopeRule.new(:unknown, :between, left, right)
+      BetweenScopeRule.new(:unknown, left, right)
     end
 
     def after(left)
-      AfterScopeRule.new(:unknown, :after, left)
+      AfterScopeRule.new(:unknown, left)
     end
 
     #################################
@@ -49,6 +49,17 @@ module TaskLoop
     #################################
     def date(*args)
       DateListRule.new(:unknown, args)
+    end
+
+    #################################
+    # Boundary Syntax
+    #################################
+    def from(value)
+      StartPointBoundaryRule.new(:unknown, value)
+    end
+
+    def to(value)
+      EndPointBoundaryRule.new(:unknown, value)
     end
 
     #################################

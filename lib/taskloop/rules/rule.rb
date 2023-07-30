@@ -12,6 +12,7 @@ module TaskLoop
       :loop        => 7,      # only support loop syntax
       :date        => 8,      # only support date list syntax
       :time        => 9,      # only support time list syntax
+      :full        => 10,     # only support boundary syntax
     }
 
     attr_accessor :unit

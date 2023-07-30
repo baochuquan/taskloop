@@ -276,6 +276,31 @@ module TaskLoop
       @date ||= DefaultRule.new(:date)
     end
 
+    # boundary syntax
+    def start_point=(rule)
+      unless rule.is_a?(StartPointBoundaryRule)
+        raise TypeError, "the rule of start_point must be a StartPointBoundaryRule"
+      end
+
+      @start_point = rule
+    end
+
+    def start_point
+      @start_point ||= DefaultRule.new(:full)
+    end
+
+    def end_point=(rule)
+      unless rule.is_a?(EndPointBoundaryRule)
+        raise TypeError, "the rule of end_point must be a EndPointBoundaryRule"
+      end
+
+      @end_point = rule
+    end
+
+    def end_point
+      @end_point ||= DefaultRule.new(:full)
+    end
+
     #################################
     # Help Methods
     #################################

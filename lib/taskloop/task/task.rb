@@ -129,6 +129,7 @@ module TaskLoop
       last_exec_time = last_time
 
       result = true
+      result &&= check_boundary_rule?(last_exec_time)
       result &&= check_interval_rule?(last_exec_time)
       result &&= check_scope_rule?(last_exec_time)
       result &&= check_specific_fule?(last_exec_time)
@@ -215,6 +216,10 @@ module TaskLoop
       return result
     end
 
+    private def check_boundary_rule?(last_exec_time)
+      result = start_point.is_conform_rule?(last_exec_time) && end_point.is_conform_rule?(last_exec_time)
+      return result
+    end
 
     #################################
     # Sha1 and description
