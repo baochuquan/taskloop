@@ -1,5 +1,14 @@
 module TaskLoop
   module TaskProperty
+    WEEK = {
+      :Sun       => 0,
+      :Mon       => 1,
+      :Tue       => 2,
+      :Wed       => 3,
+      :Thu       => 4,
+      :Fri       => 5,
+      :Sat       => 6,
+    }
 
     MONTH = {
       :Jan       => 1,
@@ -25,17 +34,6 @@ module TaskLoop
       :mon10     => 10,
       :mon11     => 11,
       :mon12     => 12,
-    }
-
-    WEEK_BASE = 10000
-    WEEK = {
-      :Sun       => 10000,
-      :Mon       => 10001,
-      :Tue       => 10002,
-      :Wed       => 10003,
-      :Thu       => 10004,
-      :Fri       => 10005,
-      :Sat       => 10006,
     }
 
     DAY = {
@@ -78,23 +76,22 @@ module TaskLoop
     attr_accessor :path
 
     #################################
-    # Setters & Getters
-    #################################
+    # Week Property
     # specific syntax
-    #   - of
-    #     - example: at :Mon
+    #   - at
+    #     - example: at :Mon, :Tue, :Fri
     # scope syntax
     #   - before
     #     - example: before :Mon
     #   - between
     #     - example: between :Mon, :Fri
     #   - after
-    #     - examle: after :Tue
+    #     0 example: after :Tue
+    #################################
     def week=(rule)
-      unless rule.is_a?(Rule)
-        raise TypeError, "the rule of week must be a class or subclass of Rule"
+      unless rule.is_a?(SpecificRule) || rule.is_a?(ScopeRule)
+        raise TypeError, "the rule of week must be SpecificRule or ScopeRule or IntervalRule"
       end
-
       @week = rule
       @week.unit = :week
     end
@@ -104,11 +101,10 @@ module TaskLoop
     end
 
     #################################
-    # Setters & Getters
-    #################################
+    # Year Property
     # specific syntax
     #   - of
-    #     - example: at 2024
+    #     - example: at 2024, 2025 ...
     # interval syntax
     #   - interval
     #     - example: interval 1.year
@@ -118,12 +114,12 @@ module TaskLoop
     #   - between
     #     - example: between 2025, 2026
     #   - after
-    #     - examle: after 2023
+    #     - example: after 2023
+    #################################
     def year=(rule)
-      unless rule.is_a?(Rule)
-        raise TypeError, "the rule of year must be a class or subclass of Rule"
+      unless rule.is_a?(SpecificRule) || rule.is_a?(ScopeRule) || rule.is_a?(IntervalRule)
+        raise TypeError, "the rule of year must be SpecificRule or ScopeRule or IntervalRule"
       end
-
       @year = rule
       @year.unit = :year
     end
@@ -132,10 +128,12 @@ module TaskLoop
       @year ||= DefaultRule.new(:year)
     end
 
+    #################################
+    # Month Property
     # specific syntax
-    #   - of
-    #     - example: of :Jan, :Feb, :Mar, :Apr, :Jun, :Jul, :Aug, :Sep, :Oct, :Nov, :Dec;
-    #     - example: of :month1, :month2, :month3, ....
+    #   - at
+    #     - example: at :Jan, :Feb, :Mar, :Apr, :Jun, :Jul, :Aug, :Sep, :Oct, :Nov, :Dec;
+    #     - example: at :month1, :month2, :month3 ...
     # interval syntax
     #   - every
     #     - example: interval 1.month
@@ -146,9 +144,10 @@ module TaskLoop
     #     - example: between 2025, 2026
     #   - after
     #     - examle: after 2023
+    #################################
     def month=(rule)
-      unless rule.is_a?(Rule)
-        raise TypeError, "the rule of month must be a class or subclass of Rule"
+      unless rule.is_a?(SpecificRule) || rule.is_a?(ScopeRule) || rule.is_a?(IntervalRule)
+        raise TypeError, "the rule of month must be SpecificRule or ScopeRule or IntervalRule"
       end
       @month = rule
       @month.unit = :month
@@ -158,9 +157,11 @@ module TaskLoop
       @month||= DefaultRule.new(:month)
     end
 
+    #################################
+    # Day Property
     # specific syntax
-    #   - on
-    #     - example: on :day1, :day2, :day3;
+    #   - at
+    #     - example: at :day1, :day2, :day3 ...
     # interval syntax
     #   - interval
     #     - example: interval 10.day
@@ -172,9 +173,10 @@ module TaskLoop
     #     - example: between :Mon, :Fri
     #   - after
     #     - example: after :day10
+    #################################
     def day=(rule)
-      unless rule.is_a?(Rule)
-        raise TypeError, "the rule of day must be a class or subclass of Rule"
+      unless rule.is_a?(SpecificRule) || rule.is_a?(ScopeRule) || rule.is_a?(IntervalRule)
+        raise TypeError, "the rule of day must be SpecificRule or ScopeRule or IntervalRule"
       end
       @day = rule
       @day.unit = :day
@@ -184,9 +186,11 @@ module TaskLoop
       @day ||= DefaultRule.new(:day)
     end
 
+    #################################
+    # Hour Property
     # specific syntax
     #   - at
-    #     - example: at 10; at 23
+    #     - example: at 10, 11, 13 ...
     # interval syntax
     #   - interval
     #     - example: interval 10.hour
@@ -197,9 +201,10 @@ module TaskLoop
     #     - example: between 10, 12
     #   - after
     #     - example: after 11
+    #################################
     def hour=(rule)
-      unless rule.is_a?(Rule)
-        raise TypeError, "the rule of hour must be a class or subclass of Rule"
+      unless rule.is_a?(SpecificRule) || rule.is_a?(ScopeRule) || rule.is_a?(IntervalRule)
+        raise TypeError, "the rule of hour must be SpecificRule or ScopeRule or IntervalRule"
       end
       @hour = rule
       @hour.unit = :hour
@@ -209,19 +214,17 @@ module TaskLoop
       @hour ||= DefaultRule.new(:hour)
     end
 
+    #################################
+    # Minute Property
     # specific syntax
     #   - at
-    #     - example: at 59; at 45
+    #     - example: at 59, 23 ...
     # interval syntax
     #   - interval
     #     - example: interval 5.minute
     def minute=(rule)
-      unless rule.is_a?(Rule)
-        raise TypeError, "the rule of minute must be a class or subclass of Rule"
-      end
-
-      if rule.is_a?(ScopeRule)
-        raise TypeError, "the rule of minute cannot be a class or subclass of ScopeRule"
+      unless rule.is_a?(SpecificRule) || rule.is_a?(IntervalRule)
+        raise TypeError, "the rule of minute must be SpecificRule or IntervalRule"
       end
       @minute = rule
       @minute.unit = :minute
@@ -231,12 +234,15 @@ module TaskLoop
       @minute ||= DefaultRule.new(:minute)
     end
 
+    #################################
+    # Loop Property
     # loop syntax
     #   - loop
     #     - example: loop 5.times
+    #################################
     def loop=(rule)
-      unless rule.is_a?(Rule)
-        raise TypeError, "the rule of loop must be a class or subclass of Rule"
+      unless rule.is_a?(LoopRule)
+        raise TypeError, "the rule of loop must be LoopRule"
       end
 
       @loop = rule
@@ -246,12 +252,15 @@ module TaskLoop
       @loop ||= DefaultRule.new(:loop)
     end
 
+    #################################
+    # Time Property
     # time list syntax
     #   - time
     #     - example: time "10:10:30", "9:10:20", "20:10:20"
+    #################################
     def time=(rule)
       unless rule.is_a?(TimeListRule)
-        raise TypeError, "the rule of time must be a TimeList Rule"
+        raise TypeError, "the rule of time must be TimeListRule"
       end
 
       @time = rule
@@ -261,12 +270,15 @@ module TaskLoop
       @time ||= DefaultRule.new(:time)
     end
 
+    #################################
+    # Date Property
     # date list syntax
     #   - date
     #     - example: date "2023-10-10", "2013-10-11", "2023-11-10"
+    #################################
     def date=(rule)
       unless rule.is_a?(DateListRule)
-        raise TypeError, "the rule of time must be a DateList Rule"
+        raise TypeError, "the rule of time must be DateListRule"
       end
 
       @date = rule
@@ -276,25 +288,36 @@ module TaskLoop
       @date ||= DefaultRule.new(:date)
     end
 
+    #################################
+    # StartPoint Property
     # boundary syntax
+    #   - start_point
+    #     - example: from "2023-10-11 10:00:00"
+    #################################
     def start_point=(rule)
       unless rule.is_a?(StartPointBoundaryRule)
-        raise TypeError, "the rule of start_point must be a StartPointBoundaryRule"
+        raise TypeError, "the rule of start_point must be StartPointBoundaryRule"
       end
-
       @start_point = rule
+      @start_point.unit = :full
     end
 
     def start_point
       @start_point ||= DefaultRule.new(:full)
     end
 
+    #################################
+    # EndPoint Property
+    # boundary syntax
+    #   - end_point
+    #     - example: to "2023-10-11 10:00:00"
+    #################################
     def end_point=(rule)
       unless rule.is_a?(EndPointBoundaryRule)
-        raise TypeError, "the rule of end_point must be a EndPointBoundaryRule"
+        raise TypeError, "the rule of end_point must be EndPointBoundaryRule"
       end
-
       @end_point = rule
+      @end_point.unit = :full
     end
 
     def end_point
@@ -304,6 +327,9 @@ module TaskLoop
     #################################
     # Help Methods
     #################################
+    def hasWeek?
+      !week.is_a?(DefaultRule)
+    end
     def hasDate?
       !date.is_a?(DefaultRule)
     end
