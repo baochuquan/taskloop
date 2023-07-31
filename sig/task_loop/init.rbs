@@ -1,0 +1,5 @@
+module TaskLoop
+  class Init
+    def run: () -> void
+  end
+end

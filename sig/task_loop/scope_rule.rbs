@@ -1,0 +1,9 @@
+module TaskLoop
+  class ScopeRule
+    SCOPE: Hash[Symbol, Integer]
+
+    attr_accessor scope: Symbol
+
+    def desc: () -> String
+  end
+end

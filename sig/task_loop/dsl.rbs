@@ -1,0 +1,25 @@
+module TaskLoop
+  module DSL
+    def after: ([Symbol | Integer]) -> AfterScopeRule
+
+    def at: (*[Symbol | Integer]) -> SpecificRule
+
+    def before: ([Symbol | Integer]) -> BeforeScopeRule
+
+    def between: ([Symbol | Integer], [Symbol | Integer]) -> BetweenScopeRule
+
+    def date: (*String) -> DateListRule
+
+    def env: (String, String) -> void
+
+    def from: (String) -> StartPointBoundaryRule
+
+    def interval: (Integer) -> IntervalRule
+
+    def loop: (Integer) -> LoopRule
+
+    def time: (*String) -> TimeListRule
+
+    def to: (String) -> EndPointBoundaryRule
+  end
+end

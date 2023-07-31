@@ -1,0 +1,7 @@
+module TaskLoop
+  class Undeploy
+    def remove_proj_path_from_projlist: () -> void
+
+    def run: () -> void
+  end
+end

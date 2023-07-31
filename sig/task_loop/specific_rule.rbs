@@ -1,0 +1,11 @@
+module TaskLoop
+  class SpecificRule
+    attr_accessor values: Array[Symbol | Integer]
+
+    def desc: () -> String
+
+    def is_conform_rule?: (Time) -> bool
+
+    def values_values: () -> Integer
+  end
+end

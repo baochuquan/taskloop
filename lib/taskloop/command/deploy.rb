@@ -65,10 +65,6 @@ module TaskLoop
       json_string = File.read(taskloop_proj_list_path)
       parsed_json = JSON.parse(json_string)
       # check if all the registered path
-      push_taskfile_dir_if_needed(parsed_json)
-    end
-
-    private def push_taskfile_dir_if_needed(parsed_json)
       proj_dir = Dir.pwd
       duplicate = parsed_json.select { |path| path == proj_dir }
       if duplicate.empty?

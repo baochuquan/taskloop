@@ -8,34 +8,34 @@ module TaskLoop
       @left = left
     end
 
-    def invalidate!
-      super
-      if @unit == :day
-        unless Task::WEEK.has_key?(@left) || Task::DAY.has_key?(@left)
-          raise ArgumentError, "#{left} must be a Symbol defined in Task::WEEK or Task::DAY"
-        end
-        return
-      end
-
-      if @unit == :month
-        unless Task::MONTH.has_key?(@left)
-          raise ArgumentError, "#{left} must be a Symbol defined in Task::MONTH"
-        end
-        return
-      end
-
-      unless @left.is_a?(Integer)
-        raise TypeError, "'left' need to be Symbol or Integer"
-      end
-
-      if @unit == :minute && (@left < 0 || @left > 59)
-        raise ArgumentError, "'right' for 'minute' must >= 0 and <= 59"
-      end
-
-      if @unit == :hour && (@left < 0 || @left > 23)
-        raise ArgumentError, "'right' for 'hour' must >= 0 and <= 23"
-      end
-    end
+    # def invalidate!
+    #   super
+    #   if @unit == :day
+    #     unless Task::WEEK.has_key?(@left) || Task::DAY.has_key?(@left)
+    #       raise ArgumentError, "#{left} must be a Symbol defined in Task::WEEK or Task::DAY"
+    #     end
+    #     return
+    #   end
+    #
+    #   if @unit == :month
+    #     unless Task::MONTH.has_key?(@left)
+    #       raise ArgumentError, "#{left} must be a Symbol defined in Task::MONTH"
+    #     end
+    #     return
+    #   end
+    #
+    #   unless @left.is_a?(Integer)
+    #     raise TypeError, "'left' need to be Symbol or Integer"
+    #   end
+    #
+    #   if @unit == :minute && (@left < 0 || @left > 59)
+    #     raise ArgumentError, "'right' for 'minute' must >= 0 and <= 59"
+    #   end
+    #
+    #   if @unit == :hour && (@left < 0 || @left > 23)
+    #     raise ArgumentError, "'right' for 'hour' must >= 0 and <= 23"
+    #   end
+    # end
 
 
     def left_value

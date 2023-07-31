@@ -1,0 +1,13 @@
+module TaskLoop
+  class TimeListRule
+    attr_writer times: Array[String]
+
+    def desc: () -> String
+
+    def is_conform_rule?: (Time) -> bool
+
+    def times: () -> Array[String]
+
+    def times_values: () -> Array[Time]
+  end
+end

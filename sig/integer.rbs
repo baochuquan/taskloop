@@ -1,0 +1,11 @@
+class Integer
+  def day: () -> Integer
+
+  def hour: () -> Integer
+
+  def minute: () -> Integer
+
+  def month: () -> Integer
+
+  def year: () -> Integer
+end

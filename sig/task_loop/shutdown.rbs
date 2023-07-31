@@ -1,0 +1,7 @@
+module TaskLoop
+  class Shutdown
+    def run: () -> void
+
+    def unregister_taskloop_from_crontab_if_needed: () -> void
+  end
+end

@@ -1,0 +1,34 @@
+module TaskLoop
+  class Task
+    DAY_MIN: Integer
+    HOUR_MIN: Integer
+    MONTH_MIN: Integer
+    YEAR_MIN: Integer
+
+    def self.tasklist: () -> Array[Task]
+
+    def self.tasklist=: (Array[Task]) -> void
+
+    def check_all_rules?: () -> bool
+
+    def check_rule_conflict?: () -> bool
+
+    def deploy_lint?: () -> bool
+
+    def desc: () -> String
+
+    def sha1: () -> String
+
+    private
+
+    def check_boundary_rule?: (Time) -> bool
+
+    def check_interval_rule?: (Time) -> bool
+
+    def check_loop_rule?: (Time) -> bool
+
+    def check_scope_rule?: (Time) -> bool
+
+    def check_specific_fule?: (Time) -> bool
+  end
+end

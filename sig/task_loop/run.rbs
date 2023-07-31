@@ -1,0 +1,11 @@
+module TaskLoop
+  class Run
+    def run: () -> void
+
+    private
+
+    def execute_task: (String, Task) -> void
+
+    def execute_tasks_if_needed: () -> void
+  end
+end

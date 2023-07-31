@@ -1,0 +1,7 @@
+class String
+  def sha1: () -> String
+
+  def sha1_32bit: () -> String
+
+  def sha1_8bit: () -> String
+end

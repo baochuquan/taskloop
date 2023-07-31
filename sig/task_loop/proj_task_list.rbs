@@ -1,0 +1,5 @@
+module TaskLoop
+  module ProjTaskList
+    def proj_tasklist_map: () -> Hash[Symbol, Array[Task]]
+  end
+end

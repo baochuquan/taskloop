@@ -327,22 +327,22 @@ module TaskLoop
     #################################
     # Help Methods
     #################################
-    def hasWeek?
+    def has_week?
       !week.is_a?(DefaultRule)
     end
-    def hasDate?
+    def has_date?
       !date.is_a?(DefaultRule)
     end
 
-    def hasTime?
+    def has_time?
       !time.is_a?(DefaultRule)
     end
 
-    def hasYMD?
+    def has_ymd?
       [year, month, day].any? { |rule| !rule.is_a?(DefaultRule) }
     end
 
-    def hasHM?
+    def has_hm?
       [hour, minute].any? { |rule| !rule.is_a?(DefaultRule) }
     end
 

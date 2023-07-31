@@ -31,21 +31,21 @@ module TaskLoop
 
     def is_conform_rule?(last_exec_time)
       current = Time.now
-      valuess = values_values
+      vals = values_values
       result = false
       case @unit
       when :year then
-        result = valuess.include?(current.year)
+        result = vals.include?(current.year)
       when :month then
-        result = valuess.include?(current.month)
+        result = vals.include?(current.month)
       when :week then
-        result = valuess.include?(TaskLoop::WEEK_BASE + current.wday)
+        result = vals.include?(TaskLoop::WEEK_BASE + current.wday)
       when :day then
-        result = valuess.include?(current.day)
+        result = vals.include?(current.day)
       when :hour then
-        result = valuess.include?(current.hour)
+        result = vals.include?(current.hour)
       when :minute then
-        result = valuess.include?(current.min)
+        result = vals.include?(current.min)
       end
       return result
     end

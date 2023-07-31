@@ -11,52 +11,52 @@ module TaskLoop
       @right = right
     end
 
-    def invalidate!
-      super
-      if @unit == :day
-        if Task::WEEK.has_key?(@left) && Task::WEEK.has_key?(@right)
-          unless Task::WEEK[@left] < Task::WEEK[@right]
-            raise ArgumentError, "'left' must less than 'right'"
-          end
-          return
-        end
-        if Task::DAY.has_key?(@left) && Task::DAY.has_key?(@right)
-          unless Task::WEEK[@left] < Task::WEEK[@right]
-            raise ArgumentError, "'left' must less than 'right'"
-          end
-          return
-        end
-
-        raise ArgumentError, "'left' and 'right' must be the same type."
-      end
-
-      if @unit == :month
-        unless Task::MONTH.has_key?(@left)
-          raise ArgumentError, "#{left} must be a Symbol defined in Task::MONTH"
-        end
-        return
-      end
-
-      unless @left.is_a?(Integer) && @right.is_a?(Integer)
-        raise TypeError, "both 'left' and 'right' need to be Symbol or Integer"
-      end
-
-      unless @left < @right
-        raise ArgumentError, "'left' must less than 'right'"
-      end
-
-      if @unit == :minute && (@left < 0 || @right > 59)
-        raise ArgumentError, "'left' and 'right' for 'minute' must >= 0 and <= 59"
-      end
-
-      if @unit == :hour && (@left < 0 || @right > 23)
-        raise ArgumentError, "'left', 'right' for 'hour' must >= 0 and <= 23"
-      end
-
-      if @unit == :year && @left < 0
-        raise ArgumentError, "'left' must greater than 0"
-      end
-    end
+    # def invalidate!
+    #   super
+    #   if @unit == :day
+    #     if Task::WEEK.has_key?(@left) && Task::WEEK.has_key?(@right)
+    #       unless Task::WEEK[@left] < Task::WEEK[@right]
+    #         raise ArgumentError, "'left' must less than 'right'"
+    #       end
+    #       return
+    #     end
+    #     if Task::DAY.has_key?(@left) && Task::DAY.has_key?(@right)
+    #       unless Task::WEEK[@left] < Task::WEEK[@right]
+    #         raise ArgumentError, "'left' must less than 'right'"
+    #       end
+    #       return
+    #     end
+    #
+    #     raise ArgumentError, "'left' and 'right' must be the same type."
+    #   end
+    #
+    #   if @unit == :month
+    #     unless Task::MONTH.has_key?(@left)
+    #       raise ArgumentError, "#{left} must be a Symbol defined in Task::MONTH"
+    #     end
+    #     return
+    #   end
+    #
+    #   unless @left.is_a?(Integer) && @right.is_a?(Integer)
+    #     raise TypeError, "both 'left' and 'right' need to be Symbol or Integer"
+    #   end
+    #
+    #   unless @left < @right
+    #     raise ArgumentError, "'left' must less than 'right'"
+    #   end
+    #
+    #   if @unit == :minute && (@left < 0 || @right > 59)
+    #     raise ArgumentError, "'left' and 'right' for 'minute' must >= 0 and <= 59"
+    #   end
+    #
+    #   if @unit == :hour && (@left < 0 || @right > 23)
+    #     raise ArgumentError, "'left', 'right' for 'hour' must >= 0 and <= 23"
+    #   end
+    #
+    #   if @unit == :year && @left < 0
+    #     raise ArgumentError, "'left' must greater than 0"
+    #   end
+    # end
 
     def left_value
       if (Task::DAY.has_key?(@left))

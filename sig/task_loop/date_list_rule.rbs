@@ -1,0 +1,11 @@
+module TaskLoop
+  class DateListRule
+    attr_writer dates: Array[String]
+
+    def dates_values: () -> Array[Time]
+
+    def desc: () -> String
+
+    def is_conform_rule?: (Time) -> bool
+  end
+end

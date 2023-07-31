@@ -1,0 +1,11 @@
+module TaskLoop
+  class Rule
+    UNIT: Hash[Symbol, Integer]
+
+    attr_accessor unit: Symbol
+
+    def desc: () -> String
+
+    def is_conform_rule?: (Time) -> bool
+  end
+end

@@ -1,0 +1,23 @@
+module TaskLoop
+  module TaskDataFile
+    attr_accessor data_proj_dir: String
+
+    def logfile_name: () -> String
+
+    def logfile_path: () -> String
+
+    def loopfile_name: () -> String
+
+    def loopfile_path: () -> String
+
+    def timefile_name: () -> String
+
+    def timefile_path: () -> String
+
+    def write_to_logfile: (String) -> void
+
+    def write_to_loopfile: (String) -> void
+
+    def write_to_timefile: (String) -> void
+  end
+end

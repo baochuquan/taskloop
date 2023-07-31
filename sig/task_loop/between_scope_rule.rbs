@@ -1,0 +1,14 @@
+module TaskLoop
+  class BetweenScopeRule
+    attr_accessor left: [Symbol | Integer]
+    attr_accessor right: [Symbol | Integer]
+
+    def desc: () -> String
+
+    def is_conform_rule?: (Time) -> bool
+
+    def left_value: () -> Integer
+
+    def right_value: () -> Integer
+  end
+end

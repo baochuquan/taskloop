@@ -1,0 +1,8 @@
+module TaskLoop
+  class DefaultRule
+
+    def desc: () -> String
+
+    def is_conform_rule?: (Time) -> bool
+  end
+end

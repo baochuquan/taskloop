@@ -1,0 +1,9 @@
+module TaskLoop
+  class BoundaryRule
+    BOUNDARY: Hash[Symbol, Integer]
+
+    attr_accessor boundary: Symbol
+
+    def desc: () -> String
+  end
+end

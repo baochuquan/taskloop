@@ -1,0 +1,12 @@
+module TaskLoop
+  class Launch
+    def create_environments_file_if_needed: () -> void
+
+    def create_tasklooprc_file_if_needed: () -> void
+
+    def register_taskloop_into_crontab_if_needed: () -> void
+
+    def run: () -> void
+
+  end
+end

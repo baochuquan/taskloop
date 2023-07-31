@@ -1,0 +1,18 @@
+module TaskLoop
+  class Deploy
+    def run: () -> void
+    def register_taskfile_dir_if_needed: () -> void
+
+    def tasklist: () -> Array[Task]
+
+    private
+
+    def clean_loopfile_if_needed: () -> void
+
+    def deploy_lint?: () -> bool
+
+    def eval_taskfile: (String) -> void
+
+    def generate_taskfile_deploy: () -> void
+  end
+end

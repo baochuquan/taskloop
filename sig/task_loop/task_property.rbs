@@ -1,0 +1,83 @@
+module TaskLoop
+  module TaskProperty
+    DAY: Hash[Symbol, Integer]
+    MONTH: Hash[Symbol, Integer]
+    WEEK: Hash[Symbol, Integer]
+
+    @date: [DateListRule | DefaultRule]
+    @day: [SpecificRule | ScopeRule | IntervalRule | DefaultRule]
+    @end_point: [EndPointBoundaryRule | DefaultRule]
+    @hour: [SpecificRule | ScopeRule | IntervalRule | DefaultRule]
+    @loop: [LoopRule | DefaultRule]
+    @minute: [SpecificRule | IntervalRule| DefaultRule]
+    @month: [SpecificRule | ScopeRule | IntervalRule | DefaultRule]
+    @start_point: [StartPointBoundaryRule | DefaultRule]
+    @time: [TimeListRule | DefaultRule]
+    @week: [SpecificRule | ScopeRule | DefaultRule]
+
+    @year: [SpecificRule | ScopeRule | IntervalRule | DefaultRule]
+
+    attr_accessor name: String
+    attr_accessor path: String
+
+    def date: () -> [DateListRule | DefaultRule]
+
+    def date=: (DateListRule) -> void
+
+    def day: () -> [SpecificRule | ScopeRule | IntervalRule | DefaultRule]
+
+    def day=: ([SpecificRule | ScopeRule | IntervalRule]) -> void
+
+    def end_point: () -> [EndPointBoundaryRule | DefaultRule]
+
+    def end_point=: (EndPointBoundaryRule) -> void
+
+    def has_date?: () -> bool
+
+    def has_hm?: () -> bool
+
+    def has_interval_rule?: () -> bool
+
+    def has_time?: () -> bool
+
+    def has_week?: () -> bool
+
+    def has_ymd?: () -> bool
+
+    def hour: () -> [SpecificRule | ScopeRule | IntervalRule | DefaultRule]
+
+    def hour=: ([SpecificRule | ScopeRule | IntervalRule]) -> void
+
+    def last_time: () -> Time
+
+    def loop: () -> [LoopRule | DefaultRule]
+
+    def loop=: (LoopRule) -> void
+
+    def loop_count: () -> Integer
+
+    def minute: () -> [SpecificRule | IntervalRule]
+
+    def minute=: ([SpecificRule | IntervalRule]) -> void
+
+    def month: () -> [SpecificRule | ScopeRule | IntervalRule | DefaultRule]
+
+    def month=: ([SpecificRule | ScopeRule | IntervalRule]) -> void
+
+    def start_point: () -> [StartPointBoundaryRule | DefaultRule]
+
+    def start_point=: (StartPointBoundaryRule) -> void
+
+    def time: () -> [TimeListRule | DefaultRule]
+
+    def time=: (TimeListRule) -> void
+
+    def week: () -> [SpecificRule | ScopeRule | DefaultRule]
+
+    def week=: ([SpecificRule | ScopeRule]) -> void
+
+    def year: () -> [SpecificRule | ScopeRule | IntervalRule | DefaultRule]
+
+    def year=: ([SpecificRule | ScopeRule | IntervalRule]) -> void
+  end
+end

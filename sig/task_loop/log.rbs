@@ -1,0 +1,11 @@
+module TaskLoop
+  class Log
+    def check_log_of_cron: () -> void
+
+    def check_log_of_task: (String) -> void
+
+    def run: () -> String
+
+    def validate!: () -> void
+  end
+end

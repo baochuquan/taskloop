@@ -19,7 +19,7 @@ module TaskLoop
       @@tasklist = value
     end
 
-    def initialize()
+    def initialize
       yield self
       check = true
       unless @name
@@ -73,20 +73,20 @@ module TaskLoop
     def check_rule_conflict?
       result = true
       # check year/month/day with date, they cannot be set at the same time
-      if hasYMD? && hasDate?
+      if has_ymd? && has_date?
         puts "Error: #{desc} => <year/month/day> and <date> cannot be set at the same time.".ansi.red
         result = false
       end
 
       # check hour/minute with time, they cannot be set at the same time
-      if hasHM? && hasTime?
+      if has_hm? && has_time?
         puts "Error: #{desc} => <hour/minute> and <time> cannot be set at the same time.".ansi.red
         result = false
       end
 
       # check rule type
 
-      if hasYMD? && hasHM?
+      if has_ymd? && has_hm?
         # check minute/hour/day/month/year. Get the last IntervalRule, than check if there is SpecificRule or ScopeRule before
         rules = [minute, hour, day, month, year]
         rIdx = rules.rindex { |rule| rule.is_a?(IntervalRule) }
@@ -104,7 +104,7 @@ module TaskLoop
 
       end
 
-      if hasYMD? && hasTime?
+      if has_ymd? && has_time?
         # check year/month/day with time, YMD can not have IntervalRule
         rules = [day, month, year]
         hasInterval = rules.any? { |rule| rule.is_a?(IntervalRule) }
@@ -114,11 +114,11 @@ module TaskLoop
         end
       end
 
-      if hasDate? && hasHM?
+      if has_date? && has_hm?
         # it's ok
       end
 
-      if hasDate? && hasTime?
+      if has_date? && has_time?
         # it's ok
       end
 
@@ -177,6 +177,9 @@ module TaskLoop
       if minute.is_a?(ScopeRule)
         result &&= minute.is_conform_rule?(last_exec_time)
       end
+      if week.is_a?(ScopeRule)
+        result &&= week.is_conform_rule?(last_exec_time)
+      end
       return result
     end
 
@@ -196,6 +199,9 @@ module TaskLoop
       end
       if minute.is_a?(SpecificRule)
         result &&= minute.is_conform_rule?(last_exec_time)
+      end
+      if week.is_a?(SpecificRule)
+        result &&= week.is_conform_rule?(last_exec_time)
       end
       if time.is_a?(TimeListRule)
         result &&= time.is_conform_rule?(last_exec_time)
@@ -217,7 +223,9 @@ module TaskLoop
     end
 
     private def check_boundary_rule?(last_exec_time)
-      result = start_point.is_conform_rule?(last_exec_time) && end_point.is_conform_rule?(last_exec_time)
+      result = true
+      result &&= start_point.is_conform_rule?(last_exec_time)
+      result &&= end_point.is_conform_rule?(last_exec_time)
       return result
     end
 
