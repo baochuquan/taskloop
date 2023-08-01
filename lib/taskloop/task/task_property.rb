@@ -222,9 +222,16 @@ module TaskLoop
     # interval syntax
     #   - interval
     #     - example: interval 5.minute
+    # scope syntax
+    #   - before
+    #     - example: before 9
+    #   - between
+    #     - example: between 10, 12
+    #   - after
+    #     - example: after 11
     def minute=(rule)
-      unless rule.is_a?(SpecificRule) || rule.is_a?(IntervalRule)
-        raise TypeError, "the rule of minute must be SpecificRule or IntervalRule"
+      unless rule.is_a?(SpecificRule) || rule.is_a?(ScopeRule)  || rule.is_a?(IntervalRule)
+        raise TypeError, "the rule of minute must be SpecificRule or ScopeRule or IntervalRule"
       end
       @minute = rule
       @minute.unit = :minute

@@ -105,11 +105,13 @@ module TaskLoop
       when :month then
         result = left <= current.month && current.month <= right
       when :week then
-        result = (left % TaskLoop::WEEK_BASE) <= current.wday && current.wday <= (right % TaskLoop::WEEK_BASE)
+        result = left <= current.wday && current.wday <= right
       when :day then
         result = left <= current.day && current.day <= right
       when :hour then
         result = left <= current.hour && current.hour <= right
+      when :minute then
+        result = left <= current.min && current.min <= right
       end
       return result
     end

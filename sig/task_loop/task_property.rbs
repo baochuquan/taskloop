@@ -56,9 +56,9 @@ module TaskLoop
 
     def loop_count: () -> Integer
 
-    def minute: () -> [SpecificRule | IntervalRule]
+    def minute: () -> [SpecificRule | ScopeRule | IntervalRule]
 
-    def minute=: ([SpecificRule | IntervalRule]) -> void
+    def minute=: ([SpecificRule | ScopeRule | IntervalRule]) -> void
 
     def month: () -> [SpecificRule | ScopeRule | IntervalRule | DefaultRule]
 

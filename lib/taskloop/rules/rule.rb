@@ -3,7 +3,7 @@ module TaskLoop
 
     UNIT = {
       :unknown     => 0,
-      :minute      => 1,      # support interval/specific syntax
+      :minute      => 1,      # support interval/scope/specific syntax
       :hour        => 2,      # support interval/scope/specific syntax
       :day         => 3,      # support interval/scope/specific syntax
       :month       => 4,      # support interval/scope/specific syntax

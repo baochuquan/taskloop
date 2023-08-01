@@ -98,10 +98,7 @@ module TaskLoop
               break
             end
           end
-
         end
-
-
       end
 
       if has_ymd? && has_time?

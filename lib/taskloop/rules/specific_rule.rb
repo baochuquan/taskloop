@@ -39,7 +39,7 @@ module TaskLoop
       when :month then
         result = vals.include?(current.month)
       when :week then
-        result = vals.include?(TaskLoop::WEEK_BASE + current.wday)
+        result = vals.include?(current.wday)
       when :day then
         result = vals.include?(current.day)
       when :hour then
