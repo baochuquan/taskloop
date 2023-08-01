@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    taskloop (0.2.0)
+    taskloop (0.3.0)
       claide (~> 1.0.3)
 
 GEM
