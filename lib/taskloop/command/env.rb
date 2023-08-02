@@ -6,7 +6,7 @@ module TaskLoop
 
     self.description = <<-DESC
       The `taskloop env` command can be used to deal with global environment variable related operations. 
-      For example, you can export environment variables into taskloop with `--global-export=VAR1,VAR2...` options.
+      For example, you can export environment variables into taskloop with `--import=VAR1,VAR2...` options.
       Beside, you can list all the global environment variables exported in taskloop.
       All above operations are based on ~/.taskloop/environments file. If you want more details about global environment
       variables, check and edit ~/.taskloop/environments by yourself.
@@ -14,14 +14,14 @@ module TaskLoop
 
     def self.options
       [
-        ['--global-import=VAR1,VAR2...', 'Import one or more global environment variables into taskloop.'],
-        ["--global-remove=VAR1,VAR2...", 'Remove one or more global environment variables from taskloop.']
+        ['--import=VAR1,VAR2...', 'Import one or more global environment variables into taskloop.'],
+        ["--remove=VAR1,VAR2...", 'Remove one or more global environment variables from taskloop.']
       ].concat(super)
     end
 
     def initialize(argv)
-      @import = argv.option('global-import')
-      @remove = argv.option('global-remove')
+      @import = argv.option('import')
+      @remove = argv.option('remove')
       super
     end
 
