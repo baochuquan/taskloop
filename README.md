@@ -6,7 +6,9 @@
 
 Taskloop is a scheduled task manager optimized based on crontab. 
 
-Compared to crontab, taskloop offers more user-friendly and semantic syntax rules. In addition to supporting crontab syntax, taskloop also provides some extensions, such as the number of loops, start/end time, log query, environment variable import, etc.
+Compared to crontab, taskloop offers more user-friendly and semantic syntax rules. In addition to supporting crontab 
+syntax, taskloop also provides some extensions, such as the number of loops, start/end time, log query, environment 
+variable import, etc.
 
 # Features
 
@@ -38,18 +40,36 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
     $ gem install taskloop
 
-
 # Usage
+TaskLoop provides a series of commands for workflows, as well as a set of syntax rules for users to customize their tasks.
 
-# Advanced Usage
+# Workflow
+When using Taskloop, we recommend that you use a git project or a local directory to manage all your scheduled tasks.
+This doesn't mean that you have to centralize management in just one place; of course, you can use multiple git 
+projects or directories to manage different types of scheduled tasks. Taskloop supports these different management 
+methods; these are just recommendations.
 
-# FAQ
+Next, let's introduce the standard workflow of Taskloop.
+
+## Launch
+Before you start using Taskloop, you need to execute the 'taskloop launch' command to globally launch Taskloop.
+
+## Init Taskfile
+
+## Customize Scheduled Task
+
+## Deploy
+
+# Rules
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive 
+prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version 
+number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git 
+commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 # Contributing
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/taskloop.
