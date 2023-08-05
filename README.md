@@ -52,13 +52,61 @@ methods; these are just recommendations.
 Next, let's introduce the standard workflow of Taskloop.
 
 ## Launch
-Before you start using Taskloop, you need to execute the 'taskloop launch' command to globally launch Taskloop.
+Before you start using Taskloop, you need to execute the `taskloop launch` command to globally launch Taskloop.
 
 ## Init Taskfile
+A Taskfile is used to describe custom tasks, and multiple tasks can be described in one Taskfile. Therefore, we can 
+execute the `taskloop init` command in a directory to generate a Taskfile and describe specific tasks in the Taskfile.
 
 ## Customize Scheduled Task
+After you execute the `taskloop init` command, a Taskfile template file will be automatically generated in the current 
+directory. The template file describes how to describe a task, including which attributes are specified 
+for each task, which attributes are required, and which attributes are optional.
+
+The following is the Taskfile template file:
+```sh
+# env to set environment variables which are shared by all tasks defined in the Taskfile. <Optional>
+# env "ENV_NAME", "ENV_VALUE"
+
+TaskLoop::Task.new do |t|
+  t.name        = 'TODO: task name. <Required>'
+  t.path        = 'TODO: task job path. For example, t.path = "./Job.sh". <Required>'
+  t.week        = 'TODO: week rule. <Optional>'
+  t.year        = "TODO: year rule. <Optional>"
+  t.month       = "TODO: month rule. <Optional>"
+  t.day         = "TODO: day rule. <Optional>"
+  t.hour        = "TODO: hour rule. <Optional>"
+  t.minute      = "TODO: minute rule. <Optional>"
+  t.time        = "TODO: time list rule. <Optional>"
+  t.date        = "TODO: date list rule. <Optional>"
+  t.loop        = "TODO: loop count. <Optional>"
+  t.start_point = "TODO: start point boundary rule. <Optional>"
+  t.end_point   = "TODO: end point boundary rule. <Optional>"
+end
+```
+
+At the beginning of the file, we can define environment variables for the tasks in the Taskfile, using the `env` syntax.
+
+The env syntax takes two arguments, the first is the name of the environment variable and the second is the value of the
+environment variable. We can use the env syntax multiple times to define multiple environment variables. These variables
+are shared by all tasks in the Taskfile.
+
+```sh
+env <ENV_NAME1> <ENV_VALUE1>
+env <ENV_NAME2> <ENV_VALUE2>
+env <ENV_NAME3> <ENV_VALUE3>
+...
+```
+
+Every task needs to be initialized using the `TaskLoop::Task.new` syntax, and set the property in the `do` closure. 
+There are two required attributes of a task, `name` and `path`, and the rest are optional attributes. If none of the 
+optional properties is set, the task will be executed every minute.
+
+
+
 
 ## Deploy
+
 
 # Rules
 
