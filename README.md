@@ -43,7 +43,6 @@ If bundler is not being used to manage dependencies, install the gem by executin
 # Usage
 TaskLoop provides a series of commands for workflows, as well as a set of syntax rules for users to customize their tasks.
 
-# Workflow
 When using Taskloop, we recommend that you use a git project or a local directory to manage all your scheduled tasks.
 This doesn't mean that you have to centralize management in just one place; of course, you can use multiple git 
 projects or directories to manage different types of scheduled tasks. Taskloop supports these different management 
