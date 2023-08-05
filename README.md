@@ -43,7 +43,7 @@ If bundler is not being used to manage dependencies, install the gem by executin
 # Usage
 TaskLoop provides a series of commands for workflows, as well as a set of syntax rules for users to customize their tasks.
 
-When using Taskloop, we recommend that you use a git project or a local directory to manage all your scheduled tasks.
+When using taskloop, we recommend that you use a git project or a local directory to manage all your scheduled tasks.
 This doesn't mean that you have to centralize management in just one place; of course, you can use multiple git 
 projects or directories to manage different types of scheduled tasks. Taskloop supports these different management 
 methods; these are just recommendations.
@@ -51,7 +51,9 @@ methods; these are just recommendations.
 Next, let's introduce the standard workflow of Taskloop.
 
 ## Launch
-Before you start using Taskloop, you need to execute the `taskloop launch` command to globally launch Taskloop.
+Before you start using taskloop, you need to execute the `taskloop launch` command to globally launch taskloop.
+
+Correspondingly, taskloop also provides a `taskloop shutdown` command to globally shutdown taskloop.
 
 ## Init Taskfile
 A Taskfile is used to describe custom tasks, and multiple tasks can be described in one Taskfile. Therefore, we can 
@@ -63,7 +65,7 @@ directory. The template file describes how to describe a task, including which a
 for each task, which attributes are required, and which attributes are optional.
 
 The following is the Taskfile template file:
-```sh
+```shell
 # env to set environment variables which are shared by all tasks defined in the Taskfile. <Optional>
 # env "ENV_NAME", "ENV_VALUE"
 
@@ -90,7 +92,7 @@ The env syntax takes two arguments, the first is the name of the environment var
 environment variable. We can use the env syntax multiple times to define multiple environment variables. These environment 
 variables are shared by all tasks in the Taskfile.
 
-```sh
+```shell
 env <ENV_NAME1> <ENV_VALUE1>
 env <ENV_NAME2> <ENV_VALUE2>
 env <ENV_NAME3> <ENV_VALUE3>
@@ -151,9 +153,50 @@ The `end_point` attribute is used to indicate the last execution time of the tas
 as: "2023-10-30 10:00:00".
 
 ## Deploy
+After you define or modify the Taskfile, you can execute the `taskloop deploy` command to deploy. After the deployment 
+is successful, the taskloop will actually execute the scheduled tasks according to the rules you defined.
 
+If you find a problem after deploying the Taskfile, you can re-edit it and deploy it again. Or you can undeploy it 
+directly through the `taskloop undeploy` command to avoid serious consequences.
+
+# Advanced Usage
+## Environment Variable
+Regarding environment variables, Taskfile supports defining local environment variables. In addition, taskloop also 
+provides a `taskloop env` command to support importing/deleting/viewing environment variables. For example:
+
+```shell
+# to list all the global environment variables
+$ taskloop env 
+
+# to import PATH and RUBY_HOME 
+$ taskloop env --import=PATH,RUBY_HOME
+
+# to remove MY_HOME environment variable
+$ taskloop env --remove=MY_HOME
+```
+
+## List Task
+If we want to see which scheduled tasks are running in the taskloop, we can use the taskloop list command at this time.
+For example:
+
+```shell
+$ taskloop list
+```
+
+## Log Query
+If we want to query the execution log of the task, we can use the `taskloop log` command, which supports the log of 
+specific tasks and the log of the system. For example:
+
+```shell
+# to query the log of task which is named "morning tip"
+$ taskloop log --task-name="morning tip"
+
+# to query the system log of taskloop
+$ taskloop log --cron
+```
 
 # Rules
+TODO: @Baocq
 
 ## Development
 
