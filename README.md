@@ -196,16 +196,101 @@ $ taskloop log --cron
 ```
 
 # Rules
-TODO: @Baocq
+In above, we know that different attributes of tasks refer to different rules. Next, let's introduce the specific usage 
+of these rules.
 
-## Development
+## IntervalRule
+If you want to execute a task every period of time, you need to use `IntervalRule`. Attributes that support 
+`IntervalRule` include `year`, `month`, `day`, `hour`, `minute`. When you use `IntervalRule` on different properties, their units are 
+different, and finally taskloop will calculate the time interval of their combination to execute the task.
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive 
-prompt that will allow you to experiment.
+The syntax of `IntervalRule` is `interval`, and the usage example of `IntervalRule` is shown below.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version 
-number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git 
-commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```ruby
+# execute the task every 5 minutes
+t.minute = interval 5
+
+# execute the task every 1 hour and 10 minutes
+t.hour = interval 1
+t.minute = interval 5
+```
+
+## ScopeRule
+If you want to specify the task to execute within a time range, then you can use `ScopeRule`. In fact, `ScopeRule` 
+contains three specific types of rules, which are `BeforeScopeRule`, `BetweenScopeRule`, `AfterScopeRule`. Attributes 
+that support `ScopeRule` include `week`, `year`, `month`, `day`, `hour`, `minute`. Here are a few examples of 
+`ScopeRule` usage.
+
+```ruby
+# executed between 10 o'clock and 19 o'clock
+t.hour = between 10, 19
+
+# execute before 30 minutes of the hour
+t.minute = before 30
+
+# executed after october
+t.month = after :Oct
+
+# execute within working days
+t.week = between :Mon, :Fri
+```
+
+## SpecificRule
+If you want to specify a certain time unit to execute, then you can use `SpecificRule`. which uses `at` 
+syntax. Attributes that support `SpecificRule` include `week`, `year`, `month`, `day`, `hour`, `minute`. Here are a few 
+examples of `SpecificRule` usage.
+
+```ruby
+# execute at 10 o'clock
+t.hour = at 10
+t.minute = at 0
+```
+
+## DateListRule
+If you want to specify one or more dates to execute the task, you can use `DateListRule`, which uses `date` syntax. Only 
+`date` attribute support `DateListRule`. Here is an example of `DateListRule`.
+
+```ruby
+# execute at 2023-10-1, 2023-10-15, 2023-10-30
+t.date = date "2023-10-1", "2023-10-15", "2023-10-30"
+```
+
+## TimeListRule
+If you want to specify one or more times to execute the task, you can use `TimeListRule`, which uses `time` syntax. Only
+`time` attribute support `TimeListRule`. Here is an example of `TimeListRule`.
+
+```ruby
+# execute at 10:00:00, 11:00:00, 12:00:00
+t.time = time "10:00:00", "11:00:00", "12:00:00"
+```
+
+## LoopRule
+If you want to control the number of executions of tasks, you can use `LoopRule`, which uses `loop` syntax. Only `loop` attribute support 
+`LoopRule`. Here is an example of `LoopRule`.
+
+```ruby
+# only execute 5 times
+t.loop = loop 5
+```
+
+## StartPointBoundaryRule
+If you want to set the earliest time when the task will be executed for the first time, then you can use 
+`StartPointBoundaryRule`, which uses `from` syntax. Only `start_point` attribute support `StartPointBoundaryRule`. Here
+is an example of `StartPointBoundaryRule`.
+
+```ruby
+# the task will start from 2023-10-1 10:00:00 at the earliest
+t.start_point = from "2023-10-1: 10:00:00"
+```
+
+## EndPointBoundaryRule
+If you want to prevent tasks from executing after a certain time, then you can use `EndPointBoundaryRule`, which uses 
+`to` syntax. Only `end_point` attribute support `EndPointBoundaryRule`. Here is an example of `EndPointBoundaryRule`.
+
+```ruby
+# the task will end after 2023-10-1 10:00:00
+t.end_point = to "2023-10-1: 10:00:00"
+```
 
 # Contributing
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/taskloop.
