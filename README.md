@@ -293,7 +293,7 @@ t.end_point = to "2023-10-1: 10:00:00"
 ```
 
 # Contributing
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/taskloop.
+Bug reports and pull requests are welcome on GitHub at https://github.com/baochuquan/taskloop.
 
 # License
 Taskloop is released under the MIT license. 
