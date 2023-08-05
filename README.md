@@ -4,6 +4,8 @@
 [![License](https://img.shields.io/badge/License-MIT-orange)](https://img.shields.io/badge/License-MIT-orange)
 [![Gem](https://img.shields.io/badge/Gem-0.3.0-blue)](https://img.shields.io/badge/Gem-0.3.0-blue)
 
+[简体中文](https://github.com/baochuquan/taskloop/README-cn.md)
+
 Taskloop is a scheduled task manager optimized based on crontab. 
 
 Compared to crontab, taskloop offers more user-friendly and semantic syntax rules. In addition to supporting crontab 
@@ -139,7 +141,7 @@ The `time` attribute is also used to set the time. When you use `SpecificRule` f
 don't set `time` property at the same time. When you set `SpecificRule` for `hour` and `minute` attribute, you can only 
 set one time, but when you use `time` attribute, you can set a time list. This kind of rule that can set a time list is 
 called `TimeListRule` in taskloop. When using `TimeListRule`, you can pass in a series of characters representing the 
-date, for example: "10:00:00".
+time, for example: "10:00:00".
 
 The `loop` attribute is used to indicate the execution times of the scheduled task, and the only supported rule is 
 called `LoopRule`. When using `LoopRule`, you only need to pass in a number indicating the number of executions.
