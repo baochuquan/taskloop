@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/badge/License-MIT-orange)](https://img.shields.io/badge/License-MIT-orange)
 [![Gem](https://img.shields.io/badge/Gem-0.3.0-blue)](https://img.shields.io/badge/Gem-0.3.0-blue)
 
-[简体中文](https://github.com/baochuquan/taskloop/README-cn.md)
+[简体中文](https://github.com/baochuquan/taskloop/blob/main/README-cn.md)
 
 Taskloop is a scheduled task manager optimized based on crontab. 
 
