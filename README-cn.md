@@ -3,6 +3,7 @@
 [![Platforms](https://img.shields.io/badge/Platforms-macOS_Linux-yellowgreen)](https://img.shields.io/badge/Platforms-macOS_Linux-Green)
 [![License](https://img.shields.io/badge/License-MIT-orange)](https://img.shields.io/badge/License-MIT-orange)
 [![Gem](https://img.shields.io/badge/Gem-0.3.0-blue)](https://img.shields.io/badge/Gem-0.3.0-blue)
+[![Language](https://img.shields.io/badge/Language-Ruby-red)](https://img.shields.io/badge/Language-Ruby-red)
 
 [English](https://github.com/baochuquan/taskloop/README.md)
 
